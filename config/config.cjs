@@ -1,15 +1,12 @@
 'use strict';
 
-import dotenv from 'dotenv';
-dotenv.config();
-
-const env = process.env;
+require('dotenv').config();
 
 const development = {
-	username: env.DB_NAME,
-	password: env.DB_PASSWORD,
-	database: env.DB_NAME,
-	host: env.DB_HOST,
+	username: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_NAME,
+	host: process.env.DB_HOST,
 	dialect: 'mysql',
 };
 const test = {
@@ -27,5 +24,4 @@ const production = {
 	dialect: 'mysql',
 };
 
-// module.exports = { development };
-export { development };
+module.exports = { development };
