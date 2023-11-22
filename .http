@@ -16,6 +16,8 @@ Content-Type: application/json
 ###
 
 #회원 로그인
+
+# @name getJWT
 POST http://localhost:3010/api/auth/login HTTP/1.1
 Content-Type: application/json
 
@@ -31,7 +33,7 @@ Content-Type: application/json
 #회원 로그아웃
 GET http://localhost:3010/api/auth/logout HTTP/1.1
 Content-Type: application/json
-authorization: {{token}}
+authorization: {{getJWT.response.body.message}}
 
 
 
@@ -50,7 +52,7 @@ authorization: {{token}}
 #회원정보 조회
 GET http://localhost:3010/api/users/3 HTTP/1.1
 Content-Type: application/json
-authorization: {{token}}
+authorization: {{getJWT.response.body.message}}
 
 
 
@@ -69,6 +71,26 @@ authorization: {{token}}
 
 
 
+###
+#게시물 삭제
+DELETE  http://localhost:3010/api/post/11 HTTP/1.1
+Content-Type: application/json
+authorization: {{token}}
+
+
+
+#
+
+###
+#게시물 작성
+POST  http://localhost:3010/api/main/feed HTTP/1.1
+Content-Type: application/json
+authorization: {{token}}
+
+{
+  "id", "category", 
+  "title", "createdAt"
+}
 
 #
 
