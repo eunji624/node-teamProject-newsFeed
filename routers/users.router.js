@@ -5,19 +5,23 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { Users } = require('../models/index.js');
 const { authMiddleware } = require('../middleware/auth.js');
-const { registerValidator } = require('../middleware/validator.js');
+// const { registerValidator } = require('../middleware/validator.js');
 
 const router = express.Router();
-
+const { body, validationResult } = require('express-validator');
 //회원 가입
 router.post(
 	'/register',
-	registerValidator,
+	body('email').isEmail(),
+	body('name').notEmpty().withMessage(`이름을 입력해 주세요`),
 	async (req, res, next) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors });
+		}
 		try {
 			const { name, email, password, description } = req.body;
-
-			const sortPassword = await bcrypt.hash(req.body.password, 11);
+			const sortPassword = await bcrypt.hash(password, 11);
 			const newData = await Users.create({
 				name,
 				email,
