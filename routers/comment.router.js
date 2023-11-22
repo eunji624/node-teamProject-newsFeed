@@ -58,7 +58,7 @@ router.get('/post/:postId', async (req, res) => {
 
 // //  U Update
 
-router.patch(
+router.put(
 	'/comment/:commentId',
 	authMiddleware,
 	async (req, res) => {

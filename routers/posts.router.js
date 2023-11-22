@@ -115,7 +115,7 @@ router.post('/post', authMiddleware, async (req, res) => {
 });
 
 // 게시물 수정 - 인증 미들웨어 확인 필요
-router.patch('/post/:postId', authMiddleware, async (req, res) => {
+router.put('/post/:postId', authMiddleware, async (req, res) => {
 	try {
 		const postId = req.params.postId;
 		//로그인 한 유저 아이디 가져오기
