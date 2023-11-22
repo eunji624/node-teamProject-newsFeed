@@ -1,4 +1,4 @@
-@token =  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcwMDY0MjgxNCwiZXhwIjoxNzAwNjQzNDE0fQ.G7SyV776PCn8yeJy4iTCqpkee_SHGitt5W87tN5P5Es
+# @token =  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTcwMDY0MjgxNCwiZXhwIjoxNzAwNjQzNDE0fQ.G7SyV776PCn8yeJy4iTCqpkee_SHGitt5W87tN5P5Es
 
 ###
 #회원가입
@@ -50,7 +50,7 @@ authorization: {{token}}
 ###
 
 #회원정보 조회
-GET http://localhost:3010/api/users/4 HTTP/1.1
+GET http://localhost:3010/api/user/info HTTP/1.1
 Content-Type: application/json
 authorization: {{getJWT.response.body.message}}
 
@@ -83,15 +83,15 @@ authorization: {{token}}
 
 ###
 #게시물 작성
-POST  http://localhost:3010/api/main/feed HTTP/1.1
+POST  http://localhost:3010/api/post HTTP/1.1
 Content-Type: application/json
-authorization: {{token}}
+authorization: {{getJWT.response.body.message}}
 
 {
   "title": "코고는 고양이",
   "content": "빌리는 잘때 코골아요",
-  "category": "고양이",
-  "patName": "빌리"
+  "category": "cat",
+  "petName": "빌리"
 }
 
 #
