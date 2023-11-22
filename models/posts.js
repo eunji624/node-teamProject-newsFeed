@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
 			this.belongsTo(models.Users, {
 				targetKey: 'id',
 				foreignKey: 'userId',
+				onDelete: 'CASCADE',
+			});
+			this.hasMany(models.Comments, {
+				sourceKey: 'id',
+				foreignKey: 'postId',
 			});
 		}
 	}
