@@ -34,13 +34,19 @@ authorization: {{getJWT.response.body.message}}
 
 ###
 //게시물 수정
-POST  http://localhost:3010/api/post HTTP/1.1
+PATCH http://localhost:3010/api/post/13 HTTP/1.1
 Content-Type: application/json
 authorization: {{getJWT.response.body.message}}
 
 {
-  "title":"귀여운 인절미",
-  "content":"귀여워요",
+  "title":"귀여운 인절미 강아지",
+  "content":"귀여운 친구에용",
   "category":"dog",
   "petName":"절미"
 }
+
+###
+//게시물 삭제
+DELETE  http://localhost:3010/api/post/14 HTTP/1.1
+Content-Type: application/json
+authorization: {{getJWT.response.body.message}}

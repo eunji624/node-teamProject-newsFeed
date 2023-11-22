@@ -40,7 +40,7 @@ router.get('/main', async (req, res) => {
 });
 
 // 게시물 카테고리별 조회 -cat , dog, bird, Reptile, Amphibia, Fish
-router.get('/main/:category', async (req, res) => {
+router.patch('/main/:category', async (req, res) => {
 	try {
 		const category = req.params.category;
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
@@ -59,7 +59,6 @@ router.get('/main/:category', async (req, res) => {
 			],
 			order: [['updatedAt', sort]],
 		});
-
 		return res
 			.status(200)
 			.json({ success: true, data: categoryPosts });
@@ -95,8 +94,8 @@ router.post('/post', authMiddleware, async (req, res) => {
 			});
 		}
 		//로그인한 유저 아이디 가져와서 글 작성 - 미드웨어로 로그인 확인 필요
-		const reShowData = await Posts.create({
-			id: res.locals.user.id,
+		await Posts.create({
+			userId: res.locals.user.id,
 			title,
 			content,
 			category,
@@ -105,7 +104,7 @@ router.post('/post', authMiddleware, async (req, res) => {
 		return res.status(200).json({
 			success: true,
 			message: '게시글이 등록되었습니다.',
-			reShowData,
+			Posts,
 		});
 	} catch {
 		return res.status(400).json({
@@ -116,7 +115,7 @@ router.post('/post', authMiddleware, async (req, res) => {
 });
 
 // 게시물 수정 - 인증 미들웨어 확인 필요
-router.get('/post/:postId', async (req, res) => {
+router.patch('/post/:postId', authMiddleware, async (req, res) => {
 	try {
 		const postId = req.params.postId;
 		//로그인 한 유저 아이디 가져오기
@@ -127,17 +126,12 @@ router.get('/post/:postId', async (req, res) => {
 			where: { id: postId },
 			attributes: [
 				'id',
+				'userId',
 				'category',
 				'title',
 				'content',
 				'petName',
 				'createdAt',
-			],
-			include: [
-				{
-					model: Users,
-					attributes: ['Name'],
-				},
 			],
 		});
 		//게시물 없을 경우
@@ -148,19 +142,19 @@ router.get('/post/:postId', async (req, res) => {
 			});
 		}
 		//게시물 존재하고 내가 쓴 글이 아닐 경우 - 수정하고 수정된 게시물 보여주기
-		if (thisPost && localsUserId !== thisPost.userId) {
+		if (localsUserId !== thisPost.userId) {
 			return res
 				.status(401)
 				.json({ success: true, message: '수정 권한이 없습니다.' });
 		}
-		if (thisPost && localsUserId === thisPost.userId) {
-			const postUpdate = await thisPost.update(
+		if (localsUserId === thisPost.userId) {
+			await thisPost.update(
 				{ category, title, content, petName },
 				{ where: { id: postId } },
 			);
 		}
 		return res.status(200).json({ success: true, data: thisPost });
-	} catch {
+	} catch (error) {
 		return res.status(500).json({
 			success: false,
 			message: '게시물 수정에 실패하였습니다.',
@@ -175,23 +169,7 @@ router.delete('/post/:postId', authMiddleware, async (req, res) => {
 		//로그인 한 유저 아이디 가져오기
 		const localsUserId = res.locals.user.id;
 		//해당 게시물 정보 가져오기
-		const thisPost = await Posts.findOne({
-			where: { id: postId },
-			attributes: [
-				'id',
-				'category',
-				'title',
-				'content',
-				'petName',
-				'createdAt',
-			],
-			include: [
-				{
-					model: Users,
-					attributes: ['Name'],
-				},
-			],
-		});
+		const thisPost = await Posts.findByPk(postId);
 		//해당 게시물이 존재하지 않음
 		if (!thisPost) {
 			return res.status(401).json({
@@ -200,18 +178,16 @@ router.delete('/post/:postId', authMiddleware, async (req, res) => {
 			});
 		}
 		//로그인 한 사람이 작성자가 아님
-		if (thisPost && localsUserId !== thisPost.userId) {
+		if (localsUserId !== thisPost.userId) {
 			return res
 				.status(401)
 				.json({ success: false, message: '삭제 권한이 없습니다.' });
 		}
 		//삭제가능
-		if (thisPost && localsUserId === thisPost.userId) {
-			const postDelete = await thisPost.destroy();
-			return res
-				.status(200)
-				.json({ success: true, message: '게시물이 삭제되었습니다.' });
-		}
+		const postDelete = await thisPost.destroy();
+		return res
+			.status(200)
+			.json({ success: true, message: '게시물이 삭제되었습니다.' });
 	} catch {
 		return res.status(500).json({
 			success: false,
