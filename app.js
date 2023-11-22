@@ -1,6 +1,5 @@
-import express from 'express';
-// import { PORT } from './constants/app.constant';
-import dotenv from 'dotenv';
+const express = require('express');
+const dotenv = require('dotenv');
 dotenv.config();
 
 const PORT = process.env.PORT;
