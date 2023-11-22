@@ -95,8 +95,8 @@ router.post('/post', authMiddleware, async (req, res) => {
 			});
 		}
 		//로그인한 유저 아이디 가져와서 글 작성 - 미드웨어로 로그인 확인 필요
-		await Posts.create({
-			userId: res.locals.user.id,
+		const reShowData = await Posts.create({
+			id: res.locals.user.id,
 			title,
 			content,
 			category,
@@ -105,7 +105,7 @@ router.post('/post', authMiddleware, async (req, res) => {
 		return res.status(200).json({
 			success: true,
 			message: '게시글이 등록되었습니다.',
-			Posts,
+			reShowData,
 		});
 	} catch {
 		return res.status(400).json({
