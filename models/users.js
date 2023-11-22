@@ -9,14 +9,18 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			this.hasMany(models.Posts, {
-				sourceKey: 'userId',
+				sourceKey: 'id',
 				foreignKey: 'userId',
+			});
+			this.hasMany(models.Comments, {
+				sourceKey: 'commentId',
+				foreignKey: 'postid',
 			});
 		}
 	}
 	Users.init(
 		{
-			userId: {
+			id: {
 				allowNull: false,
 				autoIncrement: true,
 				primaryKey: true,
