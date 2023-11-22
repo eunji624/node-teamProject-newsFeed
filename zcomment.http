@@ -24,7 +24,7 @@ Content-Type: application/json
 authorization: {{getJWT.response.body.message}}
 
 ### 댓글 수정
-PATCH http://localhost:3010/api/comment/7 HTTP/1.1
+PUT http://localhost:3010/api/comment/7 HTTP/1.1
 Content-Type: application/json
 authorization: {{getJWT.response.body.message}}
 

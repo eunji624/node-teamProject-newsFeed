@@ -6,7 +6,7 @@ POST http://localhost:3010/api/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "유빌리",
+  "name": "",
   "email": "aaaaap@naver.com",
   "password": "poiwnl87365",
   "passwordRe": "poiwnl87365",
@@ -66,7 +66,9 @@ authorization: {{token}}
 {
   "name": "노란초록이",
   "email": "modify@naver.com",
-  "description": "떡볶이를 좋아해요~"
+  "description": "떡볶이를 좋아해요~",
+  "password": "reeee4329",
+  "passwordRe": "reeee4329"
 }
 
 

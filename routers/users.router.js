@@ -112,9 +112,10 @@ router.patch(
 	authMiddleware,
 	async (req, res, next) => {
 		try {
-			const { name, email, description } = req.body;
+			const { name, email, description, password } = req.body;
 			const id = req.params.userId;
 
+			//passwordRe 확인할것
 			await Users.update(
 				{ name, email, description },
 				{ where: { id } },
