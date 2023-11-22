@@ -43,7 +43,7 @@ router.get('/post/:postId', async (req, res) => {
 	});
 	const commentsList = await Comments.findAll({
 		where: { postId: postId },
-		attributes: ['content', 'updateAt'],
+		attributes: ['content', 'commentId', 'updatedAt'],
 		include: {
 			model: Users,
 			as: 'User',
@@ -97,20 +97,16 @@ router.patch(
 					commentId: commentId,
 				},
 			});
-			res
-				.status(200)
-				.json({
-					success: true,
-					message: '댓글이 성공적으로 수정됬습니다',
-					updatedComment,
-				});
+			res.status(200).json({
+				success: true,
+				message: '댓글이 성공적으로 수정됬습니다',
+				updatedComment,
+			});
 		} else {
-			return res
-				.status(403)
-				.json({
-					success: false,
-					message: 'payload의 id와 선택한 댓글 userId가 다릅니다',
-				});
+			return res.status(403).json({
+				success: false,
+				message: 'payload의 id와 선택한 댓글 userId가 다릅니다',
+			});
 		}
 	},
 );
@@ -130,31 +126,25 @@ router.delete(
 		});
 		if (!selectedComment) {
 			// 404 not found
-			return res
-				.status(404)
-				.json({
-					success: false,
-					message: '선택한 댓글이 존재하지 않습니다',
-				});
+			return res.status(404).json({
+				success: false,
+				message: '선택한 댓글이 존재하지 않습니다',
+			});
 		}
 		const deletedComment = selectedComment;
 		if (selectedComment.userId === res.locals.user.id) {
 			selectedComment.destroy();
-			return res
-				.status(200)
-				.json({
-					success: true,
-					message: '삭제가 성공적으로 이루어졌습니다',
-					deletedComment,
-				});
+			return res.status(200).json({
+				success: true,
+				message: '삭제가 성공적으로 이루어졌습니다',
+				deletedComment,
+			});
 		} else {
 			// 403 Forbidden  권한이 없을 때 사용
-			return res
-				.status(403)
-				.json({
-					success: false,
-					message: 'payload의 id와 선택한 댓글 userId가 다릅니다',
-				});
+			return res.status(403).json({
+				success: false,
+				message: 'payload의 id와 선택한 댓글 userId가 다릅니다',
+			});
 		}
 	},
 );
