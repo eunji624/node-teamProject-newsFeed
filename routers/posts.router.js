@@ -8,20 +8,20 @@ const Op = sequelize.Op;
 require('dotenv').config();
 
 // 게시물 전체 조회 - content내에서 대표이미지(url?) 가져오는 방법 찾기
-router.get('/main/feed', async (req, res) => {
+router.get('/main', async (req, res) => {
 	try {
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
 		//게시글 전체 가져오기 (게시글id, 카테고리, 제목, 작성일)
 		const Allposts = await Posts.findAll({
-			attributes: ['id', 'category', 'title', 'createdAt'],
+			attributes: ['id', 'category', 'title', 'updatedAT'],
 			include: [
 				{
 					model: Users,
 					attributes: ['name'],
 				},
 			],
-			order: [['id', sort]],
+			order: [['updatedAt', sort]],
 		});
 		//테스트용 - 게시물이 있을 경우
 		if (Allposts) {
@@ -40,15 +40,15 @@ router.get('/main/feed', async (req, res) => {
 });
 
 // 게시물 카테고리별 조회 -cat , dog, bird, Reptile, Amphibia, Fish
-router.get('/main/feed/:category', async (req, res) => {
+router.get('/main/:category', async (req, res) => {
 	try {
-		const catrgory = req.params.category;
+		const category = req.params.category;
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
 		//게시글 전체 가져오기 (게시글id, 제목)
-		const categoryPosts = await Posts.test.findAll({
+		const categoryPosts = await Posts.findAll({
 			where: {
-				catrgory: catrgory,
+				category: category,
 			},
 			attributes: ['id', 'category', 'title', 'petName', 'createdAt'],
 			include: [
@@ -57,15 +57,16 @@ router.get('/main/feed/:category', async (req, res) => {
 					attributes: ['name'],
 				},
 			],
-			order: [['id', sort]],
+			order: [['updatedAt', sort]],
 		});
+
 		return res
 			.status(200)
 			.json({ success: true, data: categoryPosts });
 	} catch {
 		return res.status(500).json({
 			success: false,
-			message: category + '의 게시물 목록 조회에 실패하였습니다.',
+			message: `게시물 목록 조회에 실패하였습니다.`,
 		});
 	}
 });
@@ -73,7 +74,7 @@ router.get('/main/feed/:category', async (req, res) => {
 // 게시물 작성 - 로그인 해야 가능
 router.post('/post', authMiddleware, async (req, res) => {
 	try {
-		const { title, content, category, patName } = req.body;
+		const { title, content, category, petName } = req.body;
 		//빈칸이 있을 경우 - 미들웨어 처리
 		if (!title) {
 			return res.status(400).json({
@@ -99,7 +100,7 @@ router.post('/post', authMiddleware, async (req, res) => {
 			title,
 			content,
 			category,
-			patName,
+			petName,
 		});
 		return res.status(200).json({
 			success: true,
@@ -110,43 +111,6 @@ router.post('/post', authMiddleware, async (req, res) => {
 		return res.status(400).json({
 			success: false,
 			message: '게시글 등록에 실패하였습니다.',
-		});
-	}
-});
-
-// 게시물 상세조회
-router.get('/post/:postId', async (req, res) => {
-	try {
-		const postId = req.params.postId;
-		const thisPost = await Posts.findOne({
-			where: { id: postId },
-			attributes: [
-				'id',
-				'category',
-				'title',
-				'content',
-				'petName',
-				'createdAt',
-			],
-			include: [
-				{
-					model: Users,
-					attributes: ['Name'],
-				},
-			],
-		});
-		if (!thisPost) {
-			return res.status(401).json({
-				success: true,
-				message: '해당하는 게시글이 존재하지 않습니다.',
-			});
-		} else {
-			return res.status(200).json({ success: true, data: thisPost });
-		}
-	} catch {
-		return res.status(500).json({
-			success: false,
-			message: '게시물 조회에 실패하였습니다.',
 		});
 	}
 });
