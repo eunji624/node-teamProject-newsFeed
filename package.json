@@ -2,12 +2,11 @@
   "name": "node-teamProject-newsFeed",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "repository": "https://github.com/eunji624/node-teamProject-newsFeed.git",
   "author": "eunji624 <allrkatk@naver.com>",
   "license": "MIT",
   "dependencies": {
-    "babel-register": "^6.26.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
