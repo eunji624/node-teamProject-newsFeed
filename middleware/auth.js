@@ -7,6 +7,8 @@ const authMiddleware = async (req, res, next) => {
 	try {
 		const [tokenType, tokenValue] =
 			req.headers.authorization.split(' ');
+		console.log('auth 시작');
+
 		if (tokenType !== 'Bearer' || !tokenValue) {
 			return res
 				.status(400)
@@ -17,6 +19,7 @@ const authMiddleware = async (req, res, next) => {
 			where: { id: checkJwt.userId },
 		});
 		res.locals.user = userData;
+		console.log('auth 통과');
 		next();
 	} catch (err) {
 		console.log(err);

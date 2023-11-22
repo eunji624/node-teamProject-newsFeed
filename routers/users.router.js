@@ -4,7 +4,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { body } = require('express-validator');
-
+console.log('dd', body);
 const { Users } = require('../models/index.js');
 const { authMiddleware } = require('../middleware/auth.js');
 const router = express.Router();
@@ -53,6 +53,7 @@ router.post('/auth/login', async (req, res, next) => {
 //로그아웃 기능 __ 로그인 된 상태에서만 로그아웃 버튼이 보이도록 처리.
 router.get('/auth/logout', authMiddleware, async (req, res, next) => {
 	try {
+		//만료 시키는 방법으로 변경.
 		req.headers.authorization = '';
 		console.log('빔', req.headers.authorization);
 	} catch (err) {

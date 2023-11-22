@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { Posts, Users, Comments, sequelize } = require('../models');
+const { authMiddleware } = require('../middleware/auth.js');
+
 const Op = sequelize.Op;
 
 require('dotenv').config();
@@ -25,10 +27,15 @@ router.get('/main/feed', async (req, res) => {
 		if (Allposts) {
 			return res.status(200).json({ success: true, data: Allposts });
 		} else {
-			return res.status(400).json({ success: false, data: '자료가 아직 없어용' });
+			return res
+				.status(400)
+				.json({ success: false, data: '자료가 아직 없어용' });
 		}
 	} catch {
-		return res.status(500).json({ success: false, message: '게시물 목록 조회에 실패하였습니다.' });
+		return res.status(500).json({
+			success: false,
+			message: '게시물 목록 조회에 실패하였습니다.',
+		});
 	}
 });
 
@@ -52,9 +59,14 @@ router.get('/main/feed/:category', async (req, res) => {
 			],
 			order: [['id', sort]],
 		});
-		return res.status(200).json({ success: true, data: categoryPosts });
+		return res
+			.status(200)
+			.json({ success: true, data: categoryPosts });
 	} catch {
-		return res.status(500).json({ success: false, message: category + '의 게시물 목록 조회에 실패하였습니다.' });
+		return res.status(500).json({
+			success: false,
+			message: category + '의 게시물 목록 조회에 실패하였습니다.',
+		});
 	}
 });
 
@@ -89,9 +101,16 @@ router.post('/post', authMiddleware, async (req, res) => {
 			category,
 			patName,
 		});
-		return res.status(200).json({ success: true, message: '게시글이 등록되었습니다.', Posts });
+		return res.status(200).json({
+			success: true,
+			message: '게시글이 등록되었습니다.',
+			Posts,
+		});
 	} catch {
-		return res.status(400).json({ success: false, message: '게시글 등록에 실패하였습니다.' });
+		return res.status(400).json({
+			success: false,
+			message: '게시글 등록에 실패하였습니다.',
+		});
 	}
 });
 
@@ -101,7 +120,14 @@ router.get('/post/:postId', async (req, res) => {
 		const postId = req.params.postId;
 		const thisPost = await Posts.findOne({
 			where: { id: postId },
-			attributes: ['id', 'category', 'title', 'content', 'petName', 'createdAt'],
+			attributes: [
+				'id',
+				'category',
+				'title',
+				'content',
+				'petName',
+				'createdAt',
+			],
 			include: [
 				{
 					model: Users,
@@ -110,12 +136,18 @@ router.get('/post/:postId', async (req, res) => {
 			],
 		});
 		if (!thisPost) {
-			return res.status(401).json({ success: true, message: '해당하는 게시글이 존재하지 않습니다.' });
+			return res.status(401).json({
+				success: true,
+				message: '해당하는 게시글이 존재하지 않습니다.',
+			});
 		} else {
 			return res.status(200).json({ success: true, data: thisPost });
 		}
 	} catch {
-		return res.status(500).json({ success: false, message: '게시물 조회에 실패하였습니다.' });
+		return res.status(500).json({
+			success: false,
+			message: '게시물 조회에 실패하였습니다.',
+		});
 	}
 });
 
@@ -129,7 +161,14 @@ router.get('/post/:postId', async (req, res) => {
 		//해당 게시물 정보 가져오기
 		const thisPost = await Posts.findOne({
 			where: { id: postId },
-			attributes: ['id', 'category', 'title', 'content', 'petName', 'createdAt'],
+			attributes: [
+				'id',
+				'category',
+				'title',
+				'content',
+				'petName',
+				'createdAt',
+			],
 			include: [
 				{
 					model: Users,
@@ -139,23 +178,34 @@ router.get('/post/:postId', async (req, res) => {
 		});
 		//게시물 없을 경우
 		if (!thisPost) {
-			return res.status(401).json({ success: false, message: '존재하지 않는 게시물입니다.' });
+			return res.status(401).json({
+				success: false,
+				message: '존재하지 않는 게시물입니다.',
+			});
 		}
 		//게시물 존재하고 내가 쓴 글이 아닐 경우 - 수정하고 수정된 게시물 보여주기
 		if (thisPost && localsUserId !== thisPost.userId) {
-			return res.status(401).json({ success: true, message: '수정 권한이 없습니다.' });
+			return res
+				.status(401)
+				.json({ success: true, message: '수정 권한이 없습니다.' });
 		}
 		if (thisPost && localsUserId === thisPost.userId) {
-			const postUpdate = await thisPost.update({ category, title, content, petName }, { where: { id: postId } });
+			const postUpdate = await thisPost.update(
+				{ category, title, content, petName },
+				{ where: { id: postId } },
+			);
 		}
 		return res.status(200).json({ success: true, data: thisPost });
 	} catch {
-		return res.status(500).json({ success: false, message: '게시물 수정에 실패하였습니다.' });
+		return res.status(500).json({
+			success: false,
+			message: '게시물 수정에 실패하였습니다.',
+		});
 	}
 });
 
 // 게시물 삭제
-router.delete('/post/:postId', async (req, res) => {
+router.delete('/post/:postId', authMiddleware, async (req, res) => {
 	try {
 		const postId = req.params.postId;
 		//로그인 한 유저 아이디 가져오기
@@ -163,7 +213,14 @@ router.delete('/post/:postId', async (req, res) => {
 		//해당 게시물 정보 가져오기
 		const thisPost = await Posts.findOne({
 			where: { id: postId },
-			attributes: ['id', 'category', 'title', 'content', 'petName', 'createdAt'],
+			attributes: [
+				'id',
+				'category',
+				'title',
+				'content',
+				'petName',
+				'createdAt',
+			],
 			include: [
 				{
 					model: Users,
@@ -173,19 +230,29 @@ router.delete('/post/:postId', async (req, res) => {
 		});
 		//해당 게시물이 존재하지 않음
 		if (!thisPost) {
-			return res.status(401).json({ success: false, message: '존재하지 않는 게시물입니다.' });
+			return res.status(401).json({
+				success: false,
+				message: '존재하지 않는 게시물입니다.',
+			});
 		}
 		//로그인 한 사람이 작성자가 아님
 		if (thisPost && localsUserId !== thisPost.userId) {
-			return res.status(401).json({ success: false, message: '삭제 권한이 없습니다.' });
+			return res
+				.status(401)
+				.json({ success: false, message: '삭제 권한이 없습니다.' });
 		}
 		//삭제가능
 		if (thisPost && localsUserId === thisPost.userId) {
 			const postDelete = await thisPost.destroy();
-			return res.status(200).json({ success: true, message: '게시물이 삭제되었습니다.' });
+			return res
+				.status(200)
+				.json({ success: true, message: '게시물이 삭제되었습니다.' });
 		}
 	} catch {
-		return res.status(500).json({ success: false, message: '게시물 삭제에 실패하였습니다.' });
+		return res.status(500).json({
+			success: false,
+			message: '게시물 삭제에 실패하였습니다.',
+		});
 	}
 });
 
