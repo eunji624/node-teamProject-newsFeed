@@ -2,6 +2,7 @@ const express = require('express');
 const { authMiddleware } = require('../middleware/auth.js');
 const router = express.Router();
 const { Posts, Users, Comments } = require('../models');
+const { commentValidator } = require('../middleware/validator.js');
 require('dotenv').config();
 
 // CRUD
@@ -11,16 +12,21 @@ require('dotenv').config();
 // 1.미들웨어로 검증 후 payload에 user[id] 추출
 // 2.입력값 유효성 검사
 // 3./comment/(Posts):id PostID가져와서 같이 created
-router.post('/comment/:postId', authMiddleware, async (req, res) => {
-	const { content } = req.body;
-	const { postId } = req.params;
-	const createdProduct = await Comments.create({
-		userId: res.locals.user.id,
-		postId: postId,
-		content,
-	});
-	res.json({ success: true, Commnets: createdProduct });
-});
+router.post(
+	'/comment/:postId',
+	authMiddleware,
+	commentValidator,
+	async (req, res) => {
+		const { content } = req.body;
+		const { postId } = req.params;
+		const createdProduct = await Comments.create({
+			userId: res.locals.user.id,
+			postId: postId,
+			content,
+		});
+		res.json({ success: true, Commnets: createdProduct });
+	},
+);
 // C created
 
 // R Read
@@ -61,6 +67,7 @@ router.get('/post/:postId', async (req, res) => {
 router.put(
 	'/comment/:commentId',
 	authMiddleware,
+	commentValidator,
 	async (req, res) => {
 		const { commentId } = req.params;
 		const selectedComment = await Comments.findOne({

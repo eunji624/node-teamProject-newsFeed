@@ -1,8 +1,8 @@
 const {
-	query,
 	validationResult,
-	check,
 	body,
+	check,
+	query,
 	param,
 	checkSchema,
 } = require('express-validator');
@@ -25,7 +25,16 @@ const errorMsgMiddleware = (req, res, next) => {
 };
 
 const registerValidator = [
-	body('name').notEmpty().trim().withMessage(`이름을 입력해 주세요`),
+	body('name')
+		.notEmpty()
+		.trim()
+		.withMessage(`이름을 입력해 주세요`)
+		.custom(value => {
+			if (/\s/.test(value)) {
+				throw new Error('이름에 공백을 포함할 수 없습니다');
+			}
+			return true;
+		}),
 
 	body('email')
 		.notEmpty()
@@ -38,7 +47,13 @@ const registerValidator = [
 		.notEmpty()
 		.withMessage('비밀번호를 입력해 주세요')
 		.isLength({ min: 6 }, { max: 10 })
-		.withMessage('비밀번호를 6자리 이상 입력해 주세요'),
+		.withMessage('비밀번호를 6자리 이상 입력해 주세요')
+		.custom(value => {
+			if (/\s/.test(value)) {
+				throw new Error('비밀번호에 공백을 포함할 수 없습니다');
+			}
+			return ture;
+		}),
 
 	body('passwordRe')
 		.custom((value, { req }) => {
@@ -58,44 +73,39 @@ const loginValidator = [
 	registerValidator[2],
 	errorMsgMiddleware,
 ];
+
+const postValidator = [
+	body('title').notEmpty().withMessage('제목은 필수 입력입니다.'),
+	body('content').notEmpty().withMessage('내용은 필수 입력입니다.'),
+	body('category')
+		.custom(value => {
+			console.log('값', value);
+			if (value !== 'dog' && value !== 'cat' && value !== 'ect') {
+				throw new Error('카테고리를 지정해주세요.');
+			}
+			return true;
+		})
+		.withMessage('카테고리를 지정해주세요.'),
+	body('petName')
+		.notEmpty()
+		.withMessage('반려동물의 이름을 입력해 주세요'),
+	errorMsgMiddleware,
+];
+
+const commentValidator = [
+	body('content').notEmpty().withMessage('내용을 입력해 주세요.'),
+	errorMsgMiddleware,
+];
+
+const trimValidator = [];
 module.exports = {
 	errorMsgMiddleware,
 	registerValidator,
 	loginValidator,
+	postValidator,
+	commentValidator,
 };
 
-// 공백 에러 내뿜는 함수 생성.
-
-//회원가입
-//입력값이 빈값인 경우
-//이메일이 형식에 맞지 않는 경우
-//비밀번호가 6자 이상, 공백없이,
-
-//닉네임 중복 불가__ 함수로 빼서
-//이메일 중복 불가__ 함수로 빼서.
-
-//로그인
-//입력값이 빈값인 경우
-//이메일이 형식에 맞지 않는 경우
-//비밀번호가 6자 이상, 공백없이,
-
-//-----------로그인 했는가.(토큰검증)
-//post 생성
-//입력값 빈값인 경우
-
-//post 수정(PUT으로 변경)
-//입력값이 빈값인 경우
-//토큰 유저가 해당 게시글 작성자가 맞는지
-
-//post 삭제
-//토큰 유저가 해당 게시글 작성자가 맞는지
-
-//comment 작성
-//입력값이 빈값인 경우
-
-//comment 수정
-//입력값이 빈값인 경우
-//토큰 유저가 해당 게시글 작성자가 맞는지
-
-//comment 삭제
-//토큰 유저가 해당 게시글 작성자가 맞는지
+// 공백 에러 내뿜는 함수 생성. [v]
+//작성자 맞는지 함수
+//닉네임, 이메일 중복불가 함수
