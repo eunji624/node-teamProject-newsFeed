@@ -97,7 +97,7 @@ const commentValidator = [
 	errorMsgMiddleware,
 ];
 
-const trimValidator = [];
+// const isSameWriterValidator = ;
 module.exports = {
 	errorMsgMiddleware,
 	registerValidator,
@@ -106,6 +106,6 @@ module.exports = {
 	commentValidator,
 };
 
-// 공백 에러 내뿜는 함수 생성. [v]
-//작성자 맞는지 함수
+//남은거
+//작성자 맞는지 함수__ res.locals.user.id 값과, postid값에 해당하는 userid 값 비교
 //닉네임, 이메일 중복불가 함수
