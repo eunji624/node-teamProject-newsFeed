@@ -11,66 +11,81 @@
 </head>
 <body>
 <!-- ==header -->
-<header class="navigationbar">
+<header>
     <!-- 검색창 -->
-    <div class="searchBar">
-    <h1 class="main_title">  IT`s Pet</h1>
-    <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
-    <button class="searchbtn btn btn-secondary" id="searchBtn" >검색</button>
+    <div class="searchBar" id="searchBar">
+    <img class="imgLogo" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+        <form>
+            <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
+            <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
+        </form>
     <!-- 검색창 사이드 -->
     <button type="button" class="btn back_login_btn" onclick="toLogin()">로그인</button>
     <button type="button" class="btn back_login_btn" onclick="toRegister()">회원가입</button>
     <button type="button" class="btn back_login_btn" onclick="toInfo()">내정보조회</button>
+    </div>
+</header>
+<!-- ==category side-bar -->
+<aside class="side-bar">
+    <li>
+    <li><a href="api/main">전체보기</a></li>
+    <li><a href="api/main/cat">🐈 고양이</a></li>
+    <li><a href="api/main/dog">🐕 강아지</a></li>
+    <li><a href="api/main/bird">🐥 조류</a></li>
+    <li><a href="api/main/Reptiles">🐍 파충류</a></li>
+    </li>
+</aside>
+<!-- ==body cards -->
+<div class="container">
+    <div id="Product_card_add" class="row">
+<!-- 카드 -->
+    <div class="card">
+        <div class="card-img-container">
+            <img src="https://cdn.pixabay.com/photo/2017/07/25/01/22/cat-2536662_1280.jpg"
+            class="card-img-top" alt="카드 이미지">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title mb-4">아기고양이</h5>
+            <p class="card-subtitle mb-4">넘 귀엽죠</p>
+        </div>
+    </div>
+<!-- 카드 -->
+<!-- 카드 -->
+<div class="card">
+    <div class="card-img-container">
+        <img src="https://cdn.pixabay.com/photo/2017/07/25/01/22/cat-2536662_1280.jpg"
+        class="card-img-top" alt="카드 이미지">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title mb-4">아기고양이</h5>
+        <p class="card-subtitle mb-4">넘 귀엽죠</p>
+    </div>
 </div>
-<!-- ==body -->
-      <div class="Product_list">
-          <div class="container">
-              <div id="Product_card_add" class="row">
-                  <!-- 카드 1 -->
-                  <div class="col-md-3 mb-4">
-                      <div class="card">
-                          <div class="card-img-container">
-                              <img src="https://cdn.pixabay.com/photo/2023/05/30/05/50/yellow-headed-blackbird-8027623_1280.jpg"
-                                  class="card-img-top" alt="카드 이미지">
-                          </div>
-                          <div class="card-body">
-                              <h5 class="card-title mb-4" >상품명1</h5>
-                              <h6 class="card-subtitle mb-4">가격: 1000원</h6>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- 카드 1 -->
-              </div>
-          </div>
-  
-            환영 메시지 모달
+<!-- 카드 -->
+    </div>
+</div>
+<!-- ==모달 -->
       <div class="modal fade" id="Sign_up_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
-   
       <div class="modal-dialog" role="document">
-  
           <div class="modal-content">
-  
               <div class="modal-header">
-  
                   <h5 class="modal-title" id="exampleModalLabel">상품 등록이 완료됬습니다</h5>
-  
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-  
                       <span aria-hidden="true">&times;</span>
-  
                   </button>
               </div>
               <div class="modal-footer">
-  
                   <button id="Sign_up_modal_btn" type="button" class="btn btn-secondary"
                       data-dismiss="modal">확인</button>
-  
               </div>
           </div>
       </div>
   </div>
-  
+<!-- ==footer -->
+<footer>
+ <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
+</footer>
   </body>
     <script>
          function toRegister(){

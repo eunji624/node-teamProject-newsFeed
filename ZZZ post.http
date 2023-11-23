@@ -16,7 +16,7 @@ authorization: {{getJWT.response.body.message}}
 
 ###
 // == 게시물 카테고리별 조회
-GET http://localhost:3010/api/main/dog HTTP/1.1
+GET http://localhost:3010/api/main/cat HTTP/1.1
 Content-Type: application/json
 
 ###
@@ -26,13 +26,11 @@ Content-Type: application/json
 authorization: {{getJWT.response.body.message}}
 
 {
-  "title": "ㅇㅇㅇ",
-  "content": "ㅇㅇ",
+  "title": "cute cat",
+  "content": "so cute",
   "category": "cat",
-  "petName":"절dd미"
+  "petName":"catcat"
 }
-
-
 
 ###
 // == 게시물 수정
@@ -50,5 +48,11 @@ authorization: {{getJWT.response.body.message}}
 ###
 // == 게시물 삭제
 DELETE  http://localhost:3010/api/post/14 HTTP/1.1
+Content-Type: application/json
+authorization: {{getJWT.response.body.message}}
+
+###
+// == 게시물 검색 목록조회
+GET  http://localhost:3010/api/search/cat HTTP/1.1
 Content-Type: application/json
 authorization: {{getJWT.response.body.message}}
