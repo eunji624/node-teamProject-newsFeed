@@ -33,6 +33,7 @@ authorization: {{getJWT.response.body.message}}
 }
 
 
+
 ###
 // == 게시물 수정
 PUT http://localhost:3010/api/post/13 HTTP/1.1
