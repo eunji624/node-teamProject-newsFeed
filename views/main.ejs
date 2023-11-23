@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+  <head>
+    <!--  res.render('응답을 할 경로', {변수명:'값'})-->
+    <!--  res.render('index', {title:'Express'})-->
+    <!--  index.js가 전달한 변수인 title에 'Express'라는 값을 담아뒀기 때문에, -->
+    <!--  화면에 'Express'가 출력됩니다.  -->
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
+<!-- 부트스트랩 및 jQuery/Popper.js/Bootstrap JavaScript 라이브러리 추가 -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!--  -->
+<style>
+    /* 폰트설정 */
+    @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+
+* {
+  font-family: 'Orbit', sans-serif;
+}
+        /* "회원가입" 버튼 스타일 수정 */
+        .Sign_up {
+            background-color: transparent;
+            color: gray;
+            border: none;
+            margin-top: 10px;
+            width: 150px;
+        }
+
+        .login_title {
+
+
+            text-align: center;
+            /* 가로로 가운데 정렬 */
+            margin-top: 50px;
+        }
+
+        .card_add {
+            display: none;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            width: 500px;
+            margin: 10px auto 0px auto;
+            border: 1px solid gray;
+            padding: 20px;
+        }
+
+        .Product_list {
+
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        .card:hover {
+            transform: scale(1.5);
+        
+            z-index: 1;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px 0px #aaa;
+        
+        }
+
+        .card {
+            border: 2px solid #e0e0e0;
+       
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            transition: transform 0.2s;
+            text-align: left;
+            font-family: 'Orbit', sans-serif;
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: #777;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-img-top {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-img-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px 10px 0 0;
+        }
+    
+
+
+    .back_login_btn {
+        background-color: transparent;
+        color: gray;
+        border: none;
+        margin-top: 10px;
+        width: 150px;
+      }
+      .Sign_up_title {
+        text-align: center;
+        margin-top: 50px;
+      }
+  
+  </style>
+  <body>
+    <div class="Sign_up_title">
+      <h1>IT`s Pet</h1>
+  </div>
+  <div class = "text-center">
+    <button type="button" class="btn back_login_btn" onclick="toLogin()">로그인</button>
+    <button type="button" class="btn back_login_btn" onclick="toRegister()">회원가입</button>
+  </div>
+      <div class="Product_list">
+          <div class="container">
+              <div id="Product_card_add" class="row">
+                  <!-- 카드 1 -->
+                  <div class="col-md-3 mb-4">
+                      <div class="card">
+                          <div class="card-img-container">
+                              <img src="https://cdn.pixabay.com/photo/2023/05/30/05/50/yellow-headed-blackbird-8027623_1280.jpg"
+                                  class="card-img-top" alt="카드 이미지">
+                          </div>
+                          <div class="card-body">
+                              <h5 class="card-title mb-4">상품명1</h5>
+                              <h6 class="card-subtitle mb-4">가격: 1000원</h6>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+  
+            <!-- 환영 메시지 모달 -->
+      <div class="modal fade" id="Sign_up_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+   
+      <div class="modal-dialog" role="document">
+  
+          <div class="modal-content">
+  
+              <div class="modal-header">
+  
+                  <h5 class="modal-title" id="exampleModalLabel">상품 등록이 완료됬습니다</h5>
+  
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  
+                      <span aria-hidden="true">&times;</span>
+  
+                  </button>
+              </div>
+              <div class="modal-footer">
+  
+                  <button id="Sign_up_modal_btn" type="button" class="btn btn-secondary"
+                      data-dismiss="modal">확인</button>
+  
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  </body>
+    <script>
+         function toRegister(){
+    location.href="/api/register"
+}
+function toLogin(){
+    location.href="/api/login"
+}
+
+    </script>
+  </body>
+</html>
