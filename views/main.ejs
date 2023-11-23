@@ -128,6 +128,7 @@
   <div class = "text-center">
     <button type="button" class="btn back_login_btn" onclick="toLogin()">로그인</button>
     <button type="button" class="btn back_login_btn" onclick="toRegister()">회원가입</button>
+    <button type="button" class="btn back_login_btn" onclick="toInfo()">내정보조회</button>
   </div>
       <div class="Product_list">
           <div class="container">
@@ -140,11 +141,12 @@
                                   class="card-img-top" alt="카드 이미지">
                           </div>
                           <div class="card-body">
-                              <h5 class="card-title mb-4">상품명1</h5>
+                              <h5 class="card-title mb-4" >상품명1</h5>
                               <h6 class="card-subtitle mb-4">가격: 1000원</h6>
                           </div>
                       </div>
                   </div>
+                  <!-- 카드 1 -->
               </div>
           </div>
   
@@ -184,7 +186,9 @@
 function toLogin(){
     location.href="/api/login"
 }
-
+function toInfo(){
+    location.href="/api/user/info"
+}
     </script>
   </body>
 </html>
