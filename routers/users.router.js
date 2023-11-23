@@ -5,15 +5,19 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { Users } = require('../models/index.js');
 const { authMiddleware } = require('../middleware/auth.js');
-// const { registerValidator } = require('../middleware/validator.js');
+const {
+	errorMsgMiddleware,
+	loginValidator,
+	registerValidator,
+} = require('../middleware/validator.js');
 
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 //회원 가입
 router.post(
 	'/register',
-	body('email').isEmail(),
-	body('name').notEmpty().withMessage(`이름을 입력해 주세요`),
+	errorMsgMiddleware,
+	registerValidator,
 	async (req, res, next) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -37,26 +41,44 @@ router.post(
 );
 
 //로그인 기능
-router.post('/auth/login', async (req, res, next) => {
-	try {
-		const { email, password } = req.body;
-		const userData = await Users.findOne({ where: { email } });
+router.post(
+	'/auth/login',
+	errorMsgMiddleware,
+	loginValidator,
+	async (req, res, next) => {
+		try {
+			const { email, password } = req.body;
+			console.log(password);
+			const userData = await Users.findOne({ where: { email } });
+			if (!userData) {
+				throw new Error(
+					'입력하신 이메일에 해당하는 회원정보가 없습니다.',
+				);
+			}
 
-		const isSame = await bcrypt.compare(password, userData.password);
-		const token = jwt.sign(
-			{ userId: userData.id },
-			process.env.SECRET_KEY,
-			{ expiresIn: '10h' },
-		);
-		req.headers.authorization = `Bearer ${token}`;
+			const isSame = await bcrypt.compare(
+				password,
+				userData.password,
+			);
+			if (!isSame) {
+				throw new Error('입력하신 비밀번호가 올바르지 않습니다.');
+			}
+			const token = jwt.sign(
+				{ userId: userData.id },
+				process.env.SECRET_KEY,
+				{ expiresIn: '10h' },
+			);
+			req.headers.authorization = `Bearer ${token}`;
 
-		res
-			.status(200)
-			.json({ success: 'true', message: req.headers.authorization });
-	} catch (err) {
-		console.log(err);
-	}
-});
+			res.status(200).json({
+				success: 'true',
+				message: req.headers.authorization,
+			});
+		} catch (err) {
+			res.status(400).json({ message: err.message });
+		}
+	},
+);
 
 //로그아웃 기능 __ 로그인 된 상태에서만 로그아웃 버튼이 보이도록 처리.
 router.get('/auth/logout', authMiddleware, async (req, res, next) => {
@@ -113,15 +135,19 @@ router.get('/user/info', authMiddleware, async (req, res, next) => {
 //회원정보 수정 기능
 router.patch(
 	'/users/:userId',
-	authMiddleware,
+	// authMiddleware,
+	// checkUserCreated,
+	errorMsgMiddleware,
+	registerValidator,
 	async (req, res, next) => {
 		try {
-			const { name, email, description, password } = req.body;
+			const { name, email, description, password, passwordRe } =
+				req.body;
 			const id = req.params.userId;
 
 			//passwordRe 확인할것
 			await Users.update(
-				{ name, email, description },
+				{ name, email, description, password },
 				{ where: { id } },
 			);
 			const showUserData = await Users.findOne({ where: { id } });
