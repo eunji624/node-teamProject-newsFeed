@@ -13,7 +13,7 @@ router.get('/main', async (req, res) => {
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
 		//게시글 전체 가져오기 (게시글id, 카테고리, 제목, 작성일)
-		const Allposts = await Posts.findAll({
+		const AllPosts = await Posts.findAll({
 			attributes: ['id', 'category', 'title', 'updatedAT'],
 			include: [
 				{
@@ -24,8 +24,8 @@ router.get('/main', async (req, res) => {
 			order: [['updatedAt', sort]],
 		});
 		//테스트용 - 게시물이 있을 경우
-		if (Allposts) {
-			return res.status(200).json({ success: true, data: Allposts });
+		if (AllPosts) {
+			return res.status(200).json({ success: true, data: AllPosts });
 		} else {
 			return res
 				.status(400)
