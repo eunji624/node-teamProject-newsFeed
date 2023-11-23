@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+</head>
+<body>
+    <div class="postDetail">
+        <li>
+            <strong>post넘버:</strong> <%= postsDetail.id %><br/>
+            <strong>카테고리:</strong> <%= postsDetail.category %><br/>
+            <strong>제목:</strong> <%= postsDetail.title %><br/>
+            <strong>내용:</strong> <%= postsDetail.content %><br/>
+            <strong>동물이름:</strong> <%= postsDetail.petName %><br/>
+            <strong>작성시간:</strong> <%= postsDetail.createdAt %><br/>
+        </li>
+    </div>
+    <div class="commentList">
+        <% commentsList.forEach(comment => { %>
+        <li class="commnets">
+            <strong>내용:</strong> <%= comment.content %><br/>
+            <strong>댓글번호:</strong> <%= comment.commentId %><br/>
+            <strong>작성자:</strong> <%= comment.User.name %><br/>
+            <strong>작성시간:</strong> <%= comment.updatedAt %><br/>
+        </li>
+        <% }); %>
+    </div>
+</body>
+</html>

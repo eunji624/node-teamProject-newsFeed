@@ -55,7 +55,7 @@ router.post('/auth/login', loginValidator, async (req, res, next) => {
 		const token = jwt.sign(
 			{ userId: userData.id },
 			process.env.SECRET_KEY,
-			{ expiresIn: '1s' },
+			{ expiresIn: '12h' },
 		);
 		// req.headers.authorization = `Bearer ${token}`;
 		res.cookie('Authorization', `Bearer ${token}`);
@@ -114,7 +114,8 @@ router.get('/user/info', authMiddleware, async (req, res, next) => {
 			});
 		}
 
-		res.status(200).json({ success: 'true', message: userData });
+		// res.status(200).json({ success: 'true', message: userData });
+		res.render('info', { info: userData });
 	} catch (err) {
 		console.log(err);
 	}
