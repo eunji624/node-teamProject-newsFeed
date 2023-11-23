@@ -2,7 +2,10 @@ const express = require('express');
 const { authMiddleware } = require('../middleware/auth.js');
 const router = express.Router();
 const { Posts, Users, Comments } = require('../models');
-const { commentValidator } = require('../middleware/validator.js');
+const {
+	commentValidator,
+	commentSameWriterValidator,
+} = require('../middleware/validator.js');
 require('dotenv').config();
 
 // CRUD
@@ -68,6 +71,7 @@ router.put(
 	'/comment/:commentId',
 	authMiddleware,
 	commentValidator,
+	commentSameWriterValidator,
 	async (req, res) => {
 		const { commentId } = req.params;
 		const selectedComment = await Comments.findOne({
@@ -77,11 +81,11 @@ router.put(
 		});
 
 		let { content } = req.body;
-		if (!content) {
-			return res
-				.status(400)
-				.json({ success: false, message: '값을 입력하시오' });
-		}
+		// if (!content) {
+		// 	return res
+		// 		.status(400)
+		// 		.json({ success: false, message: '값을 입력하시오' });
+		// }
 		if (content === selectedComment.content) {
 			// 409 Conflict  값들끼리 충돌 날 때
 			return res
@@ -109,12 +113,13 @@ router.put(
 				message: '댓글이 성공적으로 수정됬습니다',
 				updatedComment,
 			});
-		} else {
-			return res.status(403).json({
-				success: false,
-				message: 'payload의 id와 선택한 댓글 userId가 다릅니다',
-			});
 		}
+		// else {
+		// 	return res.status(403).json({
+		// 		success: false,
+		// 		message: 'payload의 id와 선택한 댓글 userId가 다릅니다',
+		// 	});
+		// }
 	},
 );
 // //  U Update
@@ -124,6 +129,7 @@ router.put(
 router.delete(
 	'/comment/:commentId',
 	authMiddleware,
+	commentSameWriterValidator,
 	async (req, res) => {
 		const { commentId } = req.params;
 		const selectedComment = await Comments.findOne({

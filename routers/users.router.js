@@ -8,6 +8,7 @@ const { authMiddleware } = require('../middleware/auth.js');
 const {
 	loginValidator,
 	registerValidator,
+	alreadyRegister,
 } = require('../middleware/validator.js');
 
 const router = express.Router();
@@ -16,11 +17,8 @@ const { body, validationResult } = require('express-validator');
 router.post(
 	'/register',
 	registerValidator,
+	alreadyRegister,
 	async (req, res, next) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors });
-		}
 		try {
 			const { name, email, password, description } = req.body;
 			const sortPassword = await bcrypt.hash(password, 11);
