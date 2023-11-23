@@ -5,8 +5,8 @@ const { Users } = require('../models');
 
 const authMiddleware = async (req, res, next) => {
 	try {
-		const [tokenType, tokenValue] =
-			req.headers.authorization.split(' ');
+		const { Authorization } = req.cookies;
+		const [tokenType, tokenValue] = (Authorization ?? '').split(' ');
 		if (tokenType !== 'Bearer' || !tokenValue) {
 			return res
 				.status(400)
