@@ -2,108 +2,175 @@
     @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
 
 * {
-  font-family: 'Orbit', sans-serif;
+font-family: 'Orbit', sans-serif;
+}
+body{
+    height: 5000px;
 }
 
-.main_title{
+/* ~~상단헤더~~ */
+header{
+    height: 3em;
+}
+.headerBack{
+    height: 3em;
+}
+.searchBar{
+    height: 5em;
+    z-index: 1;
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    background-color: white;
+    width: 100%;
+}
+form{
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+}
+.imgLogo{
+    margin-left: 2em;
+    width: 8.5em;
+    height: 4em;
+    top: 1.7em;
+    margin-right: 1em;
+}
+.searchTxt{
+    width: 80%;
+    top: 1.5em;
+}
+.searchBtn{
+    margin: 0.6rem;
+    padding: 5px;
+    margin-top: 10px;
+}
+#searchBtn{
+    height: 2.5em;
+    background-color: #6c757d;
+    color: white;
+    border-radius: 5px;
+    padding: 2px;
+    margin-left: 1em;
+}
+.back_login_btn{
+    margin: 0.6rem;
+    padding: 5px;
+    margin-top: 10px;
+    background-color: transparent;
+    color: gray;
+    border: none;
+    width: 150px;
+}
+
+/* ~~사이드 바 */
+.side-bar{
+    margin-left: 2em;
+    position:fixed;
+    width: 13em;
+    min-height: 20em;
+    border-radius: 5px;
+    padding: 1em;
+}
+
+ul,li{
+    margin: 1;
+    padding: 0.4em;
+    padding-left:1.5em;
+    list-style: none;
+    border-radius: 5px;
+}
+ul,li:hover{
+    background-color: #6c757d;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+a:link { color: black; }
+a:visited { color:#6c757d; }
+a:hover{
+    color: white;
+    text-decoration: none;
+}
+
+/* ~~body card */
+.container{
+    margin-top: 4em;
+    width: 50em;
+}
+.card_add {
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 500px;
+    margin: 10px auto 0px auto;
+    border: 1px solid gray;
+    padding: 20px;
+}
+
+.Product_list {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    z-index: 1;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 0px #aaa;
+}
+
+.card {
     margin: 1em;
+    border: 2px solid #e0e0e0;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    transition: transform 0.2s;
+    text-align: left;
+    font-family: 'Orbit', sans-serif;
 }
 
+.card-subtitle {
+    font-size: 1rem;
+    color: #777;
+}
 
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
 
-        /* "회원가입" 버튼 스타일 수정 */
-        .Sign_up {
-            background-color: transparent;
-            color: gray;
-            border: none;
-            margin-top: 10px;
-            width: 150px;
-        }
+.card-body {
+    padding: 15px;
+}
 
-        .login_title {
+.card-img-top {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px 10px 0 0;
+}
 
-
-            text-align: center;
-            /* 가로로 가운데 정렬 */
-            margin-top: 50px;
-        }
-
-        .card_add {
-            display: none;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            width: 500px;
-            margin: 10px auto 0px auto;
-            border: 1px solid gray;
-            padding: 20px;
-        }
-
-        .Product_list {
-
-            margin-left: 20px;
-            margin-top: 20px;
-        }
-
-        .card:hover {
-            transform: scale(1.5);
-        
-            z-index: 1;
-            cursor: pointer;
-            box-shadow: 0px 0px 10px 0px #aaa;
-        
-        }
-
-        .card {
-            border: 2px solid #e0e0e0;
-       
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            transition: transform 0.2s;
-            text-align: left;
-            font-family: 'Orbit', sans-serif;
-        }
-
-        .card-subtitle {
-            font-size: 1rem;
-            color: #777;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            margin-bottom: 10px;
-        }
-
-        .card-body {
-            padding: 15px;
-        }
-
-        .card-img-top {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px 10px 0 0;
-        }
-
-        .card-img-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 300px;
-            overflow: hidden;
-            border-radius: 10px 10px 0 0;
-        }
-    
-
-
-    .back_login_btn {
-        background-color: transparent;
-        color: gray;
-        border: none;
-        margin-top: 10px;
-        width: 150px;
-      }
-      .Sign_up_title {
-        text-align: center;
-        margin-top: 50px;
-      }
-  
+.card-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+}
+/* ~~footer */
+footer {
+    background-color: #dbdbdb;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    bottom: 0;
+}

@@ -10,7 +10,7 @@ const Op = sequelize.Op;
 
 require('dotenv').config();
 
-// 게시물 전체 조회 - content내에서 대표이미지(url?) 가져오는 방법 찾기
+// ==게시물 전체 조회 - content내에서 대표이미지(url?) 가져오는 방법 찾기
 router.get('/main', async (req, res) => {
 	try {
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
@@ -42,10 +42,11 @@ router.get('/main', async (req, res) => {
 	}
 });
 
-// 게시물 카테고리별 조회 -cat , dog, bird, Reptile, Amphibia, Fish
-router.patch('/main/:category', async (req, res) => {
+// ==게시물 카테고리별 조회 -cat , dog, bird, Reptile, Amphibia, Fish
+router.get('/main/:category', async (req, res) => {
 	try {
 		const category = req.params.category;
+		console.log('이것은' + category + '입니다.');
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
 		//게시글 전체 가져오기 (게시글id, 제목)
@@ -65,7 +66,8 @@ router.patch('/main/:category', async (req, res) => {
 		return res
 			.status(200)
 			.json({ success: true, data: categoryPosts });
-	} catch {
+	} catch (error) {
+		console.log(error);
 		return res.status(500).json({
 			success: false,
 			message: `게시물 목록 조회에 실패하였습니다.`,
@@ -73,7 +75,7 @@ router.patch('/main/:category', async (req, res) => {
 	}
 });
 
-// 게시물 작성 - 로그인 해야 가능
+// ==게시물 작성 - 로그인 해야 가능
 router.post(
 	'/post',
 	authMiddleware,
@@ -123,7 +125,7 @@ router.post(
 	},
 );
 
-// 게시물 수정 - 인증 미들웨어 확인 필요
+// ==게시물 수정 - 인증 미들웨어 확인 필요
 router.put(
 	'/post/:postId',
 	authMiddleware,
@@ -177,7 +179,7 @@ router.put(
 	},
 );
 
-// 게시물 삭제
+// ==게시물 삭제
 router.delete(
 	'/post/:postId',
 	authMiddleware,
@@ -215,5 +217,36 @@ router.delete(
 		}
 	},
 );
+
+// ==게시물 검색 / 타이틀 부분검색 - 구현중
+router.get('/search/:searchWord', async (req, res) => {
+	try {
+		const searchWord = req.params.searchWord;
+		console.log('이것은' + category + '입니다.');
+		//작성일 내림차순 - 최신 작성된 게시글부터 조회
+		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
+		//게시글 전체 가져오기 (게시글id, 제목)
+		const searchPosts = await Posts.findAll({
+			where: {
+				title: { [Op.like]: '%' + searchWord + '%' },
+			},
+			attributes: ['id', 'category', 'title', 'createdAt'],
+			include: [
+				{
+					model: Users,
+					attributes: ['name'],
+				},
+			],
+			order: [['updatedAt', sort]],
+		});
+		return res.status(200).json({ success: true, data: searchPosts });
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			success: false,
+			message: `게시물 목록 조회에 실패하였습니다.`,
+		});
+	}
+});
 
 module.exports = router;
