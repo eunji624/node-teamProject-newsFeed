@@ -55,13 +55,13 @@ router.post('/auth/login', loginValidator, async (req, res, next) => {
 		const token = jwt.sign(
 			{ userId: userData.id },
 			process.env.SECRET_KEY,
-			{ expiresIn: '10h' },
+			{ expiresIn: '1s' },
 		);
-		req.headers.authorization = `Bearer ${token}`;
-
+		// req.headers.authorization = `Bearer ${token}`;
+		res.cookie('Authorization', `Bearer ${token}`);
 		res.status(200).json({
 			success: 'true',
-			message: req.headers.authorization,
+			message: `Bearer ${token}`,
 		});
 	} catch (err) {
 		res.status(400).json({ message: err.message });
