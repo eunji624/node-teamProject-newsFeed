@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { Posts, Users, Comments, sequelize } = require('../models');
 const { authMiddleware } = require('../middleware/auth.js');
-const { postValidator } = require('../middleware/validator.js');
+const {
+	postValidator,
+	postSameWriterValidator,
+} = require('../middleware/validator.js');
 const Op = sequelize.Op;
 
 require('dotenv').config();
@@ -76,7 +79,6 @@ router.post(
 	authMiddleware,
 	postValidator,
 	async (req, res) => {
-		console.log('들어와');
 		try {
 			const { title, content, category, petName } = req.body;
 			//빈칸이 있을 경우 - 미들웨어 처리
@@ -126,6 +128,7 @@ router.put(
 	'/post/:postId',
 	authMiddleware,
 	postValidator,
+	postSameWriterValidator,
 	async (req, res) => {
 		try {
 			const postId = req.params.postId;
@@ -175,37 +178,42 @@ router.put(
 );
 
 // 게시물 삭제
-router.delete('/post/:postId', authMiddleware, async (req, res) => {
-	try {
-		const postId = req.params.postId;
-		//로그인 한 유저 아이디 가져오기
-		const localsUserId = res.locals.user.id;
-		//해당 게시물 정보 가져오기
-		const thisPost = await Posts.findByPk(postId);
-		//해당 게시물이 존재하지 않음
-		if (!thisPost) {
-			return res.status(401).json({
+router.delete(
+	'/post/:postId',
+	authMiddleware,
+	postSameWriterValidator,
+	async (req, res) => {
+		try {
+			const postId = req.params.postId;
+			//로그인 한 유저 아이디 가져오기
+			const localsUserId = res.locals.user.id;
+			//해당 게시물 정보 가져오기
+			const thisPost = await Posts.findByPk(postId);
+			//해당 게시물이 존재하지 않음
+			if (!thisPost) {
+				return res.status(401).json({
+					success: false,
+					message: '존재하지 않는 게시물입니다.',
+				});
+			}
+			//로그인 한 사람이 작성자가 아님
+			if (localsUserId !== thisPost.userId) {
+				return res
+					.status(401)
+					.json({ success: false, message: '삭제 권한이 없습니다.' });
+			}
+			//삭제가능
+			const postDelete = await thisPost.destroy();
+			return res
+				.status(200)
+				.json({ success: true, message: '게시물이 삭제되었습니다.' });
+		} catch {
+			return res.status(500).json({
 				success: false,
-				message: '존재하지 않는 게시물입니다.',
+				message: '게시물 삭제에 실패하였습니다.',
 			});
 		}
-		//로그인 한 사람이 작성자가 아님
-		if (localsUserId !== thisPost.userId) {
-			return res
-				.status(401)
-				.json({ success: false, message: '삭제 권한이 없습니다.' });
-		}
-		//삭제가능
-		const postDelete = await thisPost.destroy();
-		return res
-			.status(200)
-			.json({ success: true, message: '게시물이 삭제되었습니다.' });
-	} catch {
-		return res.status(500).json({
-			success: false,
-			message: '게시물 삭제에 실패하였습니다.',
-		});
-	}
-});
+	},
+);
 
 module.exports = router;

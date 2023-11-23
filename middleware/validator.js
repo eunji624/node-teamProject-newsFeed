@@ -6,6 +6,8 @@ const {
 	param,
 	checkSchema,
 } = require('express-validator');
+const { Posts, Users, Comments } = require('../models');
+
 // const express = require('express');
 // const router = express.Router();
 
@@ -52,7 +54,7 @@ const registerValidator = [
 			if (/\s/.test(value)) {
 				throw new Error('비밀번호에 공백을 포함할 수 없습니다');
 			}
-			return ture;
+			return true;
 		}),
 
 	body('passwordRe')
@@ -97,15 +99,70 @@ const commentValidator = [
 	errorMsgMiddleware,
 ];
 
-// const isSameWriterValidator = ;
+//검증함수
+async function isSameWriter(data, jwtUserId) {
+	if (!data) {
+		return res.status(400).json({
+			success: false,
+			message: '해당 글은 존재하지 않습니다.',
+		});
+	}
+	if (data.userId !== jwtUserId) {
+		return res.status(400).json({
+			success: false,
+			message: '해당 글의 작성자가 아닙니다.',
+		});
+	}
+}
+
+//Posts 입력값에 해당하는 데이터 찾아서 검증함수 호출
+const postSameWriterValidator = async (req, res, next) => {
+	const jwtUserId = res.locals.user.id;
+	const postId = req.params.postId;
+	const findData = await Posts.findOne({ where: { id: postId } });
+	isSameWriter(findData, jwtUserId);
+	next();
+};
+
+//Comments 입력값에 해당하는 데이터 찾아서 검증함수 호출
+const commentSameWriterValidator = async (req, res, next) => {
+	const jwtUserId = res.locals.user.id;
+	const commentId = req.params.commentId;
+	const findData = await Comments.findOne({
+		where: { commentId: commentId },
+	});
+	isSameWriter(findData, jwtUserId);
+	next();
+};
+
+//회원가입시 기존 회원의 정보와 동일하지 않도록 검증
+const alreadyRegister = async (req, res, next) => {
+	const { name, email } = req.body;
+	const isSameName = await Users.findOne({ where: { name } });
+	const isSameEmail = await Users.findOne({ where: { email } });
+
+	if (isSameName) {
+		return res.status(400).json({
+			success: false,
+			message: '이미 존재하는 이름 입니다.',
+		});
+	}
+	if (isSameEmail) {
+		return res.status(400).json({
+			success: false,
+			message: '이미 존재하는 이메일 입니다.',
+		});
+	}
+	next();
+};
+
 module.exports = {
 	errorMsgMiddleware,
 	registerValidator,
 	loginValidator,
 	postValidator,
 	commentValidator,
+	postSameWriterValidator,
+	commentSameWriterValidator,
+	alreadyRegister,
 };
-
-//남은거
-//작성자 맞는지 함수__ res.locals.user.id 값과, postid값에 해당하는 userid 값 비교
-//닉네임, 이메일 중복불가 함수
