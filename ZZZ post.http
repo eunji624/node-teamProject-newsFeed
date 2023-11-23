@@ -27,11 +27,12 @@ Content-Type: application/json
 authorization: {{getJWT.response.body.message}}
 
 {
-  "title":"귀여운 인절미",
-  "content":"귀여워요",
-  "category":"dog",
-  "petName":"절미"
+  "title": "ㅇㅇㅇ",
+  "content": "ㅇㅇ",
+  "category": "cat",
+  "petName":"절dd미"
 }
+
 
 ###
 //게시물 수정

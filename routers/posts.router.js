@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Posts, Users, Comments, sequelize } = require('../models');
 const { authMiddleware } = require('../middleware/auth.js');
-
+const { postValidator } = require('../middleware/validator.js');
 const Op = sequelize.Op;
 
 require('dotenv').config();
@@ -71,96 +71,108 @@ router.patch('/main/:category', async (req, res) => {
 });
 
 // 게시물 작성 - 로그인 해야 가능
-router.post('/post', authMiddleware, async (req, res) => {
-	try {
-		const { title, content, category, petName } = req.body;
-		//빈칸이 있을 경우 - 미들웨어 처리
-		if (!title) {
+router.post(
+	'/post',
+	authMiddleware,
+	postValidator,
+	async (req, res) => {
+		console.log('들어와');
+		try {
+			const { title, content, category, petName } = req.body;
+			//빈칸이 있을 경우 - 미들웨어 처리
+			// if (!title) {
+			// 	return res.status(400).json({
+			// 		success: false,
+			// 		message: '제목은 필수 입력입니다.',
+			// 	});
+			// }
+			// if (!content) {
+			// 	return res.status(400).json({
+			// 		success: false,
+			// 		message: '내용은 필수 입력입니다.',
+			// 	});
+			// }
+			// if (!category) {
+			// 	return res.status(400).json({
+			// 		success: false,
+			// 		message: '카테고리를 지정해주세요.',
+			// 	});
+			// }
+			//로그인한 유저 아이디 가져와서 글 작성 - 미드웨어로 로그인 확인 필요
+			await Posts.create({
+				userId: res.locals.user.id,
+				title,
+				content,
+				category,
+				petName,
+			});
+
+			return res.status(200).json({
+				success: true,
+				message: '게시글이 등록되었습니다.',
+				Posts,
+			});
+		} catch {
 			return res.status(400).json({
 				success: false,
-				message: '제목은 필수 입력입니다.',
+				message: '게시글 등록에 실패하였습니다.',
 			});
 		}
-		if (!content) {
-			return res.status(400).json({
-				success: false,
-				message: '내용은 필수 입력입니다.',
-			});
-		}
-		if (!category) {
-			return res.status(400).json({
-				success: false,
-				message: '카테고리를 지정해주세요.',
-			});
-		}
-		//로그인한 유저 아이디 가져와서 글 작성 - 미드웨어로 로그인 확인 필요
-		await Posts.create({
-			userId: res.locals.user.id,
-			title,
-			content,
-			category,
-			petName,
-		});
-		return res.status(200).json({
-			success: true,
-			message: '게시글이 등록되었습니다.',
-			Posts,
-		});
-	} catch {
-		return res.status(400).json({
-			success: false,
-			message: '게시글 등록에 실패하였습니다.',
-		});
-	}
-});
+	},
+);
 
 // 게시물 수정 - 인증 미들웨어 확인 필요
-router.put('/post/:postId', authMiddleware, async (req, res) => {
-	try {
-		const postId = req.params.postId;
-		//로그인 한 유저 아이디 가져오기
-		const localsUserId = res.locals.user.id;
-		const { category, title, content, petName } = req.body;
-		//해당 게시물 정보 가져오기
-		const thisPost = await Posts.findOne({
-			where: { id: postId },
-			attributes: [
-				'id',
-				'userId',
-				'category',
-				'title',
-				'content',
-				'petName',
-				'createdAt',
-			],
-		});
-		//게시물 없을 경우
-		if (!thisPost) {
-			return res.status(401).json({
+router.put(
+	'/post/:postId',
+	authMiddleware,
+	postValidator,
+	async (req, res) => {
+		try {
+			const postId = req.params.postId;
+			//로그인 한 유저 아이디 가져오기
+			const localsUserId = res.locals.user.id;
+			const { category, title, content, petName } = req.body;
+			//해당 게시물 정보 가져오기
+			const thisPost = await Posts.findOne({
+				where: { id: postId },
+				attributes: [
+					'id',
+					'userId',
+					'category',
+					'title',
+					'content',
+					'petName',
+					'createdAt',
+				],
+			});
+			//게시물 없을 경우
+			if (!thisPost) {
+				return res.status(401).json({
+					success: false,
+					message: '존재하지 않는 게시물입니다.',
+				});
+			}
+			//게시물 존재하고 내가 쓴 글이 아닐 경우 - 수정하고 수정된 게시물 보여주기
+			if (localsUserId !== thisPost.userId) {
+				return res
+					.status(401)
+					.json({ success: true, message: '수정 권한이 없습니다.' });
+			}
+			if (localsUserId === thisPost.userId) {
+				await thisPost.update(
+					{ category, title, content, petName },
+					{ where: { id: postId } },
+				);
+			}
+			return res.status(200).json({ success: true, data: thisPost });
+		} catch (error) {
+			return res.status(500).json({
 				success: false,
-				message: '존재하지 않는 게시물입니다.',
+				message: '게시물 수정에 실패하였습니다.',
 			});
 		}
-		//게시물 존재하고 내가 쓴 글이 아닐 경우 - 수정하고 수정된 게시물 보여주기
-		if (localsUserId !== thisPost.userId) {
-			return res
-				.status(401)
-				.json({ success: true, message: '수정 권한이 없습니다.' });
-		}
-		if (localsUserId === thisPost.userId) {
-			await thisPost.update(
-				{ category, title, content, petName },
-				{ where: { id: postId } },
-			);
-		}
-		return res.status(200).json({ success: true, data: thisPost });
-	} catch (error) {
-		return res.status(500).json({
-			success: false,
-			message: '게시물 수정에 실패하였습니다.',
-		});
-	}
-});
+	},
+);
 
 // 게시물 삭제
 router.delete('/post/:postId', authMiddleware, async (req, res) => {
