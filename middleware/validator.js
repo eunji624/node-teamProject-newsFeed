@@ -2,27 +2,69 @@ const {
 	query,
 	validationResult,
 	check,
+	body,
+	param,
+	checkSchema,
 } = require('express-validator');
-console.log(query);
-const express = require('express');
-const router = express.Router();
+// const express = require('express');
+// const router = express.Router();
 
-const registerValidator = (req, res, next) => {
-	query('name').notEmpty().withMessage(`이름을 입력해 주세요`);
-	// query('email')
-	// 	.notEmpty()
-	// 	.withMessage(`이메일을 입력해 주세요`)
-	// 	.isEmail()
-	// 	.withMessage(`이메일에 형식에 맞춰 사용해 주세요`),
-	// query('description').withMessage(`자기소개를 입력해 주세요`),
-	// query('password').withMessage(`비밀번호를 입력해 주세요`),
-	// query('passwordRe').custom((value, { req }) => {
-	// 	return value === req.query.password;
-	// });
-	// .withMessage(`비밀번호를 입력해 주세요`),
+const errorMsgMiddleware = (req, res, next) => {
+	const errors = validationResult(req);
+	if (errors.isEmpty()) {
+		return next();
+	}
+	return res.status(400).json({
+		success: false,
+		error: {
+			code: 400,
+			message: errors.array()[0].msg,
+			// detail: errors.errors,
+		},
+	});
 };
 
-module.exports = { registerValidator };
+const registerValidator = [
+	body('name').notEmpty().trim().withMessage(`이름을 입력해 주세요`),
+
+	body('email')
+		.notEmpty()
+		.withMessage('이메일을 입력해 주세요')
+		.isEmail()
+		.normalizeEmail()
+		.withMessage('이메일을 확인해 주세요'),
+
+	body('password')
+		.notEmpty()
+		.withMessage('비밀번호를 입력해 주세요')
+		.isLength({ min: 6 }, { max: 10 })
+		.withMessage('비밀번호를 6자리 이상 입력해 주세요'),
+
+	body('passwordRe')
+		.custom((value, { req }) => {
+			if (value !== req.body.password) {
+				throw new Error('비밀번호를 확인해 주세요');
+			}
+			return true;
+		})
+		.withMessage('비밀번호를 확인해 주세요'),
+
+	body('description').default('안녕하세요!'),
+	errorMsgMiddleware,
+];
+
+const loginValidator = [
+	registerValidator[1],
+	registerValidator[2],
+	errorMsgMiddleware,
+];
+module.exports = {
+	errorMsgMiddleware,
+	registerValidator,
+	loginValidator,
+};
+
+// 공백 에러 내뿜는 함수 생성.
 
 //회원가입
 //입력값이 빈값인 경우
