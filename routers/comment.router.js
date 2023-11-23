@@ -7,7 +7,10 @@ const {
 	commentSameWriterValidator,
 } = require('../middleware/validator.js');
 require('dotenv').config();
-
+// 리프레시토큰 보통2주?!
+// 엑세스토큰 1시간
+// 1. 로그인성공시 R A 같이 발급
+// 2. R이 DB쪽에 저장
 // CRUD
 
 // findOne 보다 findByPk
@@ -60,8 +63,9 @@ router.get('/post/:postId', async (req, res) => {
 		},
 		order: [['updatedAt', 'DESC']],
 	});
-
-	res.send({ success: true, Detail: { postsDetail, commentsList } });
+	// console.log(commentsList);
+	res.render('postDetail', { postsDetail, commentsList });
+	// res.send({ success: true, postsDetail, commentsList });
 });
 // R Read
 
