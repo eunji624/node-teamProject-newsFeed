@@ -115,11 +115,17 @@ router.get('/main/:category', async (req, res) => {
 });
 
 //* AWS S3 multer 설정
-const postId =
-	Posts.findOne({
-		order: [['id', 'DESC']],
-	}) + 1;
 
+const getPostId = async (req, res, next) => {
+	const latestPost = await Posts.findOne({
+		order: [['id', 'DESC']],
+	});
+	if (!latestPost) {
+		return res.status(400).json({ message: '오류떳엉' });
+	}
+	req.postId = latestPost ? latestPost.id + 1 : 1;
+	next();
+};
 const upload = multer({
 	storage: multerS3({
 		s3: new AWS.S3(),
@@ -127,7 +133,10 @@ const upload = multer({
 		acl: 'public-read',
 		contentType: multerS3.AUTO_CONTENT_TYPE,
 		key(req, file, cb) {
-			cb(null, `test/${postId}_${path.basename(file.originalname)}`); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
+			cb(
+				null,
+				`test/${req.postId}_${path.basename(file.originalname)}`,
+			); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
 		},
 	}),
 	limits: { fileSize: 5 * 1024 * 1024 },
@@ -139,6 +148,7 @@ router.get('/upload', (req, res) => {
 router.post(
 	'/upload',
 	authMiddleware,
+	getPostId,
 	upload.single('imgUrl'),
 	async (req, res) => {
 		try {
@@ -159,7 +169,7 @@ router.post(
 				userId: res.locals.user.id,
 				title,
 				content,
-				imgUrl: `${process.env.IMG_URL}${maxId}_${path.basename(
+				imgUrl: `${process.env.IMG_URL}${req.postId}_${path.basename(
 					file.originalname,
 				)}`,
 				category,
