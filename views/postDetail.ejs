@@ -31,29 +31,43 @@
     <% } %>
     </div>
 </header>
-<div class="realContainer">
 <section>
-<!-- ==category side-bar -->
-<aside class="side-bar">
-    <ul>
-    <li><a href="/api/main">전체보기</a></li>
-    <li><a href="/api/main/cat">🐈 고양이</a></li>
-    <li><a href="/api/main/dog">🐕 강아지</a></li>
-    <li><a href="/api/main/bird">🐥 조류</a></li>
-    <li><a href="/api/main/Reptiles">🐍 파충류</a></li>
-    </ul>
-</aside>
+<div class="realContainer">
+    <!-- ==category side-bar -->
+    <aside class="side-bar">
+        <ul>
+        <li><a href="/api/main">전체보기</a></li>
+        <li><a href="/api/main/cat">🐈 고양이</a></li>
+        <li><a href="/api/main/dog">🐕 강아지</a></li>
+        <li><a href="/api/main/bird">🐥 조류</a></li>
+        <li><a href="/api/main/Reptiles">🐍 파충류</a></li>
+        </ul>
+    </aside>
 <!-- == -->
     <div class="postDetail">
-        <li>
+        <div>
+            <strong>이미지:</strong> <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
             <strong>post넘버:</strong> <%= postsDetail.id %><br/>
             <strong>카테고리:</strong> <%= postsDetail.category %><br/>
+            <strong>작성자:</strong> <%= postsDetail.User.name %><br/>
             <strong>제목:</strong> <%= postsDetail.title %><br/>
             <strong>내용:</strong> <%= postsDetail.content %><br/>
             <strong>동물이름:</strong> <%= postsDetail.petName %><br/>
             <strong>작성시간:</strong> <%= postsDetail.createdAt %><br/>
-        </li>
-    </div>
+        </div>
+    
+    <!-- == -->
+    <form method="POST" action="/api/comment/<%= postsDetail.id %>" >
+        <input type="text"  placeholder="내용을 입력하시오" name="content">
+        <button
+                type="submit"
+                class="btn btn-secondary"
+                onclick="commentSubmit()"
+              >
+                등록하기
+              </button>
+    </form>
+    <!--==  -->
     <div class="commentList">
         <% commentsList.forEach(comment => { %>
         <li class="commnets">
@@ -64,11 +78,18 @@
         </li>
         <% }); %>
     </div>
-</section>
+    </div> 
 </div>
+</section>
+
 <!-- ==footer -->
 <footer>
     <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
    </footer>
      </body>
+     <script defer>
+        function commentSubmit(){
+            alert("댓글이 등록되었습니다.")
+        }
+     </script>
    </html>

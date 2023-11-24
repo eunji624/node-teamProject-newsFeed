@@ -175,11 +175,7 @@ router.post(
 				category,
 				petName,
 			});
-
-			return res.status(200).json({
-				success: true,
-				message: '게시글이 등록되었습니다.',
-			});
+			return res.redirect('main');
 		} catch (error) {
 			console.error(error);
 			return res.status(400).json({

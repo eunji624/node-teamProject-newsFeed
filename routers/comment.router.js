@@ -31,7 +31,7 @@ router.post(
 			postId: postId,
 			content,
 		});
-		res.json({ success: true, Commnets: createdProduct });
+		return res.redirect(`/api/post/${postId}`); //미쳤다
 	},
 );
 // C created
@@ -50,9 +50,15 @@ router.get('/post/:postId', async (req, res) => {
 			'category',
 			'title',
 			'content',
+			'imgUrl',
 			'petName',
 			'createdAt',
 		],
+		include: {
+			model: Users,
+			as: 'User',
+			attributes: ['name'],
+		},
 	});
 	const commentsList = await Comments.findAll({
 		where: { postId: postId },
