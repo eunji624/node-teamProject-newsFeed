@@ -54,14 +54,16 @@ router.post('/auth/login', loginValidator, async (req, res, next) => {
 		const { email, password } = req.body;
 		const userData = await Users.findOne({ where: { email } });
 		if (!userData) {
-			throw new Error(
-				'입력하신 이메일에 해당하는 회원정보가 없습니다.',
-			);
+			return res.render('blank', {
+				message: '입력하신 이메일에 해당하는 회원정보가 없습니다.',
+			});
 		}
 		console.log(userData);
 		const isSame = await bcrypt.compare(password, userData.password);
 		if (!isSame) {
-			throw new Error('입력하신 비밀번호가 올바르지 않습니다.');
+			return res.render('blank', {
+				message: '입력하신 비밀번호가 올바르지 않습니다.',
+			});
 		}
 		console.log(isSame);
 
