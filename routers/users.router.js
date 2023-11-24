@@ -13,6 +13,11 @@ const {
 
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
+
+router.get('/register', async (req, res, next) => {
+	res.send('register');
+});
+
 //회원 가입
 router.post(
 	'/register',
@@ -85,6 +90,7 @@ router.get('/auth/logout', authMiddleware, async (req, res, next) => {
 		//만료 시키는 방법으로 변경.
 		req.headers.authorization = '';
 		console.log('빔', req.headers.authorization);
+		res.render('main', { userId: '' });
 	} catch (err) {
 		console.log(err);
 	}
