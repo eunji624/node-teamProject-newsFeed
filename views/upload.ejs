@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>upload</title>
+</head>
+<body>
+    <div>
+        <h4>업로드</h4>
+  
+        <form method="POST" action="/api/upload" enctype="multipart/form-data" >
+            <input type="file" name="imgUrl">
+            <input type="text"  placeholder="제목를 입력하시오" name="title">
+            <input type="text"  placeholder="동물이름을 입력하시오" name="petName">
+            <input type="text"  placeholder="카테고리를 입력하시오" name="category">
+            <input type="text"  placeholder="내용을 입력하시오" name="content">
+            <button
+                    id="Sign_up_save"
+                    type="submit"
+                    class="btn btn-secondary Sign_up_btn"
+                  >
+                    등록하기
+                  </button>
+        </form>
+    </div>
+</body>
+</html>
