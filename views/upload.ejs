@@ -4,27 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>upload</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/CSS/upload.css">
 </head>
 <body>
-    <div>
-        <img class="imgLogo" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
-        <h4 class = "post">posting</h4>
-
-        <form method="POST" action="/api/upload" enctype="multipart/form-data" >
-            <input type="file" name="imgUrl">
-            <input type="text"  placeholder="제목를 입력하시오" name="title">
-            <input type="text"  placeholder="동물이름을 입력하시오" name="petName">
-            <input type="text"  placeholder="카테고리를 입력하시오" name="category">
-            <input type="text"  placeholder="내용을 입력하시오" name="content">
+    <img id="imgLogo" onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+ 
+    <div class="postingForm">
+        <form class = "postingFormtag"method="POST" action="/api/upload" enctype="multipart/form-data" >
+            <h4>-- posting --</h4>
+            <input id="fileInput" type="file" name="imgUrl"  >
+                <!-- <lebel id = "fileLabel" for="file">
+                    <button id="fileUploadBtn"> 🏞️ 🏞️ 🏞️ 파일 업로드  🏞️ 🏞️ 🏞️</button>
+                </lebel>
+            </input> -->
+            <input class = "postingInput" type="text"  placeholder="제목를 입력해 주세요" name="title">
+            <input class = "postingInput" type="text"  placeholder="동물이름을 입력해 주세요" name="petName">
+            <div class="form-floating">
+                <select class="form-select form-select-lg mb-3" id="floatingSelect" aria-label="Floating label select example">
+                    <option selected disabled>애완동물의 종류</option>
+                    <option value="cat">cat</option>
+                    <option value="dog">dog</option>
+                    <option value="bird">brid</option>
+                    <option value="reptiles">reptiles</option>
+                </select>
+            </div>
+            <!-- <input class = "postingInput" type="text"  placeholder="카테고리를 입력하시오" name="category"> -->
+            <input class = "postingInput" type="text"  placeholder="내용을 입력해 주세요" name="content">
             <button
-                    id="Sign_up_save"
-                    type="submit"
-                    class="btn btn-secondary Sign_up_btn"
-                  >
-                    등록하기
-                  </button>
+                id = "post_btn"
+                type="submit"
+                class="btn btn-secondary post_btn"
+            >
+                등록하기
+            </button>
         </form>
     </div>
+
 </body>
 </html>

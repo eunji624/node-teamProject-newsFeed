@@ -14,7 +14,7 @@
 <header>
     <!-- 검색창 -->
     <div class="searchBar" id="searchBar">
-    <img class="imgLogo" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+    <img class="imgLogo"  onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
         <form>
             <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
             <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
@@ -43,8 +43,8 @@
 </aside>
 <!-- ==post side-bar -->
 <div class="post-side-bar">
-    <div onclick="location.href='/api/post'">
-        게시글 작성하기
+    <div id="write"  onclick="location.href='/api/post'">
+         작성하기
     </div>
 </div>
 <!-- ==body cards -->
