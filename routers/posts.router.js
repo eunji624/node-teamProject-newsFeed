@@ -46,7 +46,6 @@ router.get('/main', async (req, res) => {
 						jwtValue,
 						process.env.SECRET_KEY,
 					);
-					console.log(allPosts);
 					return res.render('main', {
 						userId: checkJwt.userId,
 						data: allPosts,

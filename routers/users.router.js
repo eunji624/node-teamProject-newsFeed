@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { Users } = require('../models/index.js');
+const { Users, Posts } = require('../models/index.js');
 const { authMiddleware } = require('../middleware/auth.js');
 const {
 	loginValidator,
@@ -89,10 +89,21 @@ router.post('/auth/login', loginValidator, async (req, res, next) => {
 //로그아웃 기능 __ 로그인 된 상태에서만 로그아웃 버튼이 보이도록 처리.
 router.get('/auth/logout', authMiddleware, async (req, res, next) => {
 	try {
-		//만료 시키는 방법으로 변경.
-		req.headers.authorization = '';
-		console.log('빔', req.headers.authorization);
-		res.render('main', { userId: '' });
+		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
+		const allPosts = await Posts.findAll({
+			attributes: ['id', 'category', 'imgUrl', 'title', 'updatedAT'],
+			include: [
+				{
+					model: Users,
+					attributes: ['name'],
+				},
+			],
+			order: [['updatedAt', sort]],
+		});
+		res.clearCookie().render('main', { userId: '', data: allPosts });
+
+		// console.log('빔', req.headers.authorization);
+		// res.render('main', { userId: '' });
 	} catch (err) {
 		console.log(err);
 	}
@@ -154,20 +165,31 @@ router.get(
 	},
 );
 
+//회원정보 수정 화면 보여주기
+router.get('/user/modify/:userId', async (req, res, next) => {
+	const userData = await Users.findOne({
+		where: { id: req.params.userId },
+	});
+	res.render('modifyUserInfo', {
+		userId: req.params.userId,
+		data: userData,
+	});
+});
+
 //회원정보 수정 기능
-router.patch(
-	'/users/:userId',
+router.put(
+	'/user/:userId',
 	authMiddleware,
-	registerValidator,
+	loginValidator,
 	async (req, res, next) => {
+		console.log('수정중');
 		try {
-			const { name, email, description, password, passwordRe } =
-				req.body;
+			const { name, email, description } = req.body;
 			const id = req.params.userId;
 
 			//passwordRe 확인할것
 			await Users.update(
-				{ name, email, description, password },
+				{ name, email, description },
 				{ where: { id } },
 			);
 			const showUserData = await Users.findOne({ where: { id } });

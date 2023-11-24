@@ -31,8 +31,17 @@
     </div>
   </div>
   <form action="/api/user/<%= userId %>" method="POST">
-    <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">임시용_회원 탈퇴하기<button>d</button></input>
+    <button>
+      <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">
+        회원 탈퇴
+      </input>
+    </button>
   </form>
+
+  <button onclick="location.href = '/api/user/modify/<%=userId%>'">
+    회원 정보 수정
+  </button>
+
   <!-- <form id = "mainForm" action="/users/<%= user.id %>" method="DELETE">
     <button onclick="moveMainPage()">임시용_메인 돌아가기</button>
   </form> -->

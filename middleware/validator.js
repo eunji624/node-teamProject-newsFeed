@@ -16,14 +16,7 @@ const errorMsgMiddleware = (req, res, next) => {
 	if (errors.isEmpty()) {
 		return next();
 	}
-	return res.status(400).json({
-		success: false,
-		error: {
-			code: 400,
-			message: errors.array()[0].msg,
-			// detail: errors.errors,
-		},
-	});
+	res.render('blank', { message: errors.array()[0].msg });
 };
 
 const registerValidator = [
@@ -118,16 +111,10 @@ const commentValidator = [
 //검증함수
 async function isSameWriter(data, jwtUserId) {
 	if (!data) {
-		return res.status(400).json({
-			success: false,
-			message: '해당 글은 존재하지 않습니다.',
-		});
+		res.render('blank', { message: '해당 글은 존재하지 않습니다.' });
 	}
 	if (data.userId !== jwtUserId) {
-		return res.status(400).json({
-			success: false,
-			message: '해당 글의 작성자가 아닙니다.',
-		});
+		res.render('blank', { message: '해당 글의 작성자가 아닙니다.' });
 	}
 }
 
@@ -158,16 +145,10 @@ const alreadyRegister = async (req, res, next) => {
 	const isSameEmail = await Users.findOne({ where: { email } });
 
 	if (isSameName) {
-		return res.status(400).json({
-			success: false,
-			message: '이미 존재하는 이름 입니다.',
-		});
+		res.render('blank', { message: '이미 존재하는 이름 입니다.' });
 	}
 	if (isSameEmail) {
-		return res.status(400).json({
-			success: false,
-			message: '이미 존재하는 이메일 입니다.',
-		});
+		res.render('blank', { message: '이미 존재하는 이메일 입니다.' });
 	}
 	next();
 };

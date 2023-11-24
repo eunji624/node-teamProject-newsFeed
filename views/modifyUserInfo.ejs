@@ -51,12 +51,12 @@
         <div class="col-md-6">
           <div class="card mt-5">
             <div class="card-header">
-              <h2 class="text-center">회원가입</h2>
+              <h2 class="text-center">회원정보 수정</h2>
             </div>
             <div class="card-body">
                 <!-- input 설정에서 name -->
                 <!-- form 에서 action="URL" method="" -->
-              <form action="/api/register" method="post">
+              <form action="/api/user/<%= userId %>" method="post">
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -70,6 +70,7 @@
                       id="user_name"
                       placeholder="이름을 입력하시오"
                       name="name"
+                      value="<%= data.name %>"
                     />
                   </div>
                 </div>
@@ -86,41 +87,11 @@
                       id="user_id"
                       placeholder="이메일를 입력하시오"
                       name="email"
+                      value="<%= data.email %>"
                     />
                   </div>
                 </div>
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="fa fa-lock">PW</i>
-                      </span>
-                    </div>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="user_password"
-                      placeholder="비밀번호를 입력하시오"
-                      name="password"
-                    />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="fa fa-lock">PW2</i>
-                      </span>
-                    </div>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="user_password"
-                      placeholder="비밀번호를 입력하시오"
-                      name="passwordRe"
-                    />
-                  </div>
-                </div>
+            
                 <div class="form-group">
                     <div class="input-group">
                       <div class="input-group-prepend">
@@ -134,17 +105,20 @@
                         id="user_description"
                         placeholder="내용를 입력하시오"
                         name="description"
+                        value="<%= data.description %>"
                       />
                     </div>
                   </div>
                 <div class="text-center">
-                  <button
-                    id="Sign_up_save"
-                    type="submit"
-                    class="btn btn-secondary Sign_up_btn"
-                  >
-                    가입하기
-                  </button>
+                  <input type="hidden" name="_method" value="put">
+                    <button
+                      id="Sign_up_save"
+                      type="submit"
+                      class="btn btn-secondary Sign_up_btn"
+                    >
+                      저장하기
+                    </button>
+                  </input>
                 </div>
               </form>
             </div>
