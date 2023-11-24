@@ -25,9 +25,9 @@ header{
 .headerBack{
     height: 3em;
 }
-.searchBar{
+#searchBar{
     padding-top: 5em;
-    padding-bottom: 2em;
+    padding-bottom: 3em;
     height: 5em;
     z-index: 1;
     display: flex;
@@ -38,7 +38,7 @@ header{
     background-color: white;
     width: 100%;
 }
-form{
+.searchForm{
     display: flex;
     vertical-align: middle;
     align-items: center;

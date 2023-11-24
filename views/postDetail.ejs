@@ -16,19 +16,19 @@
 <header>
     <!-- 검색창 -->
     <div class="searchBar" id="searchBar">
-    <img class="imgLogo" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
-        <form>
-            <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
-            <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
-        </form>
-    <!-- 검색창 사이드 -->
-    <% if(!userId){ %>
-      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
-      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/register'">회원가입</button>
-    <% }else{ %>
-      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/logout'">로그아웃</button>
-      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/user/<%= userId %>'">내정보조회</button>
-    <% } %>
+        <img class="imgLogo" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+            <form id="searchForm">
+                <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
+                <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
+            </form>
+        <!-- 검색창 사이드 -->
+        <% if(!userId){ %>
+        <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
+        <button type="button" class="btn back_login_btn" onclick="location.href= '/api/register'">회원가입</button>
+        <% }else{ %>
+        <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/logout'">로그아웃</button>
+        <button type="button" class="btn back_login_btn" onclick="location.href= '/api/user/<%= userId %>'">내정보조회</button>
+        <% } %>
     </div>
 </header>
 <section>
@@ -45,40 +45,45 @@
     </aside>
 <!-- == -->
     <div class="postDetail">
-        <div>
-            <strong>이미지:</strong> <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
-            <strong>post넘버:</strong> <%= postsDetail.id %><br/>
-            <strong>카테고리:</strong> <%= postsDetail.category %><br/>
-            <strong>작성자:</strong> <%= postsDetail.User.name %><br/>
-            <strong>제목:</strong> <%= postsDetail.title %><br/>
-            <strong>내용:</strong> <%= postsDetail.content %><br/>
-            <strong>동물이름:</strong> <%= postsDetail.petName %><br/>
-            <strong>작성시간:</strong> <%= postsDetail.createdAt %><br/>
+        <div class="postView">
+
+        <!-- 제목 -->
+        <div class="postViewTop">
+            <p class="postTitle"><%= postsDetail.title %></p> 
+            <p> <span style="font-size: xx-small;"><%= postsDetail.category %></span>&ensp;<span><%= postsDetail.petName %></span> </p> 
         </div>
-    
+        <div class="postAutherBtn">
+            <div style="text-align: left;">
+                <img class="profileImg" src="https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg">
+                <span><span style="font-size: xx-small;">작성자:</span><%= postsDetail.User.name %></span></div>
+            <div>
+                <button type="button" class="btn btn-secondary btn-sm">수정</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm">삭제</button>
+            </div>
+        </div>
+        <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
+        <p class="postContent"><%= postsDetail.content %></p>
+        <p class="postCreatedAt"><%= postsDetail.createdAt %></p>
     <!-- == -->
-    <form method="POST" action="/api/comment/<%= postsDetail.id %>" >
-        <input type="text"  placeholder="내용을 입력하시오" name="content">
-        <button
-                type="submit"
-                class="btn btn-secondary"
-                onclick="commentSubmit()"
-              >
-                등록하기
-              </button>
-    </form>
+            <div class="commetSubmit container">
+            <form class="row justify-content-center commentForm" method="POST" action="/api/comment/<%= postsDetail.id %>" >
+                <input class="commentInput form-control form-control-sm col-sm-9" type="text"  placeholder="내용을 입력하시오" name="content">
+                <button type="submit" class="btn btn-secondary btn-sm commentBtn col-sm-2" onclick="commentBtnAct()">Comment</button>
+            </form>
+            </div>
     <!--==  -->
-    <div class="commentList">
-        <% commentsList.forEach(comment => { %>
-        <li class="commnets">
-            <strong>내용:</strong> <%= comment.content %><br/>
-            <strong>댓글번호:</strong> <%= comment.commentId %><br/>
-            <strong>작성자:</strong> <%= comment.User.name %><br/>
-            <strong>작성시간:</strong> <%= comment.updatedAt %><br/>
-        </li>
-        <% }); %>
-    </div>
-    </div> 
+                <div class="commentList">
+                <% commentsList.forEach(comment => { %>
+                <li class="comment">
+                    <p> <span style="font-size: xx-small;"><%= comment.commentId %></span>
+                        <span style="font-weight:bold ;"><%= comment.User.name %></span></p>
+                    <p class="commentContent"><%= comment.content %></p>
+                    <p class="commentCreatedAt"><%= comment.updatedAt %></p>
+                </li>
+                <% }); %>
+                </div>
+</div>
+</div> 
 </div>
 </section>
 
@@ -87,9 +92,9 @@
     <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
    </footer>
      </body>
-     <script defer>
-        function commentSubmit(){
-            alert("댓글이 등록되었습니다.")
+     <script>
+        function commentBtnAct(){
+            if(<%= userId %>){alert("댓글이 등록되었습니다.")}
         }
      </script>
    </html>
