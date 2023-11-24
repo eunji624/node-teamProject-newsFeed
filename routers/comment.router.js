@@ -1,12 +1,13 @@
 const express = require('express');
 const { authMiddleware } = require('../middleware/auth.js');
 const router = express.Router();
-const { Posts, Users, Comments } = require('../models');
+const { Posts, Users, Comments } = require('../models/index.js');
 const {
 	commentValidator,
 	commentSameWriterValidator,
 } = require('../middleware/validator.js');
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
 // 리프레시토큰 보통2주?!
 // 엑세스토큰 1시간
 // 1. 로그인성공시 R A 같이 발급
@@ -63,8 +64,32 @@ router.get('/post/:postId', async (req, res) => {
 		},
 		order: [['updatedAt', 'DESC']],
 	});
+	// ~~
+	if (postsDetail) {
+		try {
+			if (!req.cookies.Authorization) {
+				return res.render('postDetail', {
+					postsDetail,
+					commentsList,
+					userId: '',
+				});
+			} else if (req.cookies.Authorization) {
+				const [jwtToken, jwtValue] =
+					req.cookies.Authorization.split(' ');
+				const checkJwt = jwt.verify(jwtValue, process.env.SECRET_KEY);
+				return res.render('postDetail', {
+					userId: checkJwt.userId,
+					postsDetail,
+					commentsList,
+				});
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	}
+	// ~~
 	// console.log(commentsList);
-	res.render('postDetail', { postsDetail, commentsList });
+	// res.render('postDetail', { postsDetail, commentsList });
 	// res.send({ success: true, postsDetail, commentsList });
 });
 // R Read
@@ -83,7 +108,6 @@ router.put(
 				commentId: commentId,
 			},
 		});
-
 		let { content } = req.body;
 		// if (!content) {
 		// 	return res
