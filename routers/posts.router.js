@@ -1,4 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
+const jwt = require('jsonwebtoken');
+
 const router = express.Router();
 const { Posts, Users, Comments, sequelize } = require('../models');
 const { authMiddleware } = require('../middleware/auth.js');
@@ -16,7 +20,7 @@ router.get('/main', async (req, res) => {
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
 		//게시글 전체 가져오기 (게시글id, 카테고리, 제목, 작성일)
-		const AllPosts = await Posts.findAll({
+		const allPosts = await Posts.findAll({
 			attributes: ['id', 'category', 'title', 'updatedAT'],
 			include: [
 				{
@@ -26,9 +30,28 @@ router.get('/main', async (req, res) => {
 			],
 			order: [['updatedAt', sort]],
 		});
+		// console.log(allPosts);
 		//테스트용 - 게시물이 있을 경우
-		if (AllPosts) {
-			return res.status(200).json({ success: true, data: AllPosts });
+		if (allPosts) {
+			try {
+				if (!req.cookies.Authorization) {
+					console.log('없다. ');
+					return res.render('main', { userId: '' });
+				} else if (req.cookies.Authorization) {
+					console.log('있다. ');
+
+					const [jwtToken, jwtValue] =
+						req.cookies.Authorization.split(' ');
+					const checkJwt = jwt.verify(
+						jwtValue,
+						process.env.SECRET_KEY,
+					);
+					return res.render('main', { userId: checkJwt.userId });
+				}
+			} catch (err) {
+				console.log(err);
+			}
+			// return res.render('main').status(200).json({ success: true, data: AllPosts });
 		} else {
 			return res
 				.status(400)

@@ -42,7 +42,7 @@ authorization: {{getJWT.response.body.message}}
 ###
 
 #회원 탈퇴
-DELETE  http://localhost:3010/api/users/2 HTTP/1.1
+DELETE  http://localhost:3010/api/user/2 HTTP/1.1
 Content-Type: application/json
 authorization: {{token}}
 
@@ -52,7 +52,7 @@ authorization: {{token}}
 ###
 
 #회원정보 조회
-GET http://localhost:3010/api/user/info HTTP/1.1
+GET http://localhost:3010/api/user/76 HTTP/1.1
 Content-Type: application/json
 authorization: {{getJWT.response.body.message}}
 

@@ -20,9 +20,14 @@
             <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
         </form>
     <!-- 검색창 사이드 -->
-    <button type="button" class="btn back_login_btn" onclick="toLogin()">로그인</button>
-    <button type="button" class="btn back_login_btn" onclick="toRegister()">회원가입</button>
-    <button type="button" class="btn back_login_btn" onclick="toInfo()">내정보조회</button>
+    <% if(!userId){ %>
+      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
+      <button type="button" class="btn back_login_btn" onclick="toRegister()">회원가입</button>
+      <button type="button" class="btn back_login_btn" onclick="alert('로그인을 해주세요')">내정보조회</button>
+    <% }else{ %>
+      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
+      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/user/<%= userId %>'">내정보조회</button>
+    <% } %>
     </div>
 </header>
 <!-- ==category side-bar -->
@@ -88,15 +93,13 @@
 </footer>
   </body>
     <script>
-         function toRegister(){
-    location.href="/api/register"
-}
-function toLogin(){
-    location.href="/api/login"
-}
-function toInfo(){
-    location.href="/api/user/info"
-}
+        // function toRegister(){
+        //   location.href="/api/register"
+        // }
+        // function toLogin(){
+        //   location.href="/api/login"
+        // }
+
     </script>
   </body>
 </html>

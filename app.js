@@ -22,15 +22,12 @@ app.use('/api', [UsersRouter, PostsRouter, CommentsRouter]);
 // app.use('/api', PostsRouter);
 // app.use('/api', CommentsRouter);
 
-app.get('/', (req, res) => {
-	res.render('main', { title: '팻' });
-});
 app.get('/api/register', (req, res) => {
 	res.render('register');
 });
-app.get('/api/login', (req, res) => {
-	res.render('login');
-});
+// app.get('/api/login', (req, res) => {
+// 	res.render('login');
+// });
 
 app.listen(PORT, () => {
 	console.log(`Example app listening on port ${PORT}`);
