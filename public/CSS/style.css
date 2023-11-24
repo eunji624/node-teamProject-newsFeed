@@ -12,6 +12,7 @@ body{
   justify-content: center;
   height: 1500px;
   overflow: auto;
+  position: relative;
 }
 section{
   width: 1080px;
@@ -37,6 +38,8 @@ header{
     position: fixed;
     background-color: white;
     width: 100%;
+    position: absolute;
+
 }
 form{
     display: flex;
@@ -218,3 +221,28 @@ footer {
   height: 200px;
   width: 400px;
 }
+
+.post-side-bar{
+  height: 60px;
+  width: 130px;
+  position: absolute;
+  position:fixed;
+  left: 16.8%;
+  top: 50%;
+  font-size: 20px;
+  background-color: #d1ccdc;
+  color: #424c55;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  cursor:pointer;
+}
+
+.post-side-bar:hover{
+  /* background-color: #d1ccdc; */
+  border:2px solid #e0e0e0
+}
+/* #write{
+  height:30px;
+  width: 30px;
+} */

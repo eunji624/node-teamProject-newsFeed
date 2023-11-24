@@ -4,12 +4,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
-const {
-	Posts,
-	Users,
-	Comments,
-	sequelize,
-} = require('../models/index.js');
+const { Posts, Users, Comments, sequelize } = require('../models');
 const { authMiddleware } = require('../middleware/auth.js');
 const {
 	postValidator,
@@ -18,16 +13,6 @@ const {
 const Op = sequelize.Op;
 
 require('dotenv').config();
-const path = require('path');
-const AWS = require('aws-sdk');
-const S3 = require('aws-sdk/clients/s3');
-const multer = require('multer');
-const multerS3 = require('multer-s3');
-AWS.config.update({
-	accessKeyId: process.env.S3_ACCESS_KEY_ID,
-	secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-	region: 'ap-northeast-2',
-});
 
 // // ==게시물 전체 조회 - content내에서 대표이미지(url?) 가져오는 방법 찾기
 router.get('/main', async (req, res) => {
@@ -123,83 +108,6 @@ router.get('/main/:category', async (req, res) => {
 			message: `게시물 목록 조회에 실패하였습니다.`,
 		});
 	}
-});
-
-//* AWS S3 multer 설정
-
-const getPostId = async (req, res, next) => {
-	const latestPost = await Posts.findOne({
-		order: [['id', 'DESC']],
-	});
-	if (!latestPost) {
-		return res.status(400).json({ message: '오류떳엉' });
-	}
-	req.postId = latestPost ? latestPost.id + 1 : 1;
-	next();
-};
-const upload = multer({
-	storage: multerS3({
-		s3: new AWS.S3(),
-		bucket: 'node-itspet',
-		acl: 'public-read',
-		contentType: multerS3.AUTO_CONTENT_TYPE,
-		key(req, file, cb) {
-			cb(
-				null,
-				`test/${req.postId}_${path.basename(file.originalname)}`,
-			); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
-		},
-	}),
-	limits: { fileSize: 5 * 1024 * 1024 },
-});
-
-router.get('/upload', (req, res) => {
-	res.render('upload');
-});
-router.post(
-	'/upload',
-	authMiddleware,
-	getPostId,
-	upload.single('imgUrl'),
-	async (req, res) => {
-		try {
-			const { title, content, category, petName } = req.body;
-			const file = req.file;
-
-			if (!file) {
-				return res.status(400).json({
-					success: false,
-					message: '이미지를 찾을 수 없습니다.',
-				});
-			}
-			const maxId = await Posts.findOne({
-				order: [['id', 'DESC']],
-			});
-
-			await Posts.create({
-				userId: res.locals.user.id,
-				title,
-				content,
-				imgUrl: `${process.env.IMG_URL}${req.postId}_${path.basename(
-					file.originalname,
-				)}`,
-				category,
-				petName,
-			});
-
-			return res.redirect('/api/main');
-		} catch (error) {
-			console.error(error);
-			return res.status(400).json({
-				success: false,
-				message: '게시글 등록에 실패하였습니다.',
-			});
-		}
-	},
-);
-
-router.get('/post', (req, res, next) => {
-	res.render('upload', {});
 });
 
 // ==게시물 작성 - 로그인 해야 가능

@@ -114,7 +114,12 @@ const postValidator = [
 	body('category')
 		.custom(value => {
 			console.log('값', value);
-			if (value !== 'dog' && value !== 'cat' && value !== 'ect') {
+			if (
+				value !== 'dog' &&
+				value !== 'cat' &&
+				value !== 'bird' &&
+				value !== 'reptiles'
+			) {
 				throw new Error('카테고리를 지정해주세요.');
 			}
 			return true;
