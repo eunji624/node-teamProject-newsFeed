@@ -15,7 +15,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 
 router.get('/register', async (req, res, next) => {
-	res.send('register');
+	res.render('register');
 });
 
 //회원 가입
@@ -33,8 +33,8 @@ router.post(
 				password: sortPassword,
 				description,
 			});
-
-			res.status(201).json({ success: 'true', message: newData });
+			return res.render('login');
+			// res.status(201).json({ success: 'true', message: newData });
 		} catch (err) {
 			console.log(err);
 		}
