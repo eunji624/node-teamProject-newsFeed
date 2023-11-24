@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>upload</title>
+    <link rel="stylesheet" href="/CSS/upload.css">
 </head>
 <body>
     <div>
-        <h4>업로드</h4>
-  
+        <img class="imgLogo" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+        <h4 class = "post">posting</h4>
+
         <form method="POST" action="/api/upload" enctype="multipart/form-data" >
             <input type="file" name="imgUrl">
             <input type="text"  placeholder="제목를 입력하시오" name="title">

@@ -218,3 +218,9 @@ footer {
   height: 200px;
   width: 400px;
 }
+
+.post-side-bar{
+  background-color: #F5EDF0;
+  height: 30px;
+  width: 30px;
+}

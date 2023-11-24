@@ -1,0 +1,30 @@
+/* 폰트설정 */
+@import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+
+* {
+font-family: 'Orbit', sans-serif;
+}
+/* d1ccdc
+424c55
+F5EDF0
+886F68
+3D2C2E */
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.imgLogo{
+  margin: 20px 20px 60px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.post{
+  font-size: 40px;
+  background-color: #886F68;
+  padding: 20px;
+  display: inline-block ;
+}
