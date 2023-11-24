@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+  <head>
+    <title>회원가입</title>
+    <!-- 부트스트랩 CSS 링크 추가 -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- 부트스트랩 및 jQuery/Popper.js/Bootstrap JavaScript 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!--  -->
+    <style>
+      /* 폰트설정 */
+      @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+
+      * {
+        font-family: 'Orbit', sans-serif;
+      }
+
+      /* "뒤로가기" 버튼 스타일 수정 */
+      .back_login_btn {
+        background-color: transparent;
+        color: gray;
+        border: none;
+        margin-top: 10px;
+        width: 150px;
+      }
+
+      .Sign_up_btn {
+        margin-top: 10px;
+        width: 150px;
+      }
+
+      .Sign_up_title {
+        text-align: center;
+        /* 가로로 가운데 정렬 */
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="Sign_up_title">
+        <h1>IT`s Pet</h1>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card mt-5">
+            <div class="card-header">
+              <h2 class="text-center">회원정보 수정</h2>
+            </div>
+            <div class="card-body">
+                <!-- input 설정에서 name -->
+                <!-- form 에서 action="URL" method="" -->
+              <form action="/api/user/modify/<%= userId %>" method="POST">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fa fa-user">이름</i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="user_name"
+                      placeholder="이름을 입력하시오"
+                      name="name"
+                      value="<%= data.name %>"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fa fa-user">email</i>
+                      </span>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="user_id"
+                      placeholder="이메일를 입력하시오"
+                      name="email"
+                      value="<%= data.email %>"
+                    />
+                  </div>
+                </div>
+            
+                <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fa fa-user">자기소개</i>
+                        </span>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="user_description"
+                        placeholder="내용를 입력하시오"
+                        name="description"
+                        value="<%= data.description %>"
+                      />
+                    </div>
+                  </div>
+                <div class="text-center">
+                  <input type="hidden" name="_method" value="put">
+                    <button
+                      id="Sign_up_save"
+                      type="submit"
+                      class="btn btn-secondary Sign_up_btn"
+                    >
+                      저장하기
+                    </button>
+                  </input>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- "뒤로가기" 버튼에 클래스 적용 -->
+      <div class="text-center">
+        <button type="button" class="btn back_login_btn" onclick="location.href='/api/main'">메인으로</button>
+      </div>
+    </div>
+    <script>
+    </script>
+  </body>
+</html>

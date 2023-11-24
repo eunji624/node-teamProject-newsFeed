@@ -9,9 +9,9 @@ const authMiddleware = async (req, res, next) => {
 		const { Authorization } = req.cookies;
 		const [tokenType, tokenValue] = (Authorization ?? '').split(' ');
 		if (tokenType !== 'Bearer' || !tokenValue) {
-			return res
-				.status(400)
-				.json({ success: false, message: '다시 로그인 해주세요.' });
+			return res.render('blank', {
+				message: '다시 로그인 해주세요.',
+			});
 		}
 		const checkJwt = jwt.verify(tokenValue, process.env.SECRET_KEY);
 		const userData = await Users.findOne({
