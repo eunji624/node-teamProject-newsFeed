@@ -30,18 +30,25 @@
       </table>
     </div>
   </div>
-  <form action="/api/user/<%= userId %>" method="POST">
-    <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">임시용_회원 탈퇴하기<button>d</button></input>
+  <form id="deleteUserForm" action="/api/user/<%= userId %>" method="POST">
+    <button >
+      <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">
+        회원 탈퇴
+      </input>
+      <script>
+        function moveWithDrawPage(){
+          if(confirm('정말 탈퇴하시겠습니까?')){
+            document.getElementById('deleteUserForm').submit()
+          }else{
+
+          }
+        }
+      </script>
+    </button>
   </form>
-  <!-- <form id = "mainForm" action="/users/<%= user.id %>" method="DELETE">
-    <button onclick="moveMainPage()">임시용_메인 돌아가기</button>
-  </form> -->
-  <script>
-    function moveWithDrawPage(){
-      if(confirm('정말 탈퇴하시겠습니까?')){
-        document.getElementById('deleteUserForm').submit()
-      }
-    }
-  </script>
+
+  <button onclick="location.href = '/api/user/modify/<%=userId%>'">
+    회원 정보 수정
+  </button>
 </body>
 </html>
