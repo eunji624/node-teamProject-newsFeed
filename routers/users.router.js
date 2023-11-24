@@ -43,6 +43,7 @@ router.post(
 
 //로그인 기능 보여주기
 router.get('/auth/login', async (req, res, next) => {
+	console.log('또잉');
 	res.render('login');
 });
 
@@ -54,16 +55,16 @@ router.post('/auth/login', loginValidator, async (req, res, next) => {
 		const { email, password } = req.body;
 		const userData = await Users.findOne({ where: { email } });
 		if (!userData) {
-			throw new Error(
-				'입력하신 이메일에 해당하는 회원정보가 없습니다.',
-			);
+			res.render('blank', {
+				message: '입력하신 이메일에 해당하는 회원정보가 없습니다.',
+			});
 		}
-		console.log(userData);
 		const isSame = await bcrypt.compare(password, userData.password);
 		if (!isSame) {
-			throw new Error('입력하신 비밀번호가 올바르지 않습니다.');
+			res.render('blank', {
+				message: '입력하신 비밀번호가 올바르지 않습니다.',
+			});
 		}
-		console.log(isSame);
 
 		const token = jwt.sign(
 			{ userId: userData.id },
@@ -71,9 +72,9 @@ router.post('/auth/login', loginValidator, async (req, res, next) => {
 			{ expiresIn: '12h' },
 		);
 		console.log(token);
-		// req.headers.authorization = `Bearer ${token}`;
-		res.cookie('Authorization', `Bearer ${token}`);
-		res.redirect('/api/main');
+		res
+			.cookie('Authorization', `Bearer ${token}`)
+			.redirect('/api/main');
 		// res.render('login');
 		// res.status(200).json({
 		// 	success: 'true',
