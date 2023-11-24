@@ -108,7 +108,13 @@ router.get('/main/:category', async (req, res) => {
 		});
 	}
 });
+
 //* AWS S3 multer 설정
+const postId =
+	Posts.findOne({
+		order: [['id', 'DESC']],
+	}) + 1;
+
 const upload = multer({
 	storage: multerS3({
 		s3: new AWS.S3(),
@@ -116,14 +122,12 @@ const upload = multer({
 		acl: 'public-read',
 		contentType: multerS3.AUTO_CONTENT_TYPE,
 		key(req, file, cb) {
-			cb(
-				null,
-				`test/${Date.now()}_${path.basename(file.originalname)}`,
-			); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
+			cb(null, `test/${postId}_${path.basename(file.originalname)}`); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
 		},
 	}),
 	limits: { fileSize: 5 * 1024 * 1024 },
 });
+
 router.get('/upload', (req, res) => {
 	res.render('upload');
 });
@@ -142,11 +146,15 @@ router.post(
 					message: '이미지를 찾을 수 없습니다.',
 				});
 			}
+			const maxId = await Posts.findOne({
+				order: [['id', 'DESC']],
+			});
+
 			await Posts.create({
 				userId: res.locals.user.id,
 				title,
 				content,
-				imgUrl: `${process.env.IMG_URL}${Date.now()}_${path.basename(
+				imgUrl: `${process.env.IMG_URL}${maxId}_${path.basename(
 					file.originalname,
 				)}`,
 				category,
