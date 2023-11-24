@@ -4,8 +4,8 @@ POST http://localhost:3010/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "aaaaap@naver.com",
-  "password": "poiwnl87365"
+  "email": "2alp2222211onf@naver.com",
+  "password": "123123"
 }
 
 ###

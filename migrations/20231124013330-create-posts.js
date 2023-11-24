@@ -25,6 +25,10 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.STRING,
 			},
+			imgUrl: {
+				allowNull: false,
+				type: Sequelize.STRING,
+			},
 			petName: {
 				type: Sequelize.STRING,
 			},
