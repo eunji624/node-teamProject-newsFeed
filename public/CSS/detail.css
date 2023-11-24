@@ -8,17 +8,18 @@ body{
   height: 1500px;
   overflow: auto;
 }
-.realContainer{
-  display: flex;
-  justify-content: center;
-  height: 1500px;
-  overflow: auto;
-}
 section{
+    display: flex;
+    justify-content: center;
+    height: 1500px;
+    overflow: auto;
+}
+.realContainer{
   width: 1080px;
   vertical-align: middle;
   align-content: center;
 }
+
 /* ~~상단헤더~~ */
 header{
   height: 5em;
@@ -118,8 +119,12 @@ a:hover{
     margin-left: 14em;
     width: 800px;
     align-items: center;
+    overflow: hidden;
 }
-
+.detailImg{
+    width: 800px;
+    object-fit: scale-down;
+}
 
 /* ~~footer */
 footer {
