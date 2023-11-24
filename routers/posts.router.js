@@ -13,6 +13,16 @@ const {
 const Op = sequelize.Op;
 
 require('dotenv').config();
+const path = require('path');
+const AWS = require('aws-sdk');
+const S3 = require('aws-sdk/clients/s3');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+AWS.config.update({
+	accessKeyId: process.env.S3_ACCESS_KEY_ID,
+	secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+	region: 'ap-northeast-2',
+});
 
 // // ==게시물 전체 조회 - content내에서 대표이미지(url?) 가져오는 방법 찾기
 router.get('/main', async (req, res) => {
@@ -99,19 +109,47 @@ router.get('/main/:category', async (req, res) => {
 		});
 	}
 });
-
-// ==게시물 작성 - 로그인 해야 가능
+//* AWS S3 multer 설정
+const upload = multer({
+	storage: multerS3({
+		s3: new AWS.S3(),
+		bucket: 'node-itspet',
+		acl: 'public-read',
+		contentType: multerS3.AUTO_CONTENT_TYPE,
+		key(req, file, cb) {
+			cb(
+				null,
+				`test/${Date.now()}_${path.basename(file.originalname)}`,
+			); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
+		},
+	}),
+	limits: { fileSize: 5 * 1024 * 1024 },
+});
+router.get('/upload', (req, res) => {
+	res.render('upload');
+});
 router.post(
-	'/post',
+	'/upload',
 	authMiddleware,
-	postValidator,
+	upload.single('imgUrl'),
 	async (req, res) => {
 		try {
 			const { title, content, category, petName } = req.body;
+			const file = req.file;
+
+			if (!file) {
+				return res.status(400).json({
+					success: false,
+					message: '이미지를 찾을 수 없습니다.',
+				});
+			}
 			await Posts.create({
 				userId: res.locals.user.id,
 				title,
 				content,
+				imgUrl: `${process.env.IMG_URL}${Date.now()}_${path.basename(
+					file.originalname,
+				)}`,
 				category,
 				petName,
 			});
@@ -119,9 +157,9 @@ router.post(
 			return res.status(200).json({
 				success: true,
 				message: '게시글이 등록되었습니다.',
-				Posts,
 			});
-		} catch {
+		} catch (error) {
+			console.error(error);
 			return res.status(400).json({
 				success: false,
 				message: '게시글 등록에 실패하였습니다.',
@@ -129,6 +167,36 @@ router.post(
 		}
 	},
 );
+
+// ==게시물 작성 - 로그인 해야 가능
+// router.post(
+// 	'/post',
+// 	authMiddleware,
+// 	postValidator,
+// 	async (req, res) => {
+// 		try {
+// 			const { title, content, category, petName } = req.body;
+// 			await Posts.create({
+// 				userId: res.locals.user.id,
+// 				title,
+// 				content,
+// 				category,
+// 				petName,
+// 			});
+
+// 			return res.status(200).json({
+// 				success: true,
+// 				message: '게시글이 등록되었습니다.',
+// 				Posts,
+// 			});
+// 		} catch {
+// 			return res.status(400).json({
+// 				success: false,
+// 				message: '게시글 등록에 실패하였습니다.',
+// 			});
+// 		}
+// 	},
+// );
 
 // ==게시물 수정 - 인증 미들웨어 확인 필요
 router.put(
