@@ -3,9 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Details</title>
+    <title><%= postsDetail.title %></title>
+    <!-- 부트스트랩 및 jQuery/Popper.js/Bootstrap JavaScript 라이브러리 추가 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/CSS/detail.css" />
 </head>
 <body>
+<!-- ==header -->
+<header>
+    <!-- 검색창 -->
+    <div class="searchBar" id="searchBar">
+    <img class="imgLogo" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+        <form>
+            <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
+            <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
+        </form>
+    <!-- 검색창 사이드 -->
+    <% if(!userId){ %>
+      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
+      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/register'">회원가입</button>
+    <% }else{ %>
+      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/logout'">로그아웃</button>
+      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/user/<%= userId %>'">내정보조회</button>
+    <% } %>
+    </div>
+</header>
+<div class="realContainer">
+<section>
+<!-- ==category side-bar -->
+<aside class="side-bar">
+    <ul>
+    <li><a href="/api/main">전체보기</a></li>
+    <li><a href="/api/main/cat">🐈 고양이</a></li>
+    <li><a href="/api/main/dog">🐕 강아지</a></li>
+    <li><a href="/api/main/bird">🐥 조류</a></li>
+    <li><a href="/api/main/Reptiles">🐍 파충류</a></li>
+    </ul>
+</aside>
+<!-- == -->
     <div class="postDetail">
         <li>
             <strong>post넘버:</strong> <%= postsDetail.id %><br/>
@@ -26,5 +64,11 @@
         </li>
         <% }); %>
     </div>
-</body>
-</html>
+</section>
+</div>
+<!-- ==footer -->
+<footer>
+    <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
+   </footer>
+     </body>
+   </html>
