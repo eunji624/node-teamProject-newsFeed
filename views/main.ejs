@@ -23,7 +23,7 @@
     <% if(!userId){ %>
       <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
       <button type="button" class="btn back_login_btn" onclick="location.href= '/api/register'">회원가입</button>
-    <% }else{ %>
+    <% }else if(userId){ %>
       <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/logout'">로그아웃</button>
       <button type="button" class="btn back_login_btn" onclick="location.href= '/api/user/<%= userId %>'">내정보조회</button>
     <% } %>
