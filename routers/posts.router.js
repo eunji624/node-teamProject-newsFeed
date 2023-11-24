@@ -14,14 +14,14 @@ const Op = sequelize.Op;
 
 require('dotenv').config();
 
-// ==게시물 전체 조회 - content내에서 대표이미지(url?) 가져오는 방법 찾기
+// // ==게시물 전체 조회 - content내에서 대표이미지(url?) 가져오는 방법 찾기
 router.get('/main', async (req, res) => {
 	try {
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
 		//게시글 전체 가져오기 (게시글id, 카테고리, 제목, 작성일)
 		const allPosts = await Posts.findAll({
-			attributes: ['id', 'category', 'title', 'updatedAT'],
+			attributes: ['id', 'category', 'imgUrl', 'title', 'updatedAT'],
 			include: [
 				{
 					model: Users,
@@ -35,23 +35,26 @@ router.get('/main', async (req, res) => {
 		if (allPosts) {
 			try {
 				if (!req.cookies.Authorization) {
-					console.log('없다. ');
-					return res.render('main', { userId: '' });
+					return res.render('main', {
+						data: allPosts,
+						userId: '',
+					});
 				} else if (req.cookies.Authorization) {
-					console.log('있다. ');
-
 					const [jwtToken, jwtValue] =
 						req.cookies.Authorization.split(' ');
 					const checkJwt = jwt.verify(
 						jwtValue,
 						process.env.SECRET_KEY,
 					);
-					return res.render('main', { userId: checkJwt.userId });
+					console.log(allPosts);
+					return res.render('main', {
+						userId: checkJwt.userId,
+						data: allPosts,
+					});
 				}
 			} catch (err) {
 				console.log(err);
 			}
-			// return res.render('main').status(200).json({ success: true, data: AllPosts });
 		} else {
 			return res
 				.status(400)
@@ -64,7 +67,6 @@ router.get('/main', async (req, res) => {
 		});
 	}
 });
-
 // ==게시물 카테고리별 조회 -cat , dog, bird, Reptile, Amphibia, Fish
 router.get('/main/:category', async (req, res) => {
 	try {
@@ -106,26 +108,6 @@ router.post(
 	async (req, res) => {
 		try {
 			const { title, content, category, petName } = req.body;
-			//빈칸이 있을 경우 - 미들웨어 처리
-			// if (!title) {
-			// 	return res.status(400).json({
-			// 		success: false,
-			// 		message: '제목은 필수 입력입니다.',
-			// 	});
-			// }
-			// if (!content) {
-			// 	return res.status(400).json({
-			// 		success: false,
-			// 		message: '내용은 필수 입력입니다.',
-			// 	});
-			// }
-			// if (!category) {
-			// 	return res.status(400).json({
-			// 		success: false,
-			// 		message: '카테고리를 지정해주세요.',
-			// 	});
-			// }
-			//로그인한 유저 아이디 가져와서 글 작성 - 미드웨어로 로그인 확인 필요
 			await Posts.create({
 				userId: res.locals.user.id,
 				title,
