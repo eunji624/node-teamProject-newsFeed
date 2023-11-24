@@ -63,6 +63,29 @@ const registerValidator = [
 	errorMsgMiddleware,
 ];
 
+const modifyValidator = [
+	body('name')
+		.notEmpty()
+		.trim()
+		.withMessage(`이름을 입력해 주세요`)
+		.custom(value => {
+			if (/\s/.test(value)) {
+				throw new Error('이름에 공백을 포함할 수 없습니다');
+			}
+			return true;
+		}),
+
+	body('email')
+		.notEmpty()
+		.withMessage('이메일을 입력해 주세요')
+		.isEmail()
+		.normalizeEmail()
+		.withMessage('이메일을 확인해 주세요'),
+
+	body('description').default('안녕하세요!'),
+	errorMsgMiddleware,
+];
+
 const loginValidator = [
 	body('email')
 		.notEmpty()
@@ -162,6 +185,7 @@ const alreadyRegister = async (req, res, next) => {
 module.exports = {
 	errorMsgMiddleware,
 	registerValidator,
+	modifyValidator,
 	loginValidator,
 	postValidator,
 	commentValidator,
