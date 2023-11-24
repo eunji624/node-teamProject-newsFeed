@@ -96,7 +96,11 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-secondary login_btn">로그인</button>
+                                <div class="text-center">
+                                    <form action="/api/auth/login" method="POST">
+                                        <button type="submit"  class="btn btn-secondary login_btn" onclick="location.href = '/api/auth/login'">로그인</button>
+                                    </form>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -105,13 +109,13 @@
         </div>
         <!-- "회원가입" 버튼에 클래스 적용 -->
         <div class="text-center">
-            <button type="button" class="btn Sign_up_btn" onclick="movePage()">-회원가입-</button>
+            <form action="/api/auth/login" method="POST">
+                <button type="submit" class="btn Sign_up_btn" onclick="movePage()">-회원가입-</button>
+            </form>
         </div>
     </div>
 <script>
-function movePage(){
-    location.href="/api/register"
-}
+
 </script>
 </body>
 

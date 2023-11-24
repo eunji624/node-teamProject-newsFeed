@@ -1,15 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>info</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/CSS/style.css" />
+  <title>info</title>
 </head>
-<body>
-    <li>
-        <strong>작성자:</strong> <%= info.name %><br/>
-        <strong>이메일:</strong> <%= info.email %><br/>
-        <strong>내용:</strong> <%= info.description %><br/>
-    </li>
+<body >
+  <div class="showUserInfowrap">
+    <div class="showUserInfo">
+      <h2>회원 정보</h2>
+      <table class = "userInfoTable" border="1">
+        <tr>
+          <th>작성자</th>
+          <th> <%= userData.name %></th>
+        </tr>
+        <tr>
+          <th>이메일</th>
+          <th> <%= userData.email %></th>
+        </tr>
+        <tr>
+          <th>이메일</th>
+          <th> <%= userData.description %> </th>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <form action="/api/user/<%= userId %>" method="POST">
+    <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">임시용_회원 탈퇴하기<button>d</button></input>
+  </form>
+  <!-- <form id = "mainForm" action="/users/<%= user.id %>" method="DELETE">
+    <button onclick="moveMainPage()">임시용_메인 돌아가기</button>
+  </form> -->
+  <script>
+    function moveWithDrawPage(){
+      if(confirm('정말 탈퇴하시겠습니까?')){
+        document.getElementById('deleteUserForm').submit()
+      }
+    }
+  </script>
 </body>
 </html>

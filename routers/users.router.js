@@ -36,33 +36,44 @@ router.post(
 	},
 );
 
-//로그인 기능
+//로그인 기능 보여주기
+router.get('/auth/login', async (req, res, next) => {
+	res.render('login');
+});
+
+//로그인 기능 디비에 접근하기.
 router.post('/auth/login', loginValidator, async (req, res, next) => {
+	console.log('로그인기능');
+
 	try {
 		const { email, password } = req.body;
-		console.log(password);
 		const userData = await Users.findOne({ where: { email } });
 		if (!userData) {
 			throw new Error(
 				'입력하신 이메일에 해당하는 회원정보가 없습니다.',
 			);
 		}
-
+		console.log(userData);
 		const isSame = await bcrypt.compare(password, userData.password);
 		if (!isSame) {
 			throw new Error('입력하신 비밀번호가 올바르지 않습니다.');
 		}
+		console.log(isSame);
+
 		const token = jwt.sign(
 			{ userId: userData.id },
 			process.env.SECRET_KEY,
 			{ expiresIn: '12h' },
 		);
+		console.log(token);
 		// req.headers.authorization = `Bearer ${token}`;
 		res.cookie('Authorization', `Bearer ${token}`);
-		res.status(200).json({
-			success: 'true',
-			message: `Bearer ${token}`,
-		});
+		res.redirect('/api/main');
+		// res.render('login');
+		// res.status(200).json({
+		// 	success: 'true',
+		// 	message: `Bearer ${token}`,
+		// });
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}
@@ -79,47 +90,61 @@ router.get('/auth/logout', authMiddleware, async (req, res, next) => {
 	}
 });
 
-//회원탈퇴 기능 __ 인증미들웨어 거치고 할 예정.(비밀번호 한번더 입력 받는것도 좋은것 같아요)
-router.delete(
-	'/users/:userId',
+//회원탈퇴 기능
+router.post(
+	'/user/:userId',
 	authMiddleware,
 	async (req, res, next) => {
+		console.log('들어옴');
+		const id = req.params.userId;
+		const tokenValue = req.cookies.Authorization.split(' ')[1];
+		console.log(tokenValue);
+
+		const decodeValue = jwt.decode(
+			tokenValue,
+			process.env.SECRET_KEY,
+		);
+		if (Number(id) === decodeValue.userId) {
+			await Users.destroy({ where: { id } });
+			console.log('삭제완료');
+			// await res.clearCookie();
+			res.cookie('Authorization', '');
+			console.log(res.cookies);
+		}
+		res.render('withDraw');
+	},
+);
+
+//회원 정보조회 기능
+router.get(
+	'/user/:userId',
+	authMiddleware,
+	async (req, res, next) => {
+		let userId = '';
 		try {
-			console.log('auth잘 돌아감', res.locals.user);
-			const id = req.params.userId;
-			const tokenValue = req.headers.authorization.split(' ')[1];
-			const decodeValue = jwt.decode(tokenValue);
-			if (Number(id) === decodeValue.userId) {
-				// await Users.destroy({ where: { id } });
+			const id = res.locals.user.id;
+			const userData = await Users.findOne({
+				where: { id },
+				attributes: ['name', 'email', 'description'],
+			});
+
+			if (!userData) {
+				res.status(404).json({
+					success: 'false',
+					message: '찾으시는 유저 정보가 없습니다.',
+				});
 			}
+
+			// res.status(200).json({ success: 'true', message: userData });
+			if (req.cookies.Authorization) {
+				userId = req.cookies.Authorization.split;
+			}
+			res.render('info', { userData: userData, userId: id });
 		} catch (err) {
 			console.log(err);
 		}
 	},
 );
-
-//회원 정보조회 기능
-router.get('/user/info', authMiddleware, async (req, res, next) => {
-	try {
-		const id = res.locals.user.id;
-		const userData = await Users.findOne({
-			where: { id },
-			attributes: ['name', 'email', 'description'],
-		});
-
-		if (!userData) {
-			res.status(404).json({
-				success: 'false',
-				message: '찾으시는 유저 정보가 없습니다.',
-			});
-		}
-
-		// res.status(200).json({ success: 'true', message: userData });
-		res.render('info', { info: userData });
-	} catch (err) {
-		console.log(err);
-	}
-});
 
 //회원정보 수정 기능
 router.patch(
