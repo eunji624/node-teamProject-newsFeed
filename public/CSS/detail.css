@@ -6,6 +6,7 @@ font-family: 'Orbit', sans-serif;
 }
 body{
   height: 1500px;
+  overflow: auto;
 }
 .realContainer{
   display: flex;
@@ -81,13 +82,13 @@ form{
 
 /* ~~사이드 바 */
 .side-bar{
-    margin-top: 3em;
-    position:fixed;
-    width: 13em;
-    min-height: 20em;
-    border-radius: 5px;
-    padding: 1em, 1.5em , 1em, 1.5em;
-    background-color: white;
+  margin-top: 3em;
+  position:fixed;
+  width: 13em;
+  min-height: 20em;
+  border-radius: 5px;
+  padding: 1em, 1.5em , 1em, 1.5em;
+  background-color: white;
 }
 ul,li{
     margin: 1;
@@ -112,52 +113,13 @@ a:hover{
 }
 
 /* ~~body card */
-.container{
+.postDetail{
     margin-top: 4em;
     margin-left: 14em;
-    width: 70em;
+    width: 800px;
     align-items: center;
 }
-.card:hover {
-    transform: scale(1.05);
-    z-index: 1;
-    cursor: pointer;
-    box-shadow: 0px 0px 10px 0px #aaa;
-}
-.card {
-    width: 800px;
-    margin: 1em;
-    border: 2px solid #e0e0e0;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    transition: transform 0.2s;
-    text-align: left;
-    font-family: 'Orbit', sans-serif;
-}
-.card-subtitle {
-    font-size: 1rem;
-    color: #777;
-}
-.card-title {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
-}
-.card-body {
-  padding: 15px;
-}
-.card-img-top {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px 10px 0 0;
-}
-.card-img-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
-  overflow: hidden;
-  border-radius: 10px 10px 0 0;
-}
+
 
 /* ~~footer */
 footer {
@@ -166,55 +128,4 @@ footer {
   text-align: center;
   padding: 1rem;
   bottom: 0;
-}
-
-.back_login_btn {
-  background-color: transparent;
-  color: gray;
-  border: none;
-  margin-top: 10px;
-  width: 150px;
-}
-.Sign_up_title {
-  text-align: center;
-  margin-top: 50px;
-}
-.showUserInfowrap{
-  background-color: #e0e0e0;
-  display: flex;
-  justify-content:center;
-  align-items: center;
-}
-.showUserInfo{
-  height: 700px;
-  width: 600px;
-  padding: 30px;
-  display: flex;
-  justify-content:center;
-  align-items: center;
-  flex-direction: column;
-  margin: 300px auto 300px auto;
-  background-color:#ececec;
-  border-radius: 5%;
-}
-.showUserInfo h2{
-  font-size: 40px;
-  margin: 50px auto 60px auto;
-}
-.userInfoTable {
-  border-radius: 5%;
-  border: 2px solid white;
-}
-.userInfoTable tr, th {
-  padding: 30px;
-  border: 2px solid white;
-  font-size: 25px;
-  height: 20px;
-} 
-.withDarwMsg{
-  
-  border-radius: 20px;
-  font-size: 30px;
-  height: 200px;
-  width: 400px;
 }

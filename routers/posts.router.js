@@ -4,7 +4,12 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
-const { Posts, Users, Comments, sequelize } = require('../models');
+const {
+	Posts,
+	Users,
+	Comments,
+	sequelize,
+} = require('../models/index.js');
 const { authMiddleware } = require('../middleware/auth.js');
 const {
 	postValidator,
