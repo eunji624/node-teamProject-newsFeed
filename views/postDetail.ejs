@@ -12,14 +12,6 @@
 <link rel="stylesheet" href="/CSS/detail.css" />
 </head>
 <style>
-    .modal-content{
-        
-    width: 500px;
-
-    }
-    .modal {
-    background: rgba(0, 0, 0, 0.5); }
-
 </style>
 <body>
 <!-- ==header -->
@@ -202,7 +194,6 @@ function deletePost() {
     document.getElementById('deletePostBtn').addEventListener('click', function () {
         const password = prompt("삭제하려면 비밀번호를 입력하세요.");
         // const writerPassword = 
-        console.log(<%= postsDetail.User.password %> + "이것은 작성자 아이디입니다.");
         if(password){
             action =`api/post/<%= postsDetail.id %>?_method=delete`
         }

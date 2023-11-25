@@ -318,6 +318,7 @@ router.delete(
 	async (req, res) => {
 		try {
 			const postId = req.params.postId;
+			console.log(postId);
 			const { password } = req.body;
 			//삭제가능
 			const checkPost = await Posts.findOne({
@@ -325,11 +326,7 @@ router.delete(
 					id: postId,
 				},
 			});
-			const postDelete = await Posts.destroy({
-				where: {
-					id: postId,
-				},
-			});
+			//비밀번호 체크
 			const checkPassword = await Users.findOne({
 				where: {
 					id: checkPost.userId,
@@ -340,21 +337,21 @@ router.delete(
 				checkPassword.password,
 			);
 			if (!isSame) {
-				return res
-					.status(401)
-					.json({
-						success: false,
-						message: '비밀번호가 틀렸습니다.',
-					});
-			} else {
-				return res
-					.status(200)
-					.render('main', { message: '게시물이 삭제되었습니다.' });
+				return res.render('blank', {
+					message: '	입력하신 비밀번호가 올바르지 않습니다.',
+				});
 			}
-			return res.status(404).json({
-				success: false,
-				message: '존재하지 않는 게시물입니다.',
-			});
+
+			if (checkPost.userId === res.locals.user.id) {
+				alert('게시물이 삭제되었습니다.');
+				checkPost.destroy();
+				return res.status(200).redirect('/api/main');
+			} else {
+				return res.status(404).json({
+					success: false,
+					message: '존재하지 않는 게시물입니다.',
+				});
+			}
 		} catch {
 			return res.status(500).json({
 				success: false,

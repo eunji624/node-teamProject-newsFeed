@@ -213,6 +213,13 @@ a:hover{
     text-align: right;
     margin-left:2em;
 }
+/* ==모달 */
+.modal-content{
+    width: 500px;
+}
+.modal {
+background: rgba(0, 0, 0, 0.5);
+}
 /* ~~footer */
 footer {
   background-color: #dbdbdb;
