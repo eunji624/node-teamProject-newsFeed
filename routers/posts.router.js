@@ -4,20 +4,15 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
-const {
-	Posts,
-	Users,
-	Comments,
-	sequelize,
-} = require('../models/index.js');
+const { Posts, Users, sequelize } = require('../models/index.js');
 const { authMiddleware } = require('../middleware/auth.js');
 const {
 	postValidator,
 	postSameWriterValidator,
 } = require('../middleware/validator.js');
+
 const Op = sequelize.Op;
 
-require('dotenv').config();
 const path = require('path');
 const AWS = require('aws-sdk');
 const S3 = require('aws-sdk/clients/s3');
@@ -139,9 +134,10 @@ const getPostId = async (req, res, next) => {
 	const latestPost = await Posts.findOne({
 		order: [['id', 'DESC']],
 	});
-	if (!latestPost) {
-		return res.status(400).json({ message: '오류떳엉' });
-	}
+
+	// if (!latestPost) {
+	// 	return res.status(400).json({ message: '오류떳엉' });
+	// }
 	req.postId = latestPost ? latestPost.id + 1 : 1;
 	next();
 };
