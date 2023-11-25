@@ -182,26 +182,37 @@ footer {
   text-align: center;
   margin-top: 50px;
 }
+/* d1ccdc
+F5EDF0 */
+
+#infoLogo{
+  font-size: 50px;
+  padding: 1%;
+  margin: 7% 0% 0% 41.5%;
+  cursor:pointer;
+}
+
+
 .showUserInfowrap{
-  background-color: #e0e0e0;
   display: flex;
   justify-content:center;
   align-items: center;
+  height: 900px;
 }
 .showUserInfo{
-  height: 700px;
-  width: 600px;
+  height: 580px;
+  width: 500px;
   padding: 30px;
   display: flex;
   justify-content:center;
   align-items: center;
   flex-direction: column;
-  margin: 300px auto 300px auto;
-  background-color:#ececec;
+  margin: 200px auto 300px auto;
+  background-color: #F5EDF0;
   border-radius: 5%;
 }
 .showUserInfo h2{
-  font-size: 40px;
+  font-size: 30px;
   margin: 50px auto 60px auto;
 }
 .userInfoTable {
@@ -211,11 +222,43 @@ footer {
 .userInfoTable tr, th {
   padding: 30px;
   border: 2px solid white;
-  font-size: 25px;
+  font-size: 20px;
   height: 20px;
 } 
+
+
+#infoDeleteBtn:hover,
+#infoModifyBtn:hover{
+  background-color: #d1ccdc;
+  /* border:2px solid #e0e0e0 */
+}
+
+#infoDeleteBtn, 
+#infoModifyBtn{
+  height: 60px;
+  width: 130px;
+  font-size: 20px;
+  background-color: transparent;
+  color: #424c55;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid  #d1ccdc;
+  cursor:pointer;
+}
+#infoDeleteBtn{
+  position: absolute;
+  left: 51.8%;
+  top: 112%;
+}
+
+#infoModifyBtn{
+  position: absolute;
+  left: 40%;
+  top: 112%;
+}
+
 .withDarwMsg{
-  
   border-radius: 20px;
   font-size: 30px;
   height: 200px;
