@@ -19,14 +19,9 @@ const PostsRouter = require('./routers/posts.router.js');
 const CommentsRouter = require('./routers/comment.router.js');
 
 app.use('/api', [UsersRouter, PostsRouter, CommentsRouter]);
-// app.use('/api', PostsRouter);
-// app.use('/api', CommentsRouter);
 
-app.get('/api/register', (req, res) => {
-	res.render('register');
-});
-// app.get('/api/login', (req, res) => {
-// 	res.render('login');
+// app.get('/api/register', (req, res) => {
+// 	res.render('register');
 // });
 
 app.listen(PORT, () => {

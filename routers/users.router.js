@@ -111,23 +111,26 @@ router.post(
 	'/user/:userId',
 	authMiddleware,
 	async (req, res, next) => {
-		console.log('들어옴');
 		const id = req.params.userId;
 		const tokenValue = req.cookies.Authorization.split(' ')[1];
-		console.log(tokenValue);
-
 		const decodeValue = jwt.decode(
 			tokenValue,
 			process.env.SECRET_KEY,
 		);
+		//해당 회원이 맞는 경우만 삭제
 		if (Number(id) === decodeValue.userId) {
-			// await Users.destroy({ where: { id } });
-			console.log('삭제완료');
+			console.log('디코디드벨류 유저아이디=>', decodeValue.userId);
+			res.clearCookie('Authorization');
+			try {
+				await Users.destroy({ where: { id: decodeValue.userId } });
+				console.log('삭제완료');
+				// res.redirect('/api/main');
+				res.render('withDraw');
+			} catch (err) {
+				console.log(err);
+			}
 			// await res.clearCookie();
-			res.cookie('Authorization');
-			console.log(res.cookies);
 		}
-		res.render('withDraw');
 	},
 );
 
