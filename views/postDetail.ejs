@@ -89,66 +89,113 @@
     <!--==  -->
     <div class="commentList">
         <% commentsList.forEach(comment => { %>
-        <li class="commnets">
-            <p> <span style="font-size: xx-small;"><%= comment.commentId %></span>
-                <span style="font-weight:bold ;"><%= comment.User.name %></span></p>
-            <p class="commentContent"><%= comment.content %></p>
-            <div class="commentBtnFD">
-            <p class="commentCreatedAt"><%= comment.updatedAt %>
-                <button class="btn btn-secondary btn-sm">수정</button>
-                <button id="<%= comment.commentId %>" onclick="showModal('<%= comment.commentId %>')" class="btn btn-outline-secondary btn-sm">삭제</button></p>
-            </div>
-        </li>
-        <% }); %>
+        <% if(userId===comment.userId){ %>
+            <li class="commnets">
+                <p> <span style="font-size: xx-small;"><%= comment.commentId %></span>
+                    <span style="font-weight:bold ;"><%= comment.User.name %></span></p>
+                <p class="commentContent"><%= comment.content %></p>
+                <div class="commentBtnFD">
+                <p class="commentCreatedAt"><%= comment.updatedAt %>
+             <button  id="editNo<%= comment.commentId %>" onclick="editModals('<%= comment.commentId %>')" class="btn btn-secondary btn-sm">수정</button>
+             <button  id="deleteNo<%= comment.commentId %>" onclick="deleteModals('<%= comment.commentId %>')" class="btn btn-outline-secondary btn-sm">삭제</button></p>
+                </div>
+            </li>
+            <% }else{ %>
+                    <li class="commnets">
+                        <p> <span style="font-size: xx-small;"><%= comment.commentId %></span>
+                            <span style="font-weight:bold ;"><%= comment.User.name %></span></p>
+                        <p class="commentContent"><%= comment.content %></p>
+                        <div class="commentBtnFD">
+                        <p class="commentCreatedAt"><%= comment.updatedAt %>
+                        </div>
+                    </li>
+            <% } %>
+            <% }); %>
     </div>
     </div> 
 </div>
 </section>
-<!-- modal -->
+<!-- Edit-Modal -->
 <section>
-    <div class="modal" id="Edit_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="edit_comment_id"> </h5>
+                    <h5 class="modal-title" id="editCommentId"> </h5>
                 </div>
-                <form method="POST" id="edit_form" action="">
+                <form method="POST" id="editForm" action="">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="edit_inputField" class="form-label" >수정할 내용을 입력하시오</label>
-                        <input type="text" class="form-control" id="edit_inputField" name="content">
+                        <label for="editInputField" class="form-label" >수정할 내용을 입력하시오</label>
+                        <input type="text" class="form-control" id="editInputField" name="content">
                     </div>
                 </div>
                 <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary" id="edit_correct_btn">확인</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="close_btn">취소</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="editCloseBtn">취소</button>
                 </div>
             </form>
             </div>
         </div>
     </div>
 </section>
-<!-- modal -->
+<!-- Edit-Modal -->
+
+<!-- Delete-Modal -->
+<section>
+    <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCommentId"> </h5>
+                </div>
+            <form method="POST" id="deleteForm" action="">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="deleteInputField" class="form-label" >비밀번호를 입력하시오</label>
+                        <input type="password" class="form-control" id="deleteInputField" name="password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary">확인</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="deleteCloseBtn">취소</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Delete-Modal -->
+
 <!-- ==footer -->
 <footer>
     <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
    </footer>
    <script>
-function showModal(commentId) {
-    document.getElementById('edit_comment_id').innerHTML=`Edit No.${commentId}`
-    document.getElementById('edit_form').action = `/api/comment/${commentId}?_method=PATCH`
-    document.getElementById('Edit_modal').style.display = "flex"
+function editModals(commentId) {
+    document.getElementById('editCommentId').innerHTML=`Edit No.${commentId}`
+    document.getElementById('editForm').action = `/api/comment/${commentId}?_method=patch`
+    document.getElementById('editModal').style.display = "flex"
+    document.getElementById('editInputField').focus();
 }
+function deleteModals(commentId) {
+    document.getElementById('deleteCommentId').innerHTML=`Delete No.${commentId}`
+    document.getElementById('deleteForm').action = `/api/comment/${commentId}?_method=delete`
+    document.getElementById('deleteModal').style.display = "flex"
+    document.getElementById('deleteInputField').focus();
+}
+
 function correctBtn(){}
-function closeBtn(){
-    document.getElementById('close_btn').addEventListener('click',  function(){ 
-        console.log("닫혀라")
-         document.getElementById('Edit_modal').style.display = "none"})
+function editCloseBtn(){
+    document.getElementById('editCloseBtn').addEventListener('click',  function(){ 
+         document.getElementById('editModal').style.display = "none"})
 }
-closeBtn();
-    function commentBtnAct(){
-                if(<%= userId %>){alert("댓글이 등록되었습니다.")}
-            }
+function deleteCloseBtn(){
+    document.getElementById('deleteCloseBtn').addEventListener('click',  function(){ 
+         document.getElementById('deleteModal').style.display = "none"})
+}
+editCloseBtn()
+deleteCloseBtn();
    </script>
      </body>
    </html>

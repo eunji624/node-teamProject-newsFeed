@@ -187,6 +187,21 @@ const alreadyRegister = async (req, res, next) => {
 	next();
 };
 
+const passwordValidator = [
+	body('password')
+		.notEmpty()
+		.withMessage('비밀번호를 입력해 주세요')
+		.isLength({ min: 6 }, { max: 10 })
+		.withMessage('비밀번호를 6자리 이상 입력해 주세요')
+		.custom(value => {
+			if (/\s/.test(value)) {
+				throw new Error('비밀번호에 공백을 포함할 수 없습니다');
+			}
+			return true;
+		}),
+	errorMsgMiddleware,
+];
+
 module.exports = {
 	errorMsgMiddleware,
 	registerValidator,
@@ -197,4 +212,5 @@ module.exports = {
 	postSameWriterValidator,
 	commentSameWriterValidator,
 	alreadyRegister,
+	passwordValidator,
 };
