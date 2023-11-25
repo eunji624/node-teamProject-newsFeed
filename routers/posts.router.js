@@ -165,7 +165,6 @@ router.post(
 		try {
 			const { title, content, category, petName } = req.body;
 			const file = req.file;
-
 			if (!file) {
 				return res.status(400).json({
 					success: false,
@@ -175,8 +174,7 @@ router.post(
 			const maxId = await Posts.findOne({
 				order: [['id', 'DESC']],
 			});
-
-			await Posts.create({
+			const createPost = await Posts.create({
 				userId: res.locals.user.id,
 				title,
 				content,
@@ -186,10 +184,8 @@ router.post(
 				category,
 				petName,
 			});
-
 			return res.redirect('/api/main');
 		} catch (error) {
-			console.error(error);
 			return res.status(400).json({
 				success: false,
 				message: '게시글 등록에 실패하였습니다.',
