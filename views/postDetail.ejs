@@ -12,14 +12,6 @@
 <link rel="stylesheet" href="/CSS/detail.css" />
 </head>
 <style>
-    .modal-content{
-        
-    width: 500px;
-
-    }
-    .modal {
-    background: rgba(0, 0, 0, 0.5); }
-
 </style>
 <body>
 <!-- ==header -->
@@ -196,6 +188,17 @@ function deleteCloseBtn(){
 }
 editCloseBtn()
 deleteCloseBtn();
+
+
+function deletePost() {
+    document.getElementById('deletePostBtn').addEventListener('click', function () {
+        const password = prompt("삭제하려면 비밀번호를 입력하세요.");
+        // const writerPassword = 
+        if(password){
+            action =`api/post/<%= postsDetail.id %>?_method=delete`
+        }
+    })
+}
    </script>
      </body>
    </html>

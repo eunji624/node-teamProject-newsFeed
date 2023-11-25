@@ -16,7 +16,7 @@ section{
   width: 1080px;
   vertical-align: middle;
   align-content: center;
-  margin-top:5em ;
+  margin-top:2em ;
 }
 
 /* ~~상단헤더~~ */
@@ -76,6 +76,7 @@ header{
     color: gray;
     border: none;
     width: 7em;
+    margin: 0;
 }
 
 /* ~~사이드 바 */
@@ -112,7 +113,7 @@ a:hover{
 
 /* ~~body card */
 .postDetail{
-    margin-top: 3em;
+    margin-top: 5em;
     margin-left: 14em;
     width: 800px;
     align-items: center;
@@ -211,6 +212,13 @@ a:hover{
 #commentBtnFD{
     text-align: right;
     margin-left:2em;
+}
+/* ==모달 */
+.modal-content{
+    width: 500px;
+}
+.modal {
+background: rgba(0, 0, 0, 0.5);
 }
 /* ~~footer */
 footer {

@@ -12,56 +12,58 @@
 <body>
 <!-- ==header -->
 <header>
-    <!-- 검색창 -->
-    <div class="searchBar" id="searchBar">
-    <img class="imgLogo"  onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
-        <form>
-            <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
-            <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
-        </form>
-    <!-- 검색창 사이드 -->
-    <% if(!userId){ %>
-      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
-      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/register'">회원가입</button>
-    <% }else if(userId){ %>
-      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/logout'">로그아웃</button>
-      <button type="button" class="btn back_login_btn" onclick="location.href= '/api/user/<%= userId %>'">내정보조회</button>
-    <% } %>
-    </div>
+        <!-- 검색창 -->
+        <div class="searchBar" id="searchBar">
+            <img class="imgLogo"  onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+                <form id="searchForm">
+                    <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
+                    <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
+                </form>
+            <!-- 검색창 사이드 -->
+            <% if(!userId){ %>
+            <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
+            <button type="button" class="btn back_login_btn" onclick="location.href= '/api/register'">회원가입</button>
+            <% }else{ %>
+            <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/logout'">로그아웃</button>
+            <button type="button" class="btn back_login_btn" onclick="location.href= '/api/user/<%= userId %>'">내정보조회</button>
+            <% } %>
+        </div>
 </header>
-<!-- ==category side-bar -->
-<aside class="side-bar">
-    <li>
-    <li><a href="/api/main">전체보기</a></li>
-    <li><a href="/api/main/cat">🐈 고양이</a></li>
-    <li><a href="/api/main/dog">🐕 강아지</a></li>
-    <li><a href="/api/main/bird">🐥 조류</a></li>
-    <li><a href="/api/main/reptiles">🐍 파충류</a></li>
-    </li>
-</aside>
-<!-- ==post side-bar -->
-<div class="post-side-bar">
-    <div id="write"  onclick="location.href='/api/post'">
-        포스팅
-    </div>
-</div>
-<!-- ==body cards -->
-<div class="container">
-    <% data.forEach(post=>{ %>
-    <div id="cardList" onclick="location.href= '/api/post/<%= post.id %>'" class="row">
-    <div class="card"> 
-        <div class="card-img-container">
-            <img src="<%= post.imgUrl %>"
-            class="card-img-top" alt="카드 이미지">
+<section>
+<div class="realContainer">
+        <!-- ==category side-bar -->
+        <aside class="side-bar">
+            <ul>
+            <li><a href="/api/main">전체보기</a></li>
+            <li><a href="/api/main/cat">🐈 고양이</a></li>
+            <li><a href="/api/main/dog">🐕 강아지</a></li>
+            <li><a href="/api/main/bird">🐥 조류</a></li>
+            <li><a href="/api/main/Reptiles">🐍 파충류</a></li>
+            <br/>
+            <% if(!userId){ %>
+            <br/>
+            <% }else{ %>
+            <li id="write"> <a onclick="location.href='/api/post'">&ensp; 📝 포스팅</a></li>
+            <% } %>
+            </ul>
+        </aside>
+    <!-- ==body cards -->
+    <div class="container">
+        <% data.forEach(post=>{ %>
+        <div id="cardList" onclick="location.href= '/api/post/<%= post.id %>'" class="row">
+        <div class="card"> 
+            <div class="card-img-container">
+                <img src="<%= post.imgUrl %>"
+                class="card-img-top" alt="카드 이미지">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title mb-4"><%= post.title %></h5>
+                <p class="card-subtitle mb-4"><%= post.content %></p>
+            </div>
         </div>
-        <div class="card-body">
-            <h5 class="card-title mb-4"><%= post.title %></h5>
-            <p class="card-subtitle mb-4"><%= post.content %></p>
         </div>
+        <% }); %>
     </div>
-    </div>
-    <% }); %>
-</div>
 <!-- ==모달 -->
       <div class="modal fade" id="Sign_up_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true">
@@ -78,21 +80,12 @@
                       data-dismiss="modal">확인</button>
               </div>
           </div>
-      </div>
-  </div>
-<!-- ==footer -->
-<footer>
- <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
-</footer>
-  </body>
-    <script>
-        // function toRegister(){
-        //   location.href="/api/register"
-        // }
-        // function toLogin(){
-        //   location.href="/api/login"
-        // }
-
-    </script>
-  </body>
-</html>
+        </div>
+    </div>
+</div>
+  </section>
+  <!-- ==footer -->
+  <footer>
+   <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
+  </footer>
+    </body>
