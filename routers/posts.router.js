@@ -298,28 +298,22 @@ router.delete(
 	async (req, res) => {
 		try {
 			const postId = req.params.postId;
-			//로그인 한 유저 아이디 가져오기
-			const localsUserId = res.locals.user.id;
-			//해당 게시물 정보 가져오기
-			const thisPost = await Posts.findByPk(postId);
-			//해당 게시물이 존재하지 않음
-			if (!thisPost) {
-				return res.status(401).json({
-					success: false,
-					message: '존재하지 않는 게시물입니다.',
+			//삭제가능
+			const postDelete = await Posts.destroy({
+				where: {
+					id: postId,
+				},
+			});
+			if (postDelete) {
+				return res.status(200).json({
+					success: true,
+					message: '게시물이 삭제되었습니다.',
 				});
 			}
-			//로그인 한 사람이 작성자가 아님
-			if (localsUserId !== thisPost.userId) {
-				return res
-					.status(401)
-					.json({ success: false, message: '삭제 권한이 없습니다.' });
-			}
-			//삭제가능
-			const postDelete = await thisPost.destroy();
-			return res
-				.status(200)
-				.json({ success: true, message: '게시물이 삭제되었습니다.' });
+			return res.status(404).json({
+				success: false,
+				message: '존재하지 않는 게시물입니다.',
+			});
 		} catch {
 			return res.status(500).json({
 				success: false,

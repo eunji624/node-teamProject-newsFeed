@@ -58,7 +58,7 @@
                 <span><span style="font-size: xx-small;">작성자:</span><%= postsDetail.User.name %></span></div>
             <div>
                 <button type="button" class="btn btn-secondary btn-sm">수정</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm">삭제</button>
+                <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deletePost()">삭제</button>
             </div>
         </div>
         <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
@@ -96,5 +96,24 @@
         function commentBtnAct(){
             if(<%= userId %>){alert("댓글이 등록되었습니다.")}
         }
+
+        function deletePost() {
+        if (confirm('정말 게시물을 삭제하시겠습니까?')) {
+        fetch(`api/post/<%= postsDetail.id %>`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            if (data.success) {
+                window.location.href = 'api/main';
+            }
+        })
+        .catch(error => {
+            alert('게시물 삭제에 실패했습니다.');
+        });
+        }
+        }
+
      </script>
    </html>
