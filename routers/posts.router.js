@@ -21,8 +21,6 @@ const multerS3 = require('multer-s3');
 const { promisify } = require('util');
 const fs = require('fs');
 const convert = require('heic-convert');
-const readFileAsync = promisify(fs.readFile);
-const writeFileAsync = promisify(fs.writeFile);
 
 AWS.config.update({
 	accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -138,22 +136,21 @@ const getPostId = async (req, res, next) => {
 	req.postId = latestPost ? latestPost.id + 1 : 1;
 	next();
 };
-const storage = multer.memoryStorage();
+
 const upload = multer({
-	storage: storage,
-	// storage: multerS3({
-	// 	s3: new AWS.S3(),
-	// 	bucket: 'node-itspet',
-	// 	acl: 'public-read',
-	// 	contentType: multerS3.AUTO_CONTENT_TYPE,
-	// 	key(req, file, cb) {
-	// 		cb(
-	// 			null,
-	// 			`test/${req.postId}_${path.basename(file.originalname)}`,
-	// 		); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
-	// 	},
-	// }),
-	// limits: { fileSize: 5 * 1024 * 1024 },
+	storage: multerS3({
+		s3: new AWS.S3(),
+		bucket: 'node-itspet',
+		acl: 'public-read',
+		contentType: multerS3.AUTO_CONTENT_TYPE,
+		key(req, file, cb) {
+			cb(
+				null,
+				`test/${req.postId}_${path.basename(file.originalname)}`,
+			); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
+		},
+	}),
+	limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 router.get('/upload', (req, res) => {
@@ -174,7 +171,6 @@ router.post(
 					message: '이미지를 찾을 수 없습니다.',
 				});
 			}
-			console.log('file', file.buffer);
 
 			//heic 파일 형식 변환.
 			const outputBuffer = await convert({
@@ -182,9 +178,7 @@ router.post(
 				format: 'JPEG', // output format
 				quality: 1, // the jpeg compression quality, between 0 and 1
 			});
-			console.log('outputBuffer', outputBuffer);
 			const base64Img = outputBuffer.toString('base64');
-			console.log('base64Img', base64Img);
 
 			const s3 = new AWS.S3();
 			const uploadParams = {
