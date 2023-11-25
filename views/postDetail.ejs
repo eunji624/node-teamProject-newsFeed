@@ -71,28 +71,33 @@
                 <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deletePost()">삭제</button>
             </div>
         </div>
-    
+        <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
+        <p class="postContent"><%= postsDetail.content %></p>
+        <p class="postCreatedAt"><%= postsDetail.createdAt %></p>
+
     <!-- == -->
-    <form method="POST" action="/api/comment/<%= postsDetail.id %>" >
-        <input type="text"  placeholder="내용을 입력하시오" name="content">
+    <form class="row justify-content-center commentForm" method="POST" action="/api/comment/<%= postsDetail.id %>" >
+        <input type="text" class="commentInput form-control form-control-sm col-sm-9" placeholder="내용을 입력하시오" name="content">
         <button
                 type="submit"
-                class="btn btn-secondary"
+                class="btn btn-secondary btn-sm commentBtn col-sm-2"
                 onclick="commentSubmit()"
               >
-                등록하기
+                comment
               </button>
     </form>
     <!--==  -->
     <div class="commentList">
         <% commentsList.forEach(comment => { %>
         <li class="commnets">
-            <strong>내용:</strong> <%= comment.content %><br/>
-            <strong>댓글번호:</strong> <%= comment.commentId %><br/>
-            <strong>작성자:</strong> <%= comment.User.name %><br/>
-            <strong>작성시간:</strong> <%= comment.updatedAt %><br/>
-            <button>수정</button>
-            <button id="<%= comment.commentId %>" onclick="showModal('<%= comment.commentId %>')">삭제</button>
+            <p> <span style="font-size: xx-small;"><%= comment.commentId %></span>
+                <span style="font-weight:bold ;"><%= comment.User.name %></span></p>
+            <p class="commentContent"><%= comment.content %></p>
+            <div class="commentBtnFD">
+            <p class="commentCreatedAt"><%= comment.updatedAt %>
+                <button class="btn btn-secondary btn-sm">수정</button>
+                <button id="<%= comment.commentId %>" onclick="showModal('<%= comment.commentId %>')" class="btn btn-outline-secondary btn-sm">삭제</button></p>
+            </div>
         </li>
         <% }); %>
     </div>
