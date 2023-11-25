@@ -50,7 +50,7 @@ router.get('/post/:postId', async (req, res) => {
 		include: {
 			model: Users,
 			as: 'User',
-			attributes: ['name'],
+			attributes: ['name', 'password'],
 		},
 	});
 	const commentsList = await Comments.findAll({

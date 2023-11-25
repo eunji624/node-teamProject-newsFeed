@@ -39,17 +39,20 @@
             <li><a href="/api/main/dog">🐕 강아지</a></li>
             <li><a href="/api/main/bird">🐥 조류</a></li>
             <li><a href="/api/main/Reptiles">🐍 파충류</a></li>
-            </ul>
             <br/>
-            <div id="write" onclick="location.href='/api/post'">포스팅</div>
-
+            <% if(!userId){ %>
+            <br/>
+            <% }else{ %>
+            <li id="write"> <a onclick="location.href='/api/post'">&ensp; 📝 포스팅</a></li>
+            <% } %>
+            </ul>
         </aside>
     <!-- ==post side-bar -->
-    <div class="post-side-bar">
+    <!-- <div class="post-side-bar">
         <div id="write"  onclick="location.href='/api/post'">
             포스팅
         </div>
-    </div>
+    </div> -->
 <!-- ==body cards -->
 <div class="container">
     <% data.forEach(post=>{ %>
@@ -91,5 +94,10 @@
 <footer>
  <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
 </footer>
+<!-- ==검색기능 -->
+<script>
+    
+</script>
+
   </body>
 </html>

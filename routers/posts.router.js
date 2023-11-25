@@ -9,6 +9,7 @@ const { authMiddleware } = require('../middleware/auth.js');
 const {
 	postValidator,
 	postSameWriterValidator,
+	passwordValidator,
 } = require('../middleware/validator.js');
 
 const Op = sequelize.Op;
@@ -312,20 +313,42 @@ router.delete(
 	'/post/:postId',
 	authMiddleware,
 	postSameWriterValidator,
+	passwordValidator,
 	async (req, res) => {
 		try {
 			const postId = req.params.postId;
+			const { password } = req.body;
 			//삭제가능
+			const checkPost = await Posts.findOne({
+				where: {
+					id: postId,
+				},
+			});
 			const postDelete = await Posts.destroy({
 				where: {
 					id: postId,
 				},
 			});
-			if (postDelete) {
-				return res.status(200).json({
-					success: true,
-					message: '게시물이 삭제되었습니다.',
-				});
+			const checkPassword = await Users.findOne({
+				where: {
+					id: checkPost.userId,
+				},
+			});
+			const isSame = await bcrypt.compare(
+				password,
+				checkPassword.password,
+			);
+			if (!isSame) {
+				return res
+					.status(401)
+					.json({
+						success: false,
+						message: '비밀번호가 틀렸습니다.',
+					});
+			} else {
+				return res
+					.status(200)
+					.render('main', { message: '게시물이 삭제되었습니다.' });
 			}
 			return res.status(404).json({
 				success: false,

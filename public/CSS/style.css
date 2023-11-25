@@ -5,7 +5,7 @@
 font-family: 'Orbit', sans-serif;
 }
 body{
-  height: 1500px;
+  height: 2000px;
   overflow: auto;
 }
 section{
@@ -16,7 +16,7 @@ section{
   width: 1080px;
   vertical-align: middle;
   align-content: center;
-  margin-top:5em ;
+  margin-top:2em ;
 }
 
 /* ~~상단헤더~~ */
@@ -76,6 +76,7 @@ header{
     color: gray;
     border: none;
     width: 7em;
+    margin: 0;
 }
 
 /* ~~사이드 바 */
@@ -156,16 +157,6 @@ a:hover{
   overflow: hidden;
   border-radius: 10px 10px 0 0;
 }
-
-/* ~~footer */
-footer {
-  background-color: #dbdbdb;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  bottom: 0;
-}
-
 .back_login_btn {
   background-color: transparent;
   color: gray;
@@ -260,35 +251,27 @@ F5EDF0 */
   width: 400px;
 }
 
-.write{
-  height: 60px;
-  width: 100px;
-  position: absolute;
-  position:fixed;
-  margin-left: 1.65em;
-  top: 50%;
-  font-size: 20px;
+#write{
   background-color: #d1ccdc;
   color: #424c55;
-  padding: 10px;
-  text-align: center;
-  border-radius: 10px;
-  cursor:pointer;
-
-  /* margin-top: 3em;
-  position:fixed;
-  width: 13em;
-  min-height: 20em;
-  border-radius: 5px;
-  padding: 1em 1.5em  1em 1.5em;
-  background-color: white; */
+  padding: 2px;
 }
 
-.write:hover{
-  /* background-color: #d1ccdc; */
-  border:2px solid #e0e0e0
+#write:hover{
+  background-color: #424c55;
+  border:2px solid #e0e0e0;
+  color:white;
 }
 /* #write{
   height:30px;
   width: 30px;
 } */
+
+/* ~~footer */
+footer {
+  background-color: #dbdbdb;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  bottom: 0;
+}
