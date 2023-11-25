@@ -55,15 +55,21 @@
     </aside>
 <!-- == -->
     <div class="postDetail">
-        <div>
-            <strong>이미지:</strong> <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
-            <strong>post넘버:</strong> <%= postsDetail.id %><br/>
-            <strong>카테고리:</strong> <%= postsDetail.category %><br/>
-            <strong>작성자:</strong> <%= postsDetail.User.name %><br/>
-            <strong>제목:</strong> <%= postsDetail.title %><br/>
-            <strong>내용:</strong> <%= postsDetail.content %><br/>
-            <strong>동물이름:</strong> <%= postsDetail.petName %><br/>
-            <strong>작성시간:</strong> <%= postsDetail.createdAt %><br/>
+        <div class="postView">
+
+        <!-- 제목 -->
+        <div class="postViewTop">
+            <p class="postTitle"><%= postsDetail.title %></p> 
+            <p> <span style="font-size: xx-small;"><%= postsDetail.category %></span>&ensp;<span><%= postsDetail.petName %></span> </p> 
+        </div>
+        <div class="postAutherBtn">
+            <div style="text-align: left;">
+                <img class="profileImg" src="https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg">
+                <span><span style="font-size: xx-small;">작성자:</span><%= postsDetail.User.name %></span></div>
+            <div>
+                <button type="button" class="btn btn-secondary btn-sm">수정</button>
+                <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deletePost()">삭제</button>
+            </div>
         </div>
     
     <!-- == -->
@@ -135,7 +141,9 @@ function closeBtn(){
          document.getElementById('Edit_modal').style.display = "none"})
 }
 closeBtn();
+function commentBtnAct(){
+            if(<%= userId %>){alert("댓글이 등록되었습니다.")}
+        }
    </script>
      </body>
-    
    </html>
