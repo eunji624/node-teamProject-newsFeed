@@ -1,24 +1,16 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const { authMiddleware } = require('../middleware/auth.js');
 const router = express.Router();
 const { Posts, Users, Comments } = require('../models/index.js');
 const {
 	commentValidator,
 	commentSameWriterValidator,
+	passwordValidator,
 } = require('../middleware/validator.js');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-// 리프레시토큰 보통2주?!
-// 엑세스토큰 1시간
-// 1. 로그인성공시 R A 같이 발급
-// 2. R이 DB쪽에 저장
-// CRUD
-
-// findOne 보다 findByPk
 // C created
-// 1.미들웨어로 검증 후 payload에 user[id] 추출
-// 2.입력값 유효성 검사
-// 3./comment/(Posts):id PostID가져와서 같이 created
 router.post(
 	'/comment/:postId',
 	authMiddleware,
@@ -62,7 +54,7 @@ router.get('/post/:postId', async (req, res) => {
 	});
 	const commentsList = await Comments.findAll({
 		where: { postId: postId },
-		attributes: ['content', 'commentId', 'updatedAt'],
+		attributes: ['content', 'commentId', 'updatedAt', 'userId'],
 		include: {
 			model: Users,
 			as: 'User',
@@ -108,40 +100,36 @@ router.patch(
 	commentValidator,
 	commentSameWriterValidator,
 	async (req, res) => {
-		const { commentId } = req.params;
-		const selectedComment = await Comments.findOne({
-			where: {
-				commentId: commentId,
-			},
-		});
-		let { content } = req.body;
-		if (content === selectedComment.content) {
-			// 409 Conflict  값들끼리 충돌 날 때
-			return res
-				.status(409)
-				.json({ success: false, message: '등록된 값이랑 똑같아요' });
-		}
-		if (selectedComment.userId === res.locals.user.id) {
-			await Comments.update(
-				{
-					content: content,
-				},
-				{
-					where: {
-						commentId: commentId,
-					},
-				},
-			);
-			const updatedComment = await Comments.findOne({
+		try {
+			const { commentId } = req.params;
+			const selectedComment = await Comments.findOne({
 				where: {
 					commentId: commentId,
 				},
 			});
-			res.status(200).json({
-				success: true,
-				message: '댓글이 성공적으로 수정됬습니다',
-				updatedComment,
-			});
+			let { content } = req.body;
+			if (content === selectedComment.content) {
+				// 409 Conflict  값들끼리 충돌 날 때
+				return res.status(409).json({
+					success: false,
+					message: '등록된 값이랑 똑같아요',
+				});
+			}
+			if (selectedComment.userId === res.locals.user.id) {
+				await Comments.update(
+					{
+						content: content,
+					},
+					{
+						where: {
+							commentId: commentId,
+						},
+					},
+				);
+				res.redirect(`/api/post/${selectedComment.postId}`);
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	},
 );
@@ -152,14 +140,30 @@ router.patch(
 router.delete(
 	'/comment/:commentId',
 	authMiddleware,
-	commentSameWriterValidator,
+	passwordValidator,
 	async (req, res) => {
 		const { commentId } = req.params;
+		const { password } = req.body;
 		const selectedComment = await Comments.findOne({
 			where: {
 				commentId: commentId,
 			},
 		});
+		const checkedPaswword = await Users.findOne({
+			where: {
+				id: selectedComment.userId,
+			},
+		});
+		const isSame = await bcrypt.compare(
+			password,
+			checkedPaswword.password,
+		);
+		if (!isSame) {
+			return res.render('blank', {
+				message: '입력하신 비밀번호가 올바르지 않습니다.',
+			});
+		}
+
 		if (!selectedComment) {
 			// 404 not found
 			return res.status(404).json({
@@ -170,11 +174,7 @@ router.delete(
 		const deletedComment = selectedComment;
 		if (selectedComment.userId === res.locals.user.id) {
 			selectedComment.destroy();
-			return res.status(200).json({
-				success: true,
-				message: '삭제가 성공적으로 이루어졌습니다',
-				deletedComment,
-			});
+			return res.redirect(`/api/post/${selectedComment.postId}`);
 		} else {
 			// 403 Forbidden  권한이 없을 때 사용
 			return res.status(403).json({
