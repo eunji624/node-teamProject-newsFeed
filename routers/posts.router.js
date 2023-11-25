@@ -93,7 +93,14 @@ router.get('/main/:category', async (req, res) => {
 			where: {
 				category: category,
 			},
-			attributes: ['id', 'category', 'title', 'petName', 'createdAt'],
+			attributes: [
+				'id',
+				'category',
+				'imgUrl',
+				'title',
+				'petName',
+				'createdAt',
+			],
 			include: [
 				{
 					model: Users,
@@ -111,6 +118,7 @@ router.get('/main/:category', async (req, res) => {
 			const [jwtToken, jwtValue] =
 				req.cookies.Authorization.split(' ');
 			const checkJwt = jwt.verify(jwtValue, process.env.SECRET_KEY);
+			console.log(categoryPosts);
 			return res.render('category', {
 				userId: checkJwt.userId,
 				data: categoryPosts,

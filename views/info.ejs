@@ -11,9 +11,14 @@
   <title>info</title>
 </head>
 <body >
-  <div class="showUserInfowrap">
+  <!-- <div class="blank"></div>
+  <div>
+    <img id="imgLogo" onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+  </div>  -->
+  <p id="infoLogo" onclick="location.href='/api/main'" >IT's Pet</p>
+ <div class="showUserInfowrap"> 
     <div class="showUserInfo">
-      <h2>회원 정보</h2>
+      <h2>-- 회원 정보 --</h2>
       <table class = "userInfoTable" border="1">
         <tr>
           <th>작성자</th>
@@ -31,9 +36,9 @@
     </div>
   </div>
   <form id="deleteUserForm" action="/api/user/<%= userId %>" method="POST">
-    <button >
+    <button id="infoDeleteBtn" >
       <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">
-        회원 탈퇴
+        탈퇴
       </input>
       <script>
         function moveWithDrawPage(){
@@ -47,8 +52,8 @@
     </button>
   </form>
 
-  <button onclick="location.href = '/api/user/modify/<%=userId%>'">
-    회원 정보 수정
+  <button id ="infoModifyBtn" onclick="location.href = '/api/user/modify/<%=userId%>'">
+    수정
   </button>
 </body>
 </html>
