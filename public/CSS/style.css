@@ -6,57 +6,55 @@ font-family: 'Orbit', sans-serif;
 }
 body{
   height: 1500px;
-}
-.realContainer{
-  display: flex;
-  justify-content: center;
-  height: 1500px;
   overflow: auto;
-  position: relative;
 }
 section{
+    display: flex;
+    justify-content: center;
+}
+.realContainer{
   width: 1080px;
   vertical-align: middle;
   align-content: center;
+  margin-top:5em ;
 }
+
 /* ~~상단헤더~~ */
 header{
-  height: 5em;
+  height: 4em;
+  width: 100%;
+  z-index: 1;
+  position: fixed;
 }
 .headerBack{
     height: 3em;
 }
 #searchBar{
-    padding-top: 5em;
-    padding-bottom: 3em;
-    height: 5em;
-    z-index: 1;
-    display: flex;
-    vertical-align: middle;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
     background-color: white;
-    width: 100%;
-    position: absolute;
-
+    padding-top: 3em;
+    padding-bottom: 3em;
+    height: 4em;
+    display:flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
 }
-.searchForm{
+#searchForm{
     display: flex;
     vertical-align: middle;
     align-items: center;
     justify-content: center;
-    width: 50%;
+    width: 30%;
+    margin: 0 3em 0 1em;;
 }
 .imgLogo{
-    margin-left: 2em;
     width: 9em;
     height: 4em;
     top: 1.7em;
     margin-right: 1em;
 }
 .searchTxt{
-    width: 70%;
+    width: 80%;
     top: 1.5em;
 }
 .searchBtn{
@@ -73,24 +71,22 @@ header{
     margin-left: 1em;
 }
 .back_login_btn{
-    margin: 0.6rem;
     padding: 5px;
-    margin-top: 10px;
     background-color: transparent;
     color: gray;
     border: none;
-    width: 150px;
+    width: 7em;
 }
 
 /* ~~사이드 바 */
 .side-bar{
-    margin-top: 3em;
-    position:fixed;
-    width: 13em;
-    min-height: 20em;
-    border-radius: 5px;
-    padding: 1em, 1.5em , 1em, 1.5em;
-    background-color: white;
+  margin-top: 3em;
+  position:fixed;
+  width: 13em;
+  min-height: 20em;
+  border-radius: 5px;
+  padding: 1em 1.5em  1em 1.5em;
+  background-color: white;
 }
 ul,li{
     margin: 1;
@@ -113,7 +109,6 @@ a:hover{
     color: white;
     text-decoration: none;
 }
-
 /* ~~body card */
 .container{
     margin-top: 4em;
