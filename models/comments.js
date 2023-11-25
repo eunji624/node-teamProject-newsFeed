@@ -31,10 +31,12 @@ module.exports = (sequelize, DataTypes) => {
 			userId: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				onDelete: 'CASCADE',
 			},
 			postId: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				onDelete: 'CASCADE',
 			},
 			content: {
 				allowNull: false,
