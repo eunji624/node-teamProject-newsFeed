@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 			userId: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				onDelete: 'CASCADE',
 			},
 			title: {
 				allowNull: false,
