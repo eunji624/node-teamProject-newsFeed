@@ -171,7 +171,9 @@ router.post(
 
 				const uploadParams = {
 					Bucket: 'node-itspet',
-					Key: `test/${req}_${path.basename(file.originalname)}.jpg`,
+					Key: `test/${req.postId}_${path.basename(
+						file.originalname,
+					)}.jpg`,
 					Body: outputBuffer,
 					ACL: 'public-read',
 					ContentType: 'image/jpeg',
