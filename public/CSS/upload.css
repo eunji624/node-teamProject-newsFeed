@@ -72,9 +72,9 @@ h4{
   outline: none;
 }
 
-/* #fileInput{
-  display: none;
-} */
+#fileInput{
+  margin-left: 3%;
+}
 #post_btn{
   width: 90%;
   margin: 0.6rem;
