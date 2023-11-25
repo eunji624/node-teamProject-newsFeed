@@ -10,6 +10,7 @@ const {
 } = require('../middleware/validator.js');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+
 // C created
 router.post(
 	'/comment/:postId',

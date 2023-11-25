@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { Users, Posts } = require('../models/index.js');

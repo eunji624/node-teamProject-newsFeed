@@ -18,6 +18,12 @@ const AWS = require('aws-sdk');
 const S3 = require('aws-sdk/clients/s3');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+const { promisify } = require('util');
+const fs = require('fs');
+const convert = require('heic-convert');
+const readFileAsync = promisify(fs.readFile);
+const writeFileAsync = promisify(fs.writeFile);
+
 AWS.config.update({
 	accessKeyId: process.env.S3_ACCESS_KEY_ID,
 	secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -29,6 +35,7 @@ router.get('/main', async (req, res) => {
 	try {
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
+
 		//게시글 전체 가져오기 (게시글id, 카테고리, 제목, 작성일)
 		const allPosts = await Posts.findAll({
 			attributes: ['id', 'category', 'imgUrl', 'title', 'updatedAT'],
@@ -40,36 +47,26 @@ router.get('/main', async (req, res) => {
 			],
 			order: [['updatedAt', sort]],
 		});
-		// console.log(allPosts);
-		//테스트용 - 게시물이 있을 경우
-		if (allPosts) {
-			try {
-				if (!req.cookies.Authorization) {
-					return res.render('main', {
-						data: allPosts,
-						userId: '',
-					});
-				} else if (req.cookies.Authorization) {
-					const [jwtToken, jwtValue] =
-						req.cookies.Authorization.split(' ');
-					const checkJwt = jwt.verify(
-						jwtValue,
-						process.env.SECRET_KEY,
-					);
-					return res.render('main', {
-						userId: checkJwt.userId,
-						data: allPosts,
-					});
-				}
-			} catch (err) {
-				console.log(err);
-			}
-		} else {
+
+		if (!allPosts) {
 			return res
 				.status(400)
 				.json({ success: false, data: '자료가 아직 없어용' });
 		}
-	} catch {
+		//테스트용 - 게시물이 있을 경우
+		if (!req.cookies.Authorization) {
+			return res.render('main', {
+				data: allPosts,
+				userId: '',
+			});
+		}
+		const [jwtToken, jwtValue] = req.cookies.Authorization.split(' ');
+		const checkJwt = jwt.verify(jwtValue, process.env.SECRET_KEY);
+		return res.render('main', {
+			userId: checkJwt.userId,
+			data: allPosts,
+		});
+	} catch (err) {
 		return res.status(500).json({
 			success: false,
 			message: '게시물 목록 조회에 실패하였습니다.',
@@ -141,20 +138,22 @@ const getPostId = async (req, res, next) => {
 	req.postId = latestPost ? latestPost.id + 1 : 1;
 	next();
 };
+const storage = multer.memoryStorage();
 const upload = multer({
-	storage: multerS3({
-		s3: new AWS.S3(),
-		bucket: 'node-itspet',
-		acl: 'public-read',
-		contentType: multerS3.AUTO_CONTENT_TYPE,
-		key(req, file, cb) {
-			cb(
-				null,
-				`test/${req.postId}_${path.basename(file.originalname)}`,
-			); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
-		},
-	}),
-	limits: { fileSize: 5 * 1024 * 1024 },
+	storage: storage,
+	// storage: multerS3({
+	// 	s3: new AWS.S3(),
+	// 	bucket: 'node-itspet',
+	// 	acl: 'public-read',
+	// 	contentType: multerS3.AUTO_CONTENT_TYPE,
+	// 	key(req, file, cb) {
+	// 		cb(
+	// 			null,
+	// 			`test/${req.postId}_${path.basename(file.originalname)}`,
+	// 		); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
+	// 	},
+	// }),
+	// limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 router.get('/upload', (req, res) => {
@@ -175,6 +174,32 @@ router.post(
 					message: '이미지를 찾을 수 없습니다.',
 				});
 			}
+			console.log('file', file.buffer);
+
+			//heic 파일 형식 변환.
+			const outputBuffer = await convert({
+				buffer: file.buffer, // the HEIC file buffer
+				format: 'JPEG', // output format
+				quality: 1, // the jpeg compression quality, between 0 and 1
+			});
+			console.log('outputBuffer', outputBuffer);
+			const base64Img = outputBuffer.toString('base64');
+			console.log('base64Img', base64Img);
+
+			const s3 = new AWS.S3();
+			const uploadParams = {
+				Bucket: 'node-itspet',
+				Key: `test/${req.postId}_${path.basename(
+					file.originalname,
+				)}.jpg`,
+				Body: outputBuffer,
+				ACL: 'public-read',
+				ContentType: 'image/jpeg',
+			};
+
+			const uploadResult = await s3.upload(uploadParams).promise();
+			const imgUrl = uploadResult.Location;
+
 			const maxId = await Posts.findOne({
 				order: [['id', 'DESC']],
 			});
@@ -182,14 +207,16 @@ router.post(
 				userId: res.locals.user.id,
 				title,
 				content,
-				imgUrl: `${process.env.IMG_URL}${req.postId}_${path.basename(
-					file.originalname,
-				)}`,
+				// imgUrl: `${
+				// 	process.env.IMG_URL
+				// }${outputBuffer}_${path.basename(file.originalname)}`,
+				imgUrl,
 				category,
 				petName,
 			});
 			return res.redirect('/api/main');
 		} catch (error) {
+			console.log(error);
 			return res.status(400).json({
 				success: false,
 				message: '게시글 등록에 실패하였습니다.',
