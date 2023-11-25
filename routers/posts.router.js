@@ -129,10 +129,6 @@ const getPostId = async (req, res, next) => {
 	const latestPost = await Posts.findOne({
 		order: [['id', 'DESC']],
 	});
-
-	// if (!latestPost) {
-	// 	return res.status(400).json({ message: '오류떳엉' });
-	// }
 	req.postId = latestPost ? latestPost.id + 1 : 1;
 	next();
 };
@@ -191,13 +187,23 @@ router.post(
 					petName,
 				});
 			} else {
+				const s3 = new AWS.S3();
+
+				const uploadParams = {
+					Bucket: 'node-itspet',
+					Key: `test/${req.postId}_${path.basename(
+						file.originalname,
+					)}.jpg`,
+					Body: req.file.buffer,
+					ACL: 'public-read',
+				};
+
+				const uploadResult = await s3.upload(uploadParams).promise();
+				const imgUrl = uploadResult.Location;
 				const createPost = await Posts.create({
 					userId: res.locals.user.id,
 					title,
 					content,
-					// imgUrl: `${
-					// 	process.env.IMG_URL
-					// }${outputBuffer}_${path.basename(file.originalname)}`,
 					imgUrl,
 					category,
 					petName,
