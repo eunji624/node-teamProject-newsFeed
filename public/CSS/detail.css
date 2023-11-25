@@ -208,6 +208,10 @@ a:hover{
     opacity: 40%;
     text-align: right;
 }
+#commentBtnFD{
+    text-align: right;
+    margin-left:2em;
+}
 /* ~~footer */
 footer {
   background-color: #dbdbdb;
