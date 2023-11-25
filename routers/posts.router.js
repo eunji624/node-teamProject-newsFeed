@@ -137,25 +137,12 @@ const getPostId = async (req, res, next) => {
 	next();
 };
 
-const upload = multer({
-	storage: multerS3({
-		s3: new AWS.S3(),
-		bucket: 'node-itspet',
-		acl: 'public-read',
-		contentType: multerS3.AUTO_CONTENT_TYPE,
-		key(req, file, cb) {
-			cb(
-				null,
-				`test/${req.postId}_${path.basename(file.originalname)}`,
-			); // test 폴더안에다 파일을 123123123123_asdasd.jpg형식으로 저장
-		},
-	}),
-	limits: { fileSize: 5 * 1024 * 1024 },
-});
+const upload = multer();
 
 router.get('/upload', (req, res) => {
 	res.render('upload');
 });
+
 router.post(
 	'/upload',
 	authMiddleware,
@@ -171,43 +158,49 @@ router.post(
 					message: '이미지를 찾을 수 없습니다.',
 				});
 			}
+			const fileTypeHeic = file.mimetype.includes('heic');
+			if (fileTypeHeic) {
+				//heic 파일 형식 변환.
+				const outputBuffer = await convert({
+					buffer: file.buffer,
+					format: 'JPEG',
+					quality: 1,
+				});
 
-			//heic 파일 형식 변환.
-			const outputBuffer = await convert({
-				buffer: file.buffer, // the HEIC file buffer
-				format: 'JPEG', // output format
-				quality: 1, // the jpeg compression quality, between 0 and 1
-			});
-			const base64Img = outputBuffer.toString('base64');
+				const s3 = new AWS.S3();
 
-			const s3 = new AWS.S3();
-			const uploadParams = {
-				Bucket: 'node-itspet',
-				Key: `test/${req.postId}_${path.basename(
-					file.originalname,
-				)}.jpg`,
-				Body: outputBuffer,
-				ACL: 'public-read',
-				ContentType: 'image/jpeg',
-			};
+				const uploadParams = {
+					Bucket: 'node-itspet',
+					Key: `test/${req}_${path.basename(file.originalname)}.jpg`,
+					Body: outputBuffer,
+					ACL: 'public-read',
+					ContentType: 'image/jpeg',
+				};
 
-			const uploadResult = await s3.upload(uploadParams).promise();
-			const imgUrl = uploadResult.Location;
+				const uploadResult = await s3.upload(uploadParams).promise();
+				const imgUrl = uploadResult.Location;
 
-			const maxId = await Posts.findOne({
-				order: [['id', 'DESC']],
-			});
-			const createPost = await Posts.create({
-				userId: res.locals.user.id,
-				title,
-				content,
-				// imgUrl: `${
-				// 	process.env.IMG_URL
-				// }${outputBuffer}_${path.basename(file.originalname)}`,
-				imgUrl,
-				category,
-				petName,
-			});
+				const createPost = await Posts.create({
+					userId: res.locals.user.id,
+					title,
+					content,
+					imgUrl,
+					category,
+					petName,
+				});
+			} else {
+				const createPost = await Posts.create({
+					userId: res.locals.user.id,
+					title,
+					content,
+					// imgUrl: `${
+					// 	process.env.IMG_URL
+					// }${outputBuffer}_${path.basename(file.originalname)}`,
+					imgUrl,
+					category,
+					petName,
+				});
+			}
 			return res.redirect('/api/main');
 		} catch (error) {
 			console.log(error);
