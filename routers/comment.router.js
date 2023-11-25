@@ -102,7 +102,7 @@ router.get('/post/:postId', async (req, res) => {
 
 // //  U Update
 
-router.put(
+router.patch(
 	'/comment/:commentId',
 	authMiddleware,
 	commentValidator,
@@ -115,11 +115,6 @@ router.put(
 			},
 		});
 		let { content } = req.body;
-		// if (!content) {
-		// 	return res
-		// 		.status(400)
-		// 		.json({ success: false, message: '값을 입력하시오' });
-		// }
 		if (content === selectedComment.content) {
 			// 409 Conflict  값들끼리 충돌 날 때
 			return res
@@ -148,12 +143,6 @@ router.put(
 				updatedComment,
 			});
 		}
-		// else {
-		// 	return res.status(403).json({
-		// 		success: false,
-		// 		message: 'payload의 id와 선택한 댓글 userId가 다릅니다',
-		// 	});
-		// }
 	},
 );
 // //  U Update
