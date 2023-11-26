@@ -151,7 +151,6 @@ router.post(
 	postValidator,
 	getPostId,
 	async (req, res) => {
-		console.log('dd', req.body);
 		try {
 			const { title, content, category, petName } = req.body;
 			const file = req.file;
@@ -171,9 +170,10 @@ router.post(
 				});
 
 				const s3 = new AWS.S3();
+				console.log('s3', s3);
 
 				const uploadParams = {
-					Bucket: 'node-itspet',
+					Bucket: 'myejbucket',
 					Key: `test/${req.postId}_${path.basename(
 						file.originalname,
 					)}.jpg`,
@@ -181,8 +181,19 @@ router.post(
 					ACL: 'public-read',
 					ContentType: 'image/jpeg',
 				};
+				console.log('업로드파람스', uploadParams);
 
+				// const uploadParams = {
+				// 	Bucket: 'node-itspet',
+				// 	Key: `test/${req.postId}_${path.basename(
+				// 		file.originalname,
+				// 	)}.jpg`,
+				// 	Body: outputBuffer,
+				// 	ACL: 'public-read',
+				// 	ContentType: 'image/jpeg',
+				// };
 				const uploadResult = await s3.upload(uploadParams).promise();
+				console.log('업로드리졸트', uploadResult);
 				const imgUrl = uploadResult.Location;
 
 				const createPost = await Posts.create({
@@ -197,7 +208,7 @@ router.post(
 				const s3 = new AWS.S3();
 
 				const uploadParams = {
-					Bucket: 'node-itspet',
+					Bucket: 'myejbucket',
 					Key: `test/${req.postId}_${path.basename(
 						file.originalname,
 					)}.jpg`,
