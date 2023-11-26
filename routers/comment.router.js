@@ -50,9 +50,10 @@ router.get('/post/:postId', async (req, res) => {
 		include: {
 			model: Users,
 			as: 'User',
-			attributes: ['name'],
+			attributes: ['name', 'id'],
 		},
 	});
+	console.log('postsDetail', postsDetail);
 	const commentsList = await Comments.findAll({
 		where: { postId: postId },
 		attributes: ['content', 'commentId', 'updatedAt', 'userId'],
@@ -76,6 +77,11 @@ router.get('/post/:postId', async (req, res) => {
 				const [jwtToken, jwtValue] =
 					req.cookies.Authorization.split(' ');
 				const checkJwt = jwt.verify(jwtValue, process.env.SECRET_KEY);
+				console.log(
+					checkJwt.userId,
+					postsDetail.dataValues.User.dataValues.id,
+				);
+
 				return res.render('postDetail', {
 					userId: checkJwt.userId,
 					postsDetail,
