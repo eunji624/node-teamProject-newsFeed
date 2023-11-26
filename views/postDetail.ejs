@@ -60,7 +60,7 @@
                 <span><span style="font-size: xx-small;">작성자:</span><%= postsDetail.User.name %></span></div>
             <div>
                 <button type="button" class="btn btn-secondary btn-sm">수정</button>
-                <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deletePost()">삭제</button>
+                <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deleteModals('<%= postsDetail.id %>')">삭제</button>
             </div>
         </div>
         <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
@@ -158,6 +158,31 @@
     </div>
 </section>
 <!-- Delete-Modal -->
+<!-- Post Delete-Modal -->
+<section>
+    <div class="modal" id="deletePostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePostId"> </h5>
+                </div>
+            <form method="POST" id="deletePostForm" action="">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="deletePostInputField" class="form-label" >비밀번호를 입력하시오</label>
+                        <input type="password" class="form-control" id="deletePostInputField" name="password">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="submit" class="btn btn-secondary">확인</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="deletePostCloseBtn">취소</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Delete-Modal -->
 
 <!-- ==footer -->
 <footer>
@@ -190,15 +215,17 @@ editCloseBtn()
 deleteCloseBtn();
 
 
-function deletePost() {
-    document.getElementById('deletePostBtn').addEventListener('click', function () {
-        const password = prompt("삭제하려면 비밀번호를 입력하세요.");
-        // const writerPassword = 
-        if(password){
-            action =`api/post/<%= postsDetail.id %>?_method=delete`
-        }
-    })
+function deleteModals(postId) {
+    document.getElementById('deletePostId').innerHTML=`게시물 <%= postsDetail.title %> <br/> 삭제합니다.`
+    document.getElementById('deletePostForm').action = `/api/post/${postId}?_method=delete`
+    document.getElementById('deletePostModal').style.display = "flex"
+    document.getElementById('deletePostInputField').focus();
 }
+function deletePostCloseBtn(){
+    document.getElementById('deletePostCloseBtn').addEventListener('click',  function(){ 
+    document.getElementById('deletePostModal').style.display = "none"})
+}
+deletePostCloseBtn()
    </script>
      </body>
    </html>
