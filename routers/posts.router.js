@@ -227,34 +227,29 @@ router.get('/post', (req, res, next) => {
 });
 
 // ==게시물 작성 - 로그인 해야 가능
-router.post(
-	'/post',
-	authMiddleware,
-	postValidator,
-	async (req, res) => {
-		try {
-			const { title, content, category, petName } = req.body;
-			await Posts.create({
-				userId: res.locals.user.id,
-				title,
-				content,
-				category,
-				petName,
-			});
+router.post('/post', authMiddleware, async (req, res) => {
+	try {
+		const { title, content, category, petName } = req.body;
+		await Posts.create({
+			userId: res.locals.user.id,
+			title,
+			content,
+			category,
+			petName,
+		});
 
-			return res.status(200).json({
-				success: true,
-				message: '게시글이 등록되었습니다.',
-				Posts,
-			});
-		} catch {
-			return res.status(400).json({
-				success: false,
-				message: '게시글 등록에 실패하였습니다.',
-			});
-		}
-	},
-);
+		return res.status(200).json({
+			success: true,
+			message: '게시글이 등록되었습니다.',
+			Posts,
+		});
+	} catch {
+		return res.status(400).json({
+			success: false,
+			message: '게시글 등록에 실패하였습니다.',
+		});
+	}
+});
 
 // ==게시물 삭제
 router.delete(
@@ -377,9 +372,10 @@ router.get(
 	},
 );
 // ==게시물 수정 - 인증 미들웨어 확인 필요 - 접근이 안되는중
-router.post(
+router.patch(
 	'/post/modify/:postId',
 	authMiddleware,
+	postValidator,
 	async (req, res) => {
 		try {
 			console.log(req.body);
@@ -416,7 +412,7 @@ router.post(
 				category,
 				petName,
 			});
-			res.status(200).json({ success: true, data: postsDetail });
+			res.redirect(`/api/post/${postsDetail.id}`);
 		} catch (error) {
 			return res.status(500).json({
 				success: false,
