@@ -135,7 +135,7 @@ const getPostId = async (req, res, next) => {
 	next();
 };
 
-// const upload = multer();
+const upload = multer();
 
 router.get('/post', (req, res) => {
 	res.render('upload');
@@ -183,15 +183,6 @@ router.post(
 				};
 				console.log('업로드파람스', uploadParams);
 
-				// const uploadParams = {
-				// 	Bucket: 'node-itspet',
-				// 	Key: `test/${req.postId}_${path.basename(
-				// 		file.originalname,
-				// 	)}.jpg`,
-				// 	Body: outputBuffer,
-				// 	ACL: 'public-read',
-				// 	ContentType: 'image/jpeg',
-				// };
 				const uploadResult = await s3.upload(uploadParams).promise();
 				console.log('업로드리졸트', uploadResult);
 				const imgUrl = uploadResult.Location;
