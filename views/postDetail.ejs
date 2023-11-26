@@ -59,7 +59,7 @@
                 <img class="profileImg" src="https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg">
                 <span><span style="font-size: xx-small;">작성자:</span><%= postsDetail.User.name %></span></div>
             <div>
-                <button type="button" class="btn btn-secondary btn-sm">수정</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="location.href = '/api/post/modify/<%= postsDetail.id %>'">수정</button>
                 <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deletePostModals('<%= postsDetail.id %>')">삭제</button>
             </div>
         </div>
@@ -214,7 +214,6 @@ function deleteCloseBtn(){
 editCloseBtn()
 deleteCloseBtn();
 
-
 function deletePostModals(postId) {
     document.getElementById('deletePostId').innerHTML=`게시물 <%= postsDetail.title %> <br/> 삭제합니다.`
     document.getElementById('deletePostForm').action = `/api/post/${postId}?_method=delete`
@@ -222,7 +221,7 @@ function deletePostModals(postId) {
     document.getElementById('deletePostInputField').focus();
 }
 function deletePostCloseBtn(){
-    document.getElementById('deletePostCloseBtn').addEventListener('click',  function(){ 
+    document.getElementById('deletePostCloseBtn').addEventListener('click', function(){ 
     document.getElementById('deletePostModal').style.display = "none"})
 }
 deletePostCloseBtn()
