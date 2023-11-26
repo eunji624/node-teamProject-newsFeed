@@ -19,9 +19,9 @@
     <!-- 검색창 -->
     <div class="searchBar" id="searchBar">
         <img class="imgLogo"  onclick="location.href='/api/main'" style="cursor:pointer;"  src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
-            <form id="searchForm">
+            <form id="searchForm" action="/api/search" method="get">
                 <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
-                <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
+                <button class="searchBtn back_login_btn" id="searchBtn" type="submit" >검색</button>
             </form>
         <!-- 검색창 사이드 -->
         <% if(!userId){ %>
@@ -52,15 +52,21 @@
         <!-- 제목 -->
         <div class="postViewTop">
             <p class="postTitle"><%= postsDetail.title %></p> 
-            <p> <span style="font-size: xx-small;"><%= postsDetail.category %></span>&ensp;<span><%= postsDetail.petName %></span> </p> 
+            <p> 
+                <span style="font-size: xx-small;"><%= postsDetail.category %></span>&ensp;<span><%= postsDetail.petName %></span> 
+            </p> 
         </div>
         <div class="postAutherBtn">
             <div style="text-align: left;">
                 <img class="profileImg" src="https://img1.daumcdn.net/thumb/R1280x0/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg">
                 <span><span style="font-size: xx-small;">작성자:</span><%= postsDetail.User.name %></span></div>
             <div>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="location.href = '/api/post/modify/<%= postsDetail.id %>'">수정</button>
-                <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deletePostModals('<%= postsDetail.id %>')">삭제</button>
+                <% if(userId===postsDetail.userId){ %>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="location.href = '/api/post/modify/<%= postsDetail.id %>'">수정</button>
+                    <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deletePostModals('<%= postsDetail.id %>')">삭제</button>
+                <% }else{ %>
+                    <button style="display: none;"></button>
+                <% } %>
             </div>
         </div>
         <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
@@ -102,7 +108,7 @@
                         </div>
                     </li>
             <% } %>
-            <% }); %>
+        <% }); %>
     </div>
     </div> 
 </div>
@@ -185,47 +191,55 @@
 <!-- Delete-Modal -->
 
 <!-- ==footer -->
-<footer>
-    <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
-   </footer>
-   <script>
-function editModals(commentId,content) {
-    document.getElementById('editCommentId').innerHTML=`Edit No.${commentId}`
-    document.getElementById('editForm').action = `/api/comment/${commentId}?_method=patch`
-    document.getElementById('editModal').style.display = "flex"
-    document.getElementById('editInputField').value = `${content}`
-    document.getElementById('editInputField').focus();
-}
-function deleteModals(commentId) {
-    document.getElementById('deleteCommentId').innerHTML=`Delete No.${commentId}`
-    document.getElementById('deleteForm').action = `/api/comment/${commentId}?_method=delete`
-    document.getElementById('deleteModal').style.display = "flex"
-    document.getElementById('deleteInputField').focus();
-}
+    <footer>
+        <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
+    </footer>
+    <script>
+        function editModals(commentId,content) {
+            document.getElementById('editCommentId').innerHTML=`Edit No.${commentId}`
+            document.getElementById('editForm').action = `/api/comment/${commentId}?_method=patch`
+            document.getElementById('editModal').style.display = "flex"
+            document.getElementById('editInputField').value = `${content}`
+            document.getElementById('editInputField').focus();
+        }
+        function deleteModals(commentId) {
+            document.getElementById('deleteCommentId').innerHTML=`Delete No.${commentId}`
+            document.getElementById('deleteForm').action = `/api/comment/${commentId}?_method=delete`
+            document.getElementById('deleteModal').style.display = "flex"
+            document.getElementById('deleteInputField').focus();
+        }
 
-function correctBtn(){}
-function editCloseBtn(){
-    document.getElementById('editCloseBtn').addEventListener('click',  function(){ 
-         document.getElementById('editModal').style.display = "none"})
-}
-function deleteCloseBtn(){
-    document.getElementById('deleteCloseBtn').addEventListener('click',  function(){ 
-         document.getElementById('deleteModal').style.display = "none"})
-}
-editCloseBtn()
-deleteCloseBtn();
+        function correctBtn(){}
+        function editCloseBtn(){
+            document.getElementById('editCloseBtn').addEventListener('click',  function(){ 
+                document.getElementById('editModal').style.display = "none"})
+        }
+        function deleteCloseBtn(){
+            document.getElementById('deleteCloseBtn').addEventListener('click',  function(){ 
+                document.getElementById('deleteModal').style.display = "none"})
+        }
+        editCloseBtn()
+        deleteCloseBtn();
 
-function deletePostModals(postId) {
-    document.getElementById('deletePostId').innerHTML=`게시물 <%= postsDetail.title %> <br/> 삭제합니다.`
-    document.getElementById('deletePostForm').action = `/api/post/${postId}?_method=delete`
-    document.getElementById('deletePostModal').style.display = "flex"
-    document.getElementById('deletePostInputField').focus();
-}
-function deletePostCloseBtn(){
-    document.getElementById('deletePostCloseBtn').addEventListener('click', function(){ 
-    document.getElementById('deletePostModal').style.display = "none"})
-}
-deletePostCloseBtn()
-   </script>
-     </body>
-   </html>
+        function deletePostModals(postId) {
+            document.getElementById('deletePostId').innerHTML=`게시물 <%= postsDetail.title %> <br/> 삭제합니다.`
+            document.getElementById('deletePostForm').action = `/api/post/${postId}?_method=delete`
+            document.getElementById('deletePostModal').style.display = "flex"
+            document.getElementById('deletePostInputField').focus();
+        }
+        function deletePostCloseBtn(){
+            document.getElementById('deletePostCloseBtn').addEventListener('click', function(){ 
+            document.getElementById('deletePostModal').style.display = "none"})
+        }
+        deletePostCloseBtn()
+
+
+        document.getElementById('searchForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const val = document.getElementById('searchinput').value;
+            location.href=`/api/search/${val}`
+        })
+
+        </script>
+    </body>
+</html>
