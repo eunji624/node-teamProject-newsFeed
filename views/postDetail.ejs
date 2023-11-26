@@ -1,55 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= postsDetail.title %></title>
-    <!-- 부트스트랩 및 jQuery/Popper.js/Bootstrap JavaScript 라이브러리 추가 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= postsDetail.title %></title>
+<!-- 부트스트랩 및 jQuery/Popper.js/Bootstrap JavaScript 라이브러리 추가 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="/CSS/detail.css" />
 </head>
-<style>
-</style>
 <body>
-<!-- ==header -->
-<header>
-    <!-- 검색창 -->
-    <div class="searchBar" id="searchBar">
-        <img class="imgLogo"  onclick="location.href='/api/main'" style="cursor:pointer;"  src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
-            <form id="searchForm" action="/api/search" method="get">
-                <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
-                <button class="searchBtn back_login_btn" id="searchBtn" type="submit" >검색</button>
-            </form>
-        <!-- 검색창 사이드 -->
-        <% if(!userId){ %>
-        <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/login'">로그인</button>
-        <button type="button" class="btn back_login_btn" onclick="location.href= '/api/register'">회원가입</button>
-        <% }else{ %>
-        <button type="button" class="btn back_login_btn" onclick="location.href= '/api/auth/logout'">로그아웃</button>
-        <button type="button" class="btn back_login_btn" onclick="location.href= '/api/user/<%= userId %>'">내정보조회</button>
-        <% } %>
-    </div>
-</header>
-<section>
-<div class="realContainer">
-    <!-- ==category side-bar -->
-    <aside class="side-bar">
-        <ul>
-        <li><a href="/api/main">전체보기</a></li>
-        <li><a href="/api/main/cat">🐈 고양이</a></li>
-        <li><a href="/api/main/dog">🐕 강아지</a></li>
-        <li><a href="/api/main/bird">🐥 조류</a></li>
-        <li><a href="/api/main/Reptiles">🐍 파충류</a></li>
-        </ul>
-    </aside>
-<!-- == -->
-    <div class="postDetail">
-        <div class="postView">
+<!-- ==네비게이션바-->
 
-        <!-- 제목 -->
+<div class="container"><!-- 헤드 컨테이너-->
+    <header>
+      <div class="row flex-nowrap justify-content-between align-items-center">
+        <div class="col-3 pt-1">
+          <img class="imgLogo"  onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+        </div>
+        <div class="col-6">
+          <form id="searchForm" action="/api/search" method="get" class="d-flex" style="width: 500px;">
+            <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요." required>&ensp;
+            <button class="btn btn-secondary searchBtn" style="width: 20%;" id="searchBtn" type="submit">검색</button>
+          </form>
+        </div>
+        <div class="col-3 d-flex justify-content-end align-items-center">
+            <% if(!userId){ %>
+            <button type="button" class="btn btn-outline-secondary headerBtn" onclick="location.href= '/api/auth/login'">로그인</button>&ensp;
+            <button type="button" class="btn btn-outline-secondary headerBtn" onclick="location.href= '/api/register'">회원가입</button>
+            <% }else{ %>
+            <button type="button" class="btn btn-outline-secondary headerBtn" onclick="location.href= '/api/auth/logout'">로그아웃</button>&ensp;
+            <button type="button" class="btn btn-outline-secondary headerBtn" onclick="location.href= '/api/user/<%= userId %>'">My info</button>
+            <% } %>
+        </div>
+      </div><!-- row끝 -->
+    </header>
+  </div><!-- 헤드 컨테이너 끝-->
+<!-- ==사이드바 -->
+<div class="container" style="margin-top: 30px;">
+    <div class="row">
+      <div class="col-3">
+        <div class="sideBar">
+          <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiar" style="width: 280px;">
+            <ul>
+              <li class="nav-item"><a class="nav-link active" href="/api/main">전체보기</a></li>
+              <li class="nav-item"><a class="nav-link active" href="/api/main/cat">🐈 고양이</a></li>
+              <li class="nav-item"><a class="nav-link active" href="/api/main/dog">🐕 강아지</a></li>
+              <li class="nav-item"><a class="nav-link active" href="/api/main/bird">🐥 조류</a></li>
+              <li class="nav-item"><a class="nav-link active" href="/api/main/Reptiles">🐍 파충류</a></li>
+              <% if(!userId){ %>
+              <hr>
+              <% }else{ %>
+              <hr>
+              <li id="write" class="nav-item"> <a class="nav-link active" onclick="location.href='/api/post'">📝 포스팅</a></li>
+              <% } %>
+            </ul>
+          </div>
+        </div><!-- sideBar -->
+      </div><!-- col-3 -->
+<!--== postDetail-->
+    <div class="col-9">
+    <div class="postDetail">
+    <!-- post Object -->
+    <div class="postObject">
         <div class="postViewTop">
             <p class="postTitle"><%= postsDetail.title %></p> 
             <p> 
@@ -69,33 +84,35 @@
                 <% } %>
             </div>
         </div>
-        <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
-        <p class="postContent"><%= postsDetail.content %></p>
-        <p class="postCreatedAt"><%= postsDetail.createdAt %></p>
-
-    <!-- == -->
+            <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
+            <p class="postContent"><%= postsDetail.content %></p>
+            <p class="postCreatedAt"><%= postsDetail.createdAt %></p>
+    </div>
+    <!-- post Object -->
+    <!-- comment Submit form -->
+    <div class="commentSubmitForm">
     <form class="row justify-content-center commentForm" method="POST" action="/api/comment/<%= postsDetail.id %>" >
         <input type="text" class="commentInput form-control form-control-sm col-sm-9" placeholder="내용을 입력하시오" name="content">
-        <button
-                type="submit"
-                class="btn btn-secondary btn-sm commentBtn col-sm-2"
-                onclick="commentSubmit()"
-              >
-                comment
-              </button>
+        <button type="submit"
+            class="btn btn-secondary btn-sm commentBtn col-sm-2"
+            onclick="commentSubmit()">
+            comment
+        </button>
     </form>
-    <!--==  -->
+    </div>
+    <!-- comment Submit form end -->
+    <!-- commentList -->
     <div class="commentList">
         <% commentsList.forEach(comment => { %>
         <% if(userId===comment.userId){ %>
             <li class="commnets">
                 <p> <span style="font-size: xx-small;"><%= comment.commentId %></span>
-                    <span style="font-weight:bold ;"><%= comment.User.name %></span></p>
+                <span style="font-weight:bold ;"><%= comment.User.name %></span></p>
                 <p class="commentContent"><%= comment.content %></p>
                 <div class="commentBtnFD">
-                <p class="commentCreatedAt"><%= comment.updatedAt %>
-             <button  id="editNo<%= comment.commentId %>" onclick="editModals('<%= comment.commentId %>','<%= comment.content %>')" class="btn btn-secondary btn-sm">수정</button>
-             <button  id="deleteNo<%= comment.commentId %>" onclick="deleteModals('<%= comment.commentId %>')" class="btn btn-outline-secondary btn-sm">삭제</button></p>
+                    <p class="commentCreatedAt"><%= comment.updatedAt %>
+                    <button  id="editNo<%= comment.commentId %>" onclick="editModals('<%= comment.commentId %>','<%= comment.content %>')" class="btn btn-secondary btn-sm">수정</button>
+                    <button  id="deleteNo<%= comment.commentId %>" onclick="deleteModals('<%= comment.commentId %>')" class="btn btn-outline-secondary btn-sm">삭제</button></p>
                 </div>
             </li>
             <% }else{ %>
@@ -112,7 +129,13 @@
     </div>
     </div> 
 </div>
-</section>
+<!--== postDetail end-->
+</div><!-- col-8 -->
+<!-- ~~ -->
+</div><!-- row끝 -->
+</div><!-- container 끝-->
+
+<!-- ==모달 -->
 <!-- Edit-Modal -->
 <section>
     <div class="modal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -122,124 +145,131 @@
                     <h5 class="modal-title" id="editCommentId"> </h5>
                 </div>
                 <form method="POST" id="editForm" action="">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="editInputField" class="form-label" >수정할 내용을 입력하시오</label>
-                        <input type="text" class="form-control" id="editInputField" value=""  name="content">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editInputField" class="form-label" >수정할 내용을 입력하시오</label>
+                            <input type="text" class="form-control" id="editInputField" value=""  name="content">
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
+                    <div class="modal-footer">
                         <button type="submit" class="btn btn-secondary" id="editCorrectBtn">확인</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="editCloseBtn">취소</button>
-                </div>
-            </form>
+                        <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="editCloseBtn">취소</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </section>
 <!-- Edit-Modal -->
-
-<!-- Delete-Modal -->
+<!-- Comment Delete-Modal -->
 <section>
     <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteCommentId"> </h5>
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCommentId"> </h5>
+            </div>
             <form method="POST" id="deleteForm" action="">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="deleteInputField" class="form-label" >비밀번호를 입력하시오</label>
-                        <input type="password" class="form-control" id="deleteInputField" name="password">
+                    <label for="deleteInputField" class="form-label" >비밀번호를 입력하시오</label>
+                    <input type="password" class="form-control" id="deleteInputField" name="password">
                     </div>
                 </div>
                 <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary" >확인</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="deleteCloseBtn">취소</button>
+                <button type="submit" class="btn btn-secondary" >확인</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="deleteCloseBtn">취소</button>
                 </div>
             </form>
-            </div>
+        </div>
         </div>
     </div>
 </section>
-<!-- Delete-Modal -->
+<!-- Comment Delete-Modal -->
 <!-- Post Delete-Modal -->
 <section>
     <div class="modal" id="deletePostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deletePostId"> </h5>
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePostId"> </h5>
+            </div>
             <form method="POST" id="deletePostForm" action="">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="deletePostInputField" class="form-label" >비밀번호를 입력하시오</label>
-                        <input type="password" class="form-control" id="deletePostInputField" name="password">
+                    <label for="deletePostInputField" class="form-label" >비밀번호를 입력하시오</label>
+                    <input type="password" class="form-control" id="deletePostInputField" name="password">
                     </div>
                 </div>
                 <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary">확인</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="deletePostCloseBtn">취소</button>
+                <button type="submit" class="btn btn-secondary">확인</button>
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal" id="deletePostCloseBtn">취소</button>
                 </div>
             </form>
-            </div>
+        </div>
         </div>
     </div>
 </section>
-<!-- Delete-Modal -->
-
+<!-- Post Delete-Modal -->
 <!-- ==footer -->
-    <footer>
-        <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
+<div class="container">
+    <footer class="py-3 my-4">
+      <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+        <li class="nav-item"><a href="/api/main" class="nav-link px-2 text-body-secondary">Home</a></li>
+        <li class="nav-item"><a href="https://github.com/eunji624/node-teamProject-newsFeed" class="nav-link px-2 text-body-secondary">Github</a></li>
+        <li class="nav-item"><a href="https://teamsparta.notion.site/7-IT-s-Pets-da031492647841ffa39226b9a47aa520" class="nav-link px-2 text-body-secondary">About</a></li>
+      </ul>
+      <p class="text-center text-body-secondary">&copy; 2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
     </footer>
-    <script>
-        function editModals(commentId,content) {
-            document.getElementById('editCommentId').innerHTML=`Edit No.${commentId}`
-            document.getElementById('editForm').action = `/api/comment/${commentId}?_method=patch`
-            document.getElementById('editModal').style.display = "flex"
-            document.getElementById('editInputField').value = `${content}`
-            document.getElementById('editInputField').focus();
-        }
-        function deleteModals(commentId) {
-            document.getElementById('deleteCommentId').innerHTML=`Delete No.${commentId}`
-            document.getElementById('deleteForm').action = `/api/comment/${commentId}?_method=delete`
-            document.getElementById('deleteModal').style.display = "flex"
-            document.getElementById('deleteInputField').focus();
-        }
+  </div>
+<!-- ==스크립트 -->
+<script>
+function editModals(commentId,content) {
+    document.getElementById('editCommentId').innerHTML=`Edit No.${commentId}`
+    document.getElementById('editForm').action = `/api/comment/${commentId}?_method=patch`
+    document.getElementById('editModal').style.display = "flex"
+    document.getElementById('editInputField').value = `${content}`
+    document.getElementById('editInputField').focus();
+}
+function deleteModals(commentId) {
+    document.getElementById('deleteCommentId').innerHTML=`Delete No.${commentId}`
+    document.getElementById('deleteForm').action = `/api/comment/${commentId}?_method=delete`
+    document.getElementById('deleteModal').style.display = "flex"
+    document.getElementById('deleteInputField').focus();
+}
 
-        function correctBtn(){}
-        function editCloseBtn(){
-            document.getElementById('editCloseBtn').addEventListener('click',  function(){ 
-                document.getElementById('editModal').style.display = "none"})
-        }
-        function deleteCloseBtn(){
-            document.getElementById('deleteCloseBtn').addEventListener('click',  function(){ 
-                document.getElementById('deleteModal').style.display = "none"})
-        }
-        editCloseBtn()
-        deleteCloseBtn();
+function correctBtn(){}
+function editCloseBtn(){
+    document.getElementById('editCloseBtn').addEventListener('click',  function(){ 
+    document.getElementById('editModal').style.display = "none"})
+}
+function deleteCloseBtn(){
+    document.getElementById('deleteCloseBtn').addEventListener('click',  function(){ 
+    document.getElementById('deleteModal').style.display = "none"})
+}
+editCloseBtn()
+deleteCloseBtn();
 
-        function deletePostModals(postId) {
-            document.getElementById('deletePostId').innerHTML=`게시물 <%= postsDetail.title %> <br/> 삭제합니다.`
-            document.getElementById('deletePostForm').action = `/api/post/${postId}?_method=delete`
-            document.getElementById('deletePostModal').style.display = "flex"
-            document.getElementById('deletePostInputField').focus();
-        }
-        function deletePostCloseBtn(){
-            document.getElementById('deletePostCloseBtn').addEventListener('click', function(){ 
-            document.getElementById('deletePostModal').style.display = "none"})
-        }
-        deletePostCloseBtn()
+function deletePostModals(postId) {
+    document.getElementById('deletePostId').innerHTML=`게시물 <%= postsDetail.title %> <br/> 삭제합니다.`
+    document.getElementById('deletePostForm').action = `/api/post/${postId}?_method=delete`
+    document.getElementById('deletePostModal').style.display = "flex"
+    document.getElementById('deletePostInputField').focus();
+}
+function deletePostCloseBtn(){
+    document.getElementById('deletePostCloseBtn').addEventListener('click', function(){ 
+    document.getElementById('deletePostModal').style.display = "none"})
+}
+deletePostCloseBtn()
 
 
-        document.getElementById('searchForm').addEventListener('submit', function(e){
-            e.preventDefault();
-            const val = document.getElementById('searchinput').value;
-            location.href=`/api/search/${val}`
-        })
+document.getElementById('searchForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const val = document.getElementById('searchinput').value;
+    location.href=`/api/search/${val}`
+})
 
-        </script>
-    </body>
+</script>
+</body>
 </html>
