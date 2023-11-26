@@ -65,3 +65,22 @@ http://mallish.store/api/main
 [Notion](https://teamsparta.notion.site/7-IT-s-Pets-da031492647841ffa39226b9a47aa520)
 
 
+| URL        | Method   | Function                       | Request                                  | 
+|------------------|----------|----------------------------|------------------------------------------|
+| api/register            | POST      | 회원가입               | name, email, password, description                  
+| api/auth/login          | POST      | 로그인                 | email, password                                    
+| api/auth/logout         | GET       | 로그아웃               | name: 사용자 이름, email: 사용자 이메일              
+| api/user/:userId        | POST      | 회원탈퇴               |                                                    
+| api/user/:userId        | GET       | 회원정보조회           | 기능만 존재 구현X                                     
+| api/user/modify/:userId | POST      | 회원정보 수정          | name, email, description, password, passwordRe       
+| api/main                | GET       | 메인페이지             |                                                     
+| api/main/:category      | GET       | 카테고리별 조회        |                                                    
+| api/post                | POST      | 게시물 작성            | title, content, category, petName ,ImgUrl           
+| api/post/:postId        | DELETE    | 게시물 삭제            | password                                             
+| api/search/:searchWord' | GET       | 게시물 검색            | req.params.searchWord                                
+| api/post/modify/:postId'| PATCH     | 게시물 수정            | category, title, content, petName, req.params.postId  
+| api/post/:postId        | GET       | 상세 게시물,댓글 조회   |                                                    
+| api/comment/:postId     | POST      | 댓글 작성              | content,req.params                                
+| api/comment/:postId     | PATCH     | 댓글 수정              | req.params                                          
+| api/comment/:postId     | DELETE    | 댓글 삭제              | req.params                                        
+
