@@ -22,6 +22,7 @@ const multer = require('multer');
 // const { promisify } = require('util');
 const fs = require('fs');
 const convert = require('heic-convert');
+const { log } = require('console');
 
 AWS.config.update({
 	accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -255,61 +256,6 @@ router.post(
 	},
 );
 
-// ==게시물 수정 - 인증 미들웨어 확인 필요
-router.put(
-	'/post/:postId',
-	authMiddleware,
-	postValidator,
-	postSameWriterValidator,
-	async (req, res) => {
-		try {
-			const postId = req.params.postId;
-			//로그인 한 유저 아이디 가져오기
-			const localsUserId = res.locals.user.id;
-			const { category, title, content, petName } = req.body;
-			//해당 게시물 정보 가져오기
-			const thisPost = await Posts.findOne({
-				where: { id: postId },
-				attributes: [
-					'id',
-					'userId',
-					'category',
-					'title',
-					'content',
-					'petName',
-					'createdAt',
-				],
-			});
-			//게시물 없을 경우
-			if (!thisPost) {
-				return res.status(401).json({
-					success: false,
-					message: '존재하지 않는 게시물입니다.',
-				});
-			}
-			//게시물 존재하고 내가 쓴 글이 아닐 경우 - 수정하고 수정된 게시물 보여주기
-			if (localsUserId !== thisPost.userId) {
-				return res
-					.status(401)
-					.json({ success: true, message: '수정 권한이 없습니다.' });
-			}
-			if (localsUserId === thisPost.userId) {
-				await thisPost.update(
-					{ category, title, content, petName },
-					{ where: { id: postId } },
-				);
-			}
-			return res.status(200).json({ success: true, data: thisPost });
-		} catch (error) {
-			return res.status(500).json({
-				success: false,
-				message: '게시물 수정에 실패하였습니다.',
-			});
-		}
-	},
-);
-
-// ==게시물 삭제
 // ==게시물 삭제
 router.delete(
 	'/post/:postId',
@@ -339,11 +285,6 @@ router.delete(
 			});
 			console.log('checkedPassword ', checkedPassword);
 			console.log('사용자입력 비번', password);
-			// console.log(sortPassword === checkedPassword);
-			// console.log(sortPassword + '해쉬비번');
-			// console.log(checkedPassword.password + '포스트 비번');
-			// console.log(res.locals.user.password + '내 비번');
-			//TODO ~~ 왜 다른것이지 도대체???????????
 			const isSame = await bcrypt.compare(
 				password,
 				checkedPassword.password,
@@ -355,8 +296,6 @@ router.delete(
 					message: '입력하신 비밀번호가 올바르지 않습니다.',
 				});
 			}
-			// if (checkPost.User.id === res.locals.user.id) {
-			// alert('게시물이 삭제되었습니다.');
 			checkPost.destroy();
 			return res.status(200).redirect('/api/main');
 			// }
@@ -398,5 +337,93 @@ router.get('/search/:searchWord', async (req, res) => {
 		});
 	}
 });
+
+// 수정 Post modify창으로 가기
+router.get(
+	'/post/modify/:postId',
+	authMiddleware,
+	async (req, res) => {
+		try {
+			const { postId } = req.params;
+			const postsDetail = await Posts.findOne({
+				where: {
+					id: postId,
+				},
+				attributes: [
+					'id',
+					'category',
+					'title',
+					'content',
+					'imgUrl',
+					'petName',
+					'createdAt',
+				],
+				include: {
+					model: Users,
+					as: 'User',
+					attributes: ['name'],
+				},
+			});
+			return res.render('modifyPost', {
+				postsDetail,
+			});
+		} catch (error) {
+			console.log(error);
+			return res.status(500).json({
+				success: false,
+				message: `게시물 조회에 실패하였습니다.`,
+			});
+		}
+	},
+);
+// ==게시물 수정 - 인증 미들웨어 확인 필요 - 접근이 안되는중
+router.post(
+	'/post/modify/:postId',
+	authMiddleware,
+	async (req, res) => {
+		try {
+			console.log(req.body);
+			const postId = req.params.postId;
+			const localsUserId = res.locals.user.id;
+			console.log(postId + '<<<<post Id');
+			console.log(localsUserId + '<<<< localsUserId');
+			const { category, title, content, petName } = req.body;
+			console.log(req.body);
+			console.log(
+				'req바디' + category,
+				title,
+				content,
+				petName + '수정값',
+			);
+			//해당 게시물 정보 가져오기
+			const postsDetail = await Posts.findOne({
+				where: {
+					id: postId,
+				},
+				attributes: [
+					'id',
+					'category',
+					'title',
+					'content',
+					'imgUrl',
+					'petName',
+					'createdAt',
+				],
+			});
+			await postsDetail.update({
+				title,
+				content,
+				category,
+				petName,
+			});
+			res.status(200).json({ success: true, data: postsDetail });
+		} catch (error) {
+			return res.status(500).json({
+				success: false,
+				message: '게시물 수정에 실패하였습니다.',
+			});
+		}
+	},
+);
 
 module.exports = router;

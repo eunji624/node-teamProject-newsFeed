@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수정하기::<%= postsDetail.title %></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/CSS/upload.css">
+</head>
+<body>
+    <img id="imgLogo" onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+ 
+    <div class="postingForm">
+        <form class = "postingFormtag" method="POST" action="/api/post/modify/<%= postsDetail.id %>" enctype="multipart/form-data" >
+            <h4>수정하기::<%= postsDetail.title %></h4>
+            <!-- <input id="fileInput" type="file" name="imgUrl" value="<%= postsDetail.imgUrl %>" > -->
+                <!-- <lebel id = "fileLabel" for="file">
+                    <button id="fileUploadBtn"> 🏞️ 🏞️ 🏞️ 파일 업로드  🏞️ 🏞️ 🏞️</button>
+                </lebel>-->
+            <p>제목 <input class = "postingInput" type="text"  placeholder="제목를 입력해 주세요" name="title" value="<%= postsDetail.title %>"> </p>
+            <p>동물이름<input class = "postingInput" type="text"  placeholder="동물이름을 입력해 주세요" name="petName" value="<%= postsDetail.petName %>"></p> 
+            <p>카테고리 <select name="category" class="form-select form-select-lg mb-3" id="floatingSelect" aria-label="Floating label select example">
+                <option selected disabled ><%= postsDetail.category %></option>
+                <option value="cat">cat</option>
+                <option value="dog">dog</option>
+                <option value="bird">bird</option>
+                <option value="reptiles">reptiles</option>
+            </select></p>
+            <p>게시글 내용<input class = "postingInput" type="text"  placeholder="내용을 입력해 주세요" name="content" value="<%= postsDetail.content %>"></p>
+            <button
+                id = "post_btn"
+                class="btn btn-secondary post_btn">
+                <input type="hidden" name="_method" value="patch"> 
+                등록하기</input> 
+            </button>
+        
+        </form>
+    </div>
+
+</body>
+</html>
