@@ -18,8 +18,8 @@ const path = require('path');
 const AWS = require('aws-sdk');
 const S3 = require('aws-sdk/clients/s3');
 const multer = require('multer');
-const multerS3 = require('multer-s3');
-const { promisify } = require('util');
+// const multerS3 = require('multer-s3');
+// const { promisify } = require('util');
 const fs = require('fs');
 const convert = require('heic-convert');
 
@@ -134,7 +134,7 @@ const getPostId = async (req, res, next) => {
 	next();
 };
 
-const upload = multer();
+// const upload = multer();
 
 router.get('/upload', (req, res) => {
 	res.render('upload');
@@ -144,7 +144,7 @@ router.post(
 	'/upload',
 	authMiddleware,
 	getPostId,
-	upload.single('imgUrl'),
+	multer().single('imgUrl'),
 	async (req, res) => {
 		try {
 			const { title, content, category, petName } = req.body;

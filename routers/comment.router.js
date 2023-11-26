@@ -109,13 +109,6 @@ router.patch(
 				},
 			});
 			let { content } = req.body;
-			if (content === selectedComment.content) {
-				// 409 Conflict  값들끼리 충돌 날 때
-				return res.status(409).json({
-					success: false,
-					message: '등록된 값이랑 똑같아요',
-				});
-			}
 			if (selectedComment.userId === res.locals.user.id) {
 				await Comments.update(
 					{
