@@ -11,9 +11,9 @@
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/eunji624"><img src="https://avatars.githubusercontent.com/u/130081021?v=4" width="100px;" alt=""/><sub><b> 팀장 : 유은지 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/leesin1040"><img src="https://avatars.githubusercontent.com/u/74364209?v=4" width="100px;" alt=""/><sub><b> 팀원 : 최이진 </b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/Han9526"><img src="https://avatars.githubusercontent.com/Han9526" width="100px;" alt=""/><sub><b> 팀원 : 한승준 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/eunji624"><img src="https://avatars.githubusercontent.com/u/130081021?v=4" width="100px;" alt=""/><br /><sub><b> 팀장 : 유은지 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/leesin1040"><img src="https://avatars.githubusercontent.com/u/74364209?v=4" width="100px;" alt=""/><br /><sub><b> 팀원 : 최이진 </b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/Han9526"><img src="https://avatars.githubusercontent.com/Han9526" width="100px;" alt=""/><br /><sub><b> 팀원 : 한승준 </b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>
@@ -31,19 +31,19 @@ http://mallish.store/api/main
 
 ## 역할
 
-- **로그인/회원가입,validator,프론트 및 배포**: <a href="https://github.com/eunji624"><img src="https://avatars.githubusercontent.com/u/130081021?v=4" width="100px;" alt=""/> 팀장 : 유은지 </a>
-- **게시글CRUD 및 프론트 총괄**: <a href="https://github.com/leesin1040"><img src="https://avatars.githubusercontent.com/u/74364209?v=4" width="100px;" alt=""/> 팀원 : 최이진 </a></td>
-- **댓글CRUD 및 IMG Upload**:  <td align="center"><a href="https://github.com/Han9526"><img src="https://avatars.githubusercontent.com/Han9526" width="100px;" alt=""/> 팀원 : 한승준 </a><br /></td>
+- **로그인/회원가입,validator,프론트 및 배포**: <td align="center"><a href="https://github.com/eunji624"><img src="https://avatars.githubusercontent.com/u/130081021?v=4" width="100px;" alt=""/><br /><sub><b> 팀장 : 유은지 </b></sub></a><br /></td>
+- **게시글CRUD 및 프론트 총괄**: <td align="center"><a href="https://github.com/leesin1040"><img src="https://avatars.githubusercontent.com/u/74364209?v=4" width="100px;" alt=""/><br /><sub><b> 팀원 : 최이진 </b></sub></a><br /></td>
+- **댓글CRUD 및 IMG Upload**: <td align="center"><a href="https://github.com/Han9526"><img src="https://avatars.githubusercontent.com/Han9526" width="100px;" alt=""/><br /><sub><b> 팀원 : 한승준 </b></sub></a><br /></td>
 
 ## WireFrame
 
-[![](./public/images/WireFrame_001.png)]
-[![](./public/images/WireFrame_002.png)]
+(./public/images/WireFrame_001.png)
+(./public/images/WireFrame_002.png)
 
 
 ## ERD
 
-[![](./public/images/IT`s Pets.png)](https://drawsql.app/teams/7-9/diagrams/copy-of-it-s-pet)
+(./public/images/IT`s Pets.png)(https://drawsql.app/teams/7-9/diagrams/copy-of-it-s-pet)
 
 ## API
 
