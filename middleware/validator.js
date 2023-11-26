@@ -128,6 +128,7 @@ const postValidator = [
 	body('petName')
 		.notEmpty()
 		.withMessage('반려동물의 이름을 입력해 주세요'),
+
 	errorMsgMiddleware,
 ];
 
