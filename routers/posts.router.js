@@ -137,16 +137,21 @@ const getPostId = async (req, res, next) => {
 
 // const upload = multer();
 
-router.get('/upload', (req, res) => {
+router.get('/post', (req, res) => {
 	res.render('upload');
 });
+// router.get('/post', (req, res, next) => {
+// 	res.render('upload', {});
+// });
 
 router.post(
-	'/upload',
+	'/post',
 	authMiddleware,
-	getPostId,
 	multer().single('imgUrl'),
+	postValidator,
+	getPostId,
 	async (req, res) => {
+		console.log('dd', req.body);
 		try {
 			const { title, content, category, petName } = req.body;
 			const file = req.file;
@@ -222,34 +227,39 @@ router.post(
 	},
 );
 
-router.get('/post', (req, res, next) => {
-	res.render('upload', {});
-});
+// router.get('/post', (req, res, next) => {
+// 	res.render('upload', {});
+// });
 
-// ==게시물 작성 - 로그인 해야 가능
-router.post('/post', authMiddleware, async (req, res) => {
-	try {
-		const { title, content, category, petName } = req.body;
-		await Posts.create({
-			userId: res.locals.user.id,
-			title,
-			content,
-			category,
-			petName,
-		});
+// 게시물 작성 - 로그인 해야 가능
+// router.post(
+// 	'/post',
+// 	authMiddleware,
+// 	postValidator,
+// 	async (req, res) => {
+// 		try {
+// 			const { title, content, category, petName } = req.body;
+// 			await Posts.create({
+// 				userId: res.locals.user.id,
+// 				title,
+// 				content,
+// 				category,
+// 				petName,
+// 			});
 
-		return res.status(200).json({
-			success: true,
-			message: '게시글이 등록되었습니다.',
-			Posts,
-		});
-	} catch {
-		return res.status(400).json({
-			success: false,
-			message: '게시글 등록에 실패하였습니다.',
-		});
-	}
-});
+// 			return res.status(200).json({
+// 				success: true,
+// 				message: '게시글이 등록되었습니다.',
+// 				Posts,
+// 			});
+// 		} catch {
+// 			return res.status(400).json({
+// 				success: false,
+// 				message: '게시글 등록에 실패하였습니다.',
+// 			});
+// 		}
+// 	},
+// );
 
 // ==게시물 삭제
 router.delete(
@@ -337,6 +347,7 @@ router.get('/search/:searchWord', async (req, res) => {
 router.get(
 	'/post/modify/:postId',
 	authMiddleware,
+	// postValidator,
 	async (req, res) => {
 		try {
 			const { postId } = req.params;
