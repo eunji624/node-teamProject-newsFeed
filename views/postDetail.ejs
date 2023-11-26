@@ -88,7 +88,7 @@
                 <p class="commentContent"><%= comment.content %></p>
                 <div class="commentBtnFD">
                 <p class="commentCreatedAt"><%= comment.updatedAt %>
-             <button  id="editNo<%= comment.commentId %>" onclick="editModals('<%= comment.commentId %>')" class="btn btn-secondary btn-sm">수정</button>
+             <button  id="editNo<%= comment.commentId %>" onclick="editModals('<%= comment.commentId %>','<%= comment.content %>')" class="btn btn-secondary btn-sm">수정</button>
              <button  id="deleteNo<%= comment.commentId %>" onclick="deleteModals('<%= comment.commentId %>')" class="btn btn-outline-secondary btn-sm">삭제</button></p>
                 </div>
             </li>
@@ -119,7 +119,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="editInputField" class="form-label" >수정할 내용을 입력하시오</label>
-                        <input type="text" class="form-control" id="editInputField" name="content">
+                        <input type="text" class="form-control" id="editInputField" value=""  name="content">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -189,10 +189,11 @@
     <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
    </footer>
    <script>
-function editModals(commentId) {
+function editModals(commentId,content) {
     document.getElementById('editCommentId').innerHTML=`Edit No.${commentId}`
     document.getElementById('editForm').action = `/api/comment/${commentId}?_method=patch`
     document.getElementById('editModal').style.display = "flex"
+    document.getElementById('editInputField').value = `${content}`
     document.getElementById('editInputField').focus();
 }
 function deleteModals(commentId) {
