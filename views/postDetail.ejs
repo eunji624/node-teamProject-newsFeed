@@ -60,7 +60,7 @@
                 <span><span style="font-size: xx-small;">작성자:</span><%= postsDetail.User.name %></span></div>
             <div>
                 <button type="button" class="btn btn-secondary btn-sm">수정</button>
-                <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deleteModals('<%= postsDetail.id %>')">삭제</button>
+                <button id="deletePostBtn" type="button" class="btn btn-outline-secondary btn-sm" onclick="deletePostModals('<%= postsDetail.id %>')">삭제</button>
             </div>
         </div>
         <img class="detailImg" src="<%= postsDetail.imgUrl %>"> <br/>
@@ -215,7 +215,7 @@ editCloseBtn()
 deleteCloseBtn();
 
 
-function deleteModals(postId) {
+function deletePostModals(postId) {
     document.getElementById('deletePostId').innerHTML=`게시물 <%= postsDetail.title %> <br/> 삭제합니다.`
     document.getElementById('deletePostForm').action = `/api/post/${postId}?_method=delete`
     document.getElementById('deletePostModal').style.display = "flex"
