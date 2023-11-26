@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt');
 const router = express.Router();
 const { Posts, Users, sequelize } = require('../models/index.js');
 const { authMiddleware } = require('../middleware/auth.js');
@@ -318,44 +318,47 @@ router.delete(
 	async (req, res) => {
 		try {
 			const postId = req.params.postId;
-			console.log(postId);
 			const { password } = req.body;
-			//삭제가능
 			const checkPost = await Posts.findOne({
 				where: {
 					id: postId,
 				},
+				include: {
+					model: Users,
+					as: 'User',
+					attributes: ['id'],
+				},
 			});
-			//비밀번호 체크
-			const checkPassword = await Users.findOne({
+			const checkedPassword = await Users.findOne({
 				where: {
 					id: checkPost.userId,
 				},
 			});
+
+			console.log(sortPassword === checkedPassword);
+			console.log(sortPassword + '해쉬비번');
+			console.log(checkedPassword.password + '포스트 비번');
+			console.log(res.locals.user.password + '내 비번');
+			//TODO ~~ 왜 다른것이지 도대체???????????
 			const isSame = await bcrypt.compare(
 				password,
-				checkPassword.password,
+				checkedPassword.password,
 			);
+
+			//비밀번호 체크
 			if (!isSame) {
 				return res.render('blank', {
-					message: '	입력하신 비밀번호가 올바르지 않습니다.',
+					message: '입력하신 비밀번호가 올바르지 않습니다.',
 				});
 			}
-
-			if (checkPost.userId === res.locals.user.id) {
+			if (checkPost.User.id === res.locals.user.id) {
 				alert('게시물이 삭제되었습니다.');
 				checkPost.destroy();
 				return res.status(200).redirect('/api/main');
-			} else {
-				return res.status(404).json({
-					success: false,
-					message: '존재하지 않는 게시물입니다.',
-				});
 			}
 		} catch {
-			return res.status(500).json({
-				success: false,
-				message: '게시물 삭제에 실패하였습니다.',
+			return res.render('blank', {
+				message: '게시물 삭제에 실패했습니다.',
 			});
 		}
 	},
