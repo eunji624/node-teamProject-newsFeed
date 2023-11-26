@@ -12,7 +12,7 @@ const {
 	passwordValidator,
 } = require('../middleware/validator.js');
 
-const Op = sequelize.Op;
+const { Op } = require('sequelize');
 
 const path = require('path');
 const AWS = require('aws-sdk');
@@ -238,40 +238,6 @@ router.post(
 	},
 );
 
-// router.get('/post', (req, res, next) => {
-// 	res.render('upload', {});
-// });
-
-// 게시물 작성 - 로그인 해야 가능
-// router.post(
-// 	'/post',
-// 	authMiddleware,
-// 	postValidator,
-// 	async (req, res) => {
-// 		try {
-// 			const { title, content, category, petName } = req.body;
-// 			await Posts.create({
-// 				userId: res.locals.user.id,
-// 				title,
-// 				content,
-// 				category,
-// 				petName,
-// 			});
-
-// 			return res.status(200).json({
-// 				success: true,
-// 				message: '게시글이 등록되었습니다.',
-// 				Posts,
-// 			});
-// 		} catch {
-// 			return res.status(400).json({
-// 				success: false,
-// 				message: '게시글 등록에 실패하였습니다.',
-// 			});
-// 		}
-// 	},
-// );
-
 // ==게시물 삭제
 router.delete(
 	'/post/:postId',
@@ -327,15 +293,13 @@ router.delete(
 router.get('/search/:searchWord', async (req, res) => {
 	try {
 		const searchWord = req.params.searchWord;
-		console.log('이것은' + category + '입니다.');
-		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
-		//게시글 전체 가져오기 (게시글id, 제목)
+
 		const searchPosts = await Posts.findAll({
 			where: {
-				title: { [Op.like]: '%' + searchWord + '%' },
+				title: { [Op.like]: `%${searchWord}%` },
 			},
-			attributes: ['id', 'category', 'title', 'createdAt'],
+			attributes: ['id', 'category', 'imgUrl', 'title', 'createdAt'],
 			include: [
 				{
 					model: Users,
@@ -344,7 +308,16 @@ router.get('/search/:searchWord', async (req, res) => {
 			],
 			order: [['updatedAt', sort]],
 		});
-		return res.status(200).json({ success: true, data: searchPosts });
+		console.log('searchPosts', searchPosts);
+		if (!searchPosts) {
+			return res.render('blank', {
+				message: '검색결과가 없습니다.',
+			});
+		}
+		const token = req.cookies.Authorization.split(' ')[1];
+		const userId = jwt.decode(token).userId;
+
+		return res.render('main', { userId, data: searchPosts });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({

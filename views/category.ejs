@@ -15,9 +15,9 @@
         <!-- 검색창 -->
         <div class="searchBar" id="searchBar">
             <img class="imgLogo"  onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
-                <form id="searchForm">
+                <form id="searchForm" action="/api/search" method="get">
                     <input class="searchTxt form-control" type="text" id="searchinput" placeholder=" 검색하세요.">
-                    <button class="searchBtn back_login_btn" id="searchBtn" >검색</button>
+                    <button class="searchBtn back_login_btn" id="searchBtn" type="submit" >검색</button>
                 </form>
             <!-- 검색창 사이드 -->
             <% if(!userId){ %>
@@ -64,28 +64,18 @@
         </div>
         <% }); %>
     </div>
-<!-- ==모달 -->
-      <div class="modal fade" id="Sign_up_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">상품 등록이 완료됬습니다</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-footer">
-                  <button id="Sign_up_modal_btn" type="button" class="btn btn-secondary"
-                      data-dismiss="modal">확인</button>
-              </div>
-          </div>
-        </div>
-    </div>
 </div>
   </section>
   <!-- ==footer -->
   <footer>
-   <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
+        <p>&copy;2023 SPARTACODINGCLUB NBC Team IT's Pets</p>
   </footer>
+        <script>
+            document.getElementById('searchForm').addEventListener('submit', function(e){
+                e.preventDefault();
+                const val = document.getElementById('searchinput').value;
+                location.href=`/api/search/${val}`
+            })
+        </script>
     </body>
+</html>
