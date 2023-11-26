@@ -310,12 +310,14 @@ router.put(
 );
 
 // ==게시물 삭제
+// ==게시물 삭제
 router.delete(
 	'/post/:postId',
 	authMiddleware,
 	postSameWriterValidator,
 	passwordValidator,
 	async (req, res) => {
+		console.log('삭제중');
 		try {
 			const postId = req.params.postId;
 			const { password } = req.body;
@@ -329,33 +331,35 @@ router.delete(
 					attributes: ['id'],
 				},
 			});
+			console.log('checkPost', checkPost);
 			const checkedPassword = await Users.findOne({
 				where: {
 					id: checkPost.userId,
 				},
 			});
-
-			console.log(sortPassword === checkedPassword);
-			console.log(sortPassword + '해쉬비번');
-			console.log(checkedPassword.password + '포스트 비번');
-			console.log(res.locals.user.password + '내 비번');
+			console.log('checkedPassword ', checkedPassword);
+			console.log('사용자입력 비번', password);
+			// console.log(sortPassword === checkedPassword);
+			// console.log(sortPassword + '해쉬비번');
+			// console.log(checkedPassword.password + '포스트 비번');
+			// console.log(res.locals.user.password + '내 비번');
 			//TODO ~~ 왜 다른것이지 도대체???????????
 			const isSame = await bcrypt.compare(
 				password,
 				checkedPassword.password,
 			);
-
+			console.log('isSame', isSame);
 			//비밀번호 체크
 			if (!isSame) {
 				return res.render('blank', {
 					message: '입력하신 비밀번호가 올바르지 않습니다.',
 				});
 			}
-			if (checkPost.User.id === res.locals.user.id) {
-				alert('게시물이 삭제되었습니다.');
-				checkPost.destroy();
-				return res.status(200).redirect('/api/main');
-			}
+			// if (checkPost.User.id === res.locals.user.id) {
+			// alert('게시물이 삭제되었습니다.');
+			checkPost.destroy();
+			return res.status(200).redirect('/api/main');
+			// }
 		} catch {
 			return res.render('blank', {
 				message: '게시물 삭제에 실패했습니다.',
