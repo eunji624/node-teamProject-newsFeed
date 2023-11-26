@@ -1,130 +1,55 @@
 /* 폰트설정 */
 @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
-
 * {
 font-family: 'Orbit', sans-serif;
 }
 body{
-  height: 1500px;
-  overflow: auto;
+  font-family: sans-serif;
 }
-section{
-    display: flex;
-    justify-content: center;
-}
-.realContainer{
-  width: 1080px;
-  vertical-align: middle;
-  align-content: center;
-  margin-top:2em ;
-}
-
-/* ~~상단헤더~~ */
 header{
-  height: 4em;
-  width: 100%;
-  z-index: 1;
-  position: fixed;
-}
-.headerBack{
-    height: 3em;
-}
-#searchBar{
-    background-color: white;
-    padding-top: 3em;
-    padding-bottom: 3em;
-    height: 4em;
-    display:flex;
-    vertical-align: middle;
-    align-items: center;
-    justify-content: center;
-}
-#searchForm{
-    display: flex;
-    vertical-align: middle;
-    align-items: center;
-    justify-content: center;
-    width: 30%;
-    margin: 0 3em 0 1em;;
-}
-.imgLogo{
-    width: 9em;
-    height: 4em;
-    top: 1.7em;
-    margin-right: 1em;
-}
-.searchTxt{
-    width: 80%;
-    top: 1.5em;
-}
-.searchBtn{
-    margin: 0.6rem;
-    padding: 5px;
-    margin-top: 10px;
-}
-#searchBtn{
-    height: 2.5em;
-    background-color: #d1ccdc;
-    color: #424c55;
-    border-radius: 5px;
-    padding: 2px;
-    margin-left: 1em;
-}
-.back_login_btn{
-    padding: 5px;
-    background-color: transparent;
-    color: gray;
-    border: none;
-    width: 7em;
-    margin: 0;
-}
-
-/* ~~사이드 바 */
-.side-bar{
-  margin-top: 3em;
-  position:fixed;
-  width: 13em;
-  min-height: 20em;
-  border-radius: 5px;
-  padding: 1em 1.5em  1em 1.5em;
+  margin-top: 20px;
   background-color: white;
 }
-ul,li{
-    margin: 1;
-    padding: 0.6em;
-    list-style: none;
-    border-radius: 5px;
+.imgLogo{
+  width: 160px;
+  height: 60px;
+  top: 20px;
 }
-li:hover{
-    background-color: #d1ccdc;
+.headerBtn{
+  border-style: none;
 }
 
-a{
-    color: inherit;
-    text-decoration: none;
-    font-size: 1.1em;
+/* 사이드바 */
+ul,li{
+  list-style: none;
+  border-radius: 5px;
 }
-a:link { color: black; }
+li:hover{
+  background-color: #d1ccdc;
+  color: white;
+}
+a{
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 17px;
+}
+a:link { color: #6c757d; }
 a:visited { color:#6c757d; }
 a:hover{
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
+}
+#write{
+  color:#6c757d;
 }
 
 /* ~~body card */
 .postDetail{
-    margin-top: 5em;
-    margin-left: 14em;
-    width: 800px;
+    padding: 48px;
+    width: 100%;
     align-items: center;
-    overflow: hidden;
-}
-.postView{
     border-radius: 10px;
-    padding: 2em;
     border: 1px solid #d1ccdc;
-    padding-right: 3em;
-    margin-bottom: 5em;
 }
 .profileImg{
     width: 50px;
@@ -132,46 +57,43 @@ a:hover{
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid #d1ccdc;
-    margin-left: 1em;
 }
 .postViewTop{
     text-align: right;
-    margin-bottom: 1em;
+    margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
 }
 .postTitle{
     font-size: large;
     font-weight: bold;
-    margin-left: 1em;
 }
 .postAutherBtn{
     text-align: right;
-    margin-bottom: 1em;
+    margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
 }
 /* ==포스트내부 */
 .detailImg{
-    width: 700px;
+    width: 95%;
     object-fit: contain;
-    margin: 1em;
     border-radius: 10px;
 
 }
 .postContent{
-    margin: 1em;
+    margin: 16px;
     width: 716px;
 }
 .postCreatedAt{
     font-size: small;
     opacity: 40%;
     text-align: right;
-    margin-bottom: 3em;
+    margin-bottom: 48px;
 }
 /* == 코멘트 작성 */
 .commentSubmit{
-    margin: 1em 2em 1em 2em;
+    margin: 16px 32px 16px 32px;
     display: flex;
     vertical-align: middle;
     align-items: center;
@@ -187,22 +109,22 @@ a:hover{
 }
 .commentBtn{
     width: 10%;
-    margin-left: 1em;
+    margin-left: 16px;
 }
-
 /* ==코멘트 리스트 */
 .commentList{
-    margin-top: 3em;
-    margin-bottom: 2.5em;
+    margin-top: 48px;
+    margin-bottom: 40px;
 }
-.comment{
+.commnets{
     border: dotted #d1ccdc;
     border-width: 1px 0;
     border-radius: 0;
-    margin: 0;
+    padding: 5px;
+    margin: 5;
 }
 .commentContent{
-    margin: 0 2em 0 2em;
+    margin: 0 32px 0 32px;
 }
 .commentCreatedAt{
     font-size: small;
@@ -211,7 +133,7 @@ a:hover{
 }
 #commentBtnFD{
     text-align: right;
-    margin-left:2em;
+    margin-left:32px;
 }
 /* ==모달 */
 .modal-content{
@@ -225,6 +147,6 @@ footer {
   background-color: #dbdbdb;
   color: white;
   text-align: center;
-  padding: 1rem;
+  padding: 16px;
   bottom: 0;
 }
