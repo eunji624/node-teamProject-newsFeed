@@ -60,24 +60,24 @@
       </div><!-- sideBar -->
     </div><!-- col-3 -->
 <!-- ~~ -->
-<div class="col-8">
-  <div class="allCards">
-    <% data.forEach(post=>{ %>
-    <div id="cardList" onclick="location.href= '/api/post/<%= post.id %>'">
-      <div class="card">
-        <div class="card-img-container">
-          <img src="<%= post.imgUrl %>"
-          class="card-img-top" alt="카드 이미지">
-        </div>
-        <div class="card-body">
-          <h5 class="card-title mb-4"><%= post.title %></h5>
-          <p class="card-subtitle mb-4"><%= post.content %></p>
-        </div>
-      </div><!-- card -->
-    </div><!-- cardList -->
-    <% }); %>
-  </div><!-- allCards -->
-</div><!-- col-9 -->
+    <div class="col-8">
+      <div class="allCards">
+        <% data.forEach(post=>{ %>
+        <div id="cardList" onclick="location.href= '/api/post/<%= post.id %>'">
+          <div class="card">
+            <div class="card-img-container">
+              <img src="<%= post.imgUrl %>"
+              class="card-img-top" alt="카드 이미지">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title mb-4"><%= post.title %></h5>
+              <p class="card-subtitle mb-4"><%= post.content %></p>
+            </div>
+          </div><!-- card -->
+        </div><!-- cardList -->
+        <% }); %>
+      </div><!-- allCards -->
+    </div><!-- col-9 -->
 <!-- ~~ -->
   </div><!-- row끝 -->
 </div><!-- container 끝-->
