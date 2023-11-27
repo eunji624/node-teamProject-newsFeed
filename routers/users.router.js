@@ -170,9 +170,17 @@ router.get('/user/modify/:userId', async (req, res, next) => {
 	const userData = await Users.findOne({
 		where: { id: req.params.userId },
 	});
+	if (userData.provider === 'kakao') {
+		res.render('modifyUserInfo', {
+			userId: req.params.userId,
+			data: userData,
+			pwd: '',
+		});
+	}
 	res.render('modifyUserInfo', {
 		userId: req.params.userId,
 		data: userData,
+		pwd: true,
 	});
 });
 
@@ -182,15 +190,20 @@ router.post(
 	authMiddleware,
 	modifyValidator,
 	async (req, res, next) => {
-		console.log('수정중');
 		try {
 			const { name, email, description, password, passwordRe } =
 				req.body;
 			const id = req.params.userId;
+			if (password !== passwordRe) {
+				res.render('blank', {
+					message: '비밀번호가 일치하지 않습니다.',
+				});
+			}
 
-			//passwordRe 확인할것
+			const hashPwd = await bcrypt.hash(password, 11);
+
 			await Users.update(
-				{ name, email, description, password },
+				{ name, email, description, password: hashPwd },
 				{ where: { id } },
 			);
 			const showUserData = await Users.findOne({ where: { id } });
