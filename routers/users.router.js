@@ -45,14 +45,11 @@ router.post(
 
 //로그인 기능 보여주기
 router.get('/auth/login', async (req, res, next) => {
-	console.log('또잉');
 	res.render('login');
 });
 
 //로그인 기능 디비에 접근하기.
 router.post('/auth/login', loginValidator, async (req, res, next) => {
-	console.log('로그인기능');
-
 	try {
 		const { email, password } = req.body;
 		const userData = await Users.findOne({ where: { email } });
@@ -73,7 +70,6 @@ router.post('/auth/login', loginValidator, async (req, res, next) => {
 			process.env.SECRET_KEY,
 			{ expiresIn: '12h' },
 		);
-		console.log(token);
 		return res
 			.cookie('Authorization', `Bearer ${token}`)
 			.redirect('/api/main');
@@ -120,11 +116,9 @@ router.post(
 		);
 		//해당 회원이 맞는 경우만 삭제
 		if (Number(id) === decodeValue.userId) {
-			console.log('디코디드벨류 유저아이디=>', decodeValue.userId);
 			res.clearCookie('Authorization');
 			try {
 				await Users.destroy({ where: { id: decodeValue.userId } });
-				console.log('삭제완료');
 				// res.redirect('/api/main');
 				res.render('withDraw');
 			} catch (err) {

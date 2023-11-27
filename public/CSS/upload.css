@@ -4,17 +4,11 @@
 * {
 font-family: 'Orbit', sans-serif;
 }
-/* d1ccdc
-424c55
-F5EDF0
-886F68
-3D2C2E */
 
 body{
   display: flex;
   align-items: center;
   justify-content: center;
-  /* flex-direction: column; */
 }
 #imgLogo{
   margin: 60px 20px 60px 20px;
@@ -29,7 +23,6 @@ body{
 h4{
   font-size: 30px;
   color: #886F68;
-  /* color:  #d1ccdc;; */
   padding: 20px;
   text-align: center;
   margin-bottom: 50px;
@@ -43,10 +36,6 @@ h4{
   padding: 30px 30px 30px 40px;
   border-radius: 40px;
   border: 3px solid transparent ;
-  /* display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column; */
 }
 .postingInput:first-child{
   height: 50px;
@@ -102,12 +91,6 @@ h4{
 }
 
 
-.postingFormtag{
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-  /* text-decoration: ; */
-}
 
 .blank1{
   height: 60px;

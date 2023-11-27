@@ -53,7 +53,6 @@ router.get('/post/:postId', async (req, res) => {
 			attributes: ['name', 'id'],
 		},
 	});
-	console.log('postsDetail', postsDetail);
 	const commentsList = await Comments.findAll({
 		where: { postId: postId },
 		attributes: ['content', 'commentId', 'updatedAt', 'userId'],
@@ -77,10 +76,6 @@ router.get('/post/:postId', async (req, res) => {
 				const [jwtToken, jwtValue] =
 					req.cookies.Authorization.split(' ');
 				const checkJwt = jwt.verify(jwtValue, process.env.SECRET_KEY);
-				console.log(
-					checkJwt.userId,
-					postsDetail.dataValues.User.dataValues.id,
-				);
 
 				return res.render('postDetail', {
 					userId: checkJwt.userId,
@@ -92,15 +87,10 @@ router.get('/post/:postId', async (req, res) => {
 			console.log(err);
 		}
 	}
-	// ~~
-	// console.log(commentsList);
-	// res.render('postDetail', { postsDetail, commentsList });
-	// res.send({ success: true, postsDetail, commentsList });
 });
 // R Read
 
 // //  U Update
-
 router.patch(
 	'/comment/:commentId',
 	authMiddleware,
