@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
 			this.belongsTo(models.Users, {
 				targetKey: 'id',
 				foreignKey: 'userId',
+				onDelete: 'CASCADE',
+			});
+			this.hasMany(models.Comments, {
+				sourceKey: 'id',
+				foreignKey: 'postId',
 			});
 		}
 	}
@@ -25,12 +30,17 @@ module.exports = (sequelize, DataTypes) => {
 			userId: {
 				allowNull: false,
 				type: DataTypes.INTEGER,
+				onDelete: 'CASCADE',
 			},
 			title: {
 				allowNull: false,
 				type: DataTypes.STRING,
 			},
 			content: {
+				allowNull: false,
+				type: DataTypes.STRING,
+			},
+			imgUrl: {
 				allowNull: false,
 				type: DataTypes.STRING,
 			},

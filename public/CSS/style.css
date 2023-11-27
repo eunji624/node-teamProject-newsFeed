@@ -1,0 +1,167 @@
+/* 폰트설정 */
+@import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+* {
+font-family: 'Orbit', sans-serif;
+}
+body{
+  font-family: sans-serif;
+}
+header{
+  margin-top: 20px;
+  background-color: white;
+}
+.imgLogo{
+  width: 160px;
+  height: 60px;
+  top: 20px;
+}
+.headerBtn{
+  border-style: none;
+}
+/* 사이드바 */
+ul,li{
+  list-style: none;
+  border-radius: 5px;
+}
+li:hover{
+  background-color: #d1ccdc;
+  color: white;
+}
+a{
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 17px;
+}
+a:link { color: #6c757d; }
+a:visited { color:#6c757d; }
+a:hover{
+  color: white;
+  text-decoration: none;
+}
+#write{
+  color:#6c757d;
+}
+/* 카드 */
+.card {
+  width: 100%;
+  margin: 1em;
+  border: 2px solid #e0e0e0;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  transition: transform 0.2s;
+  text-align: left;
+  font-family: 'Orbit', sans-serif;
+}
+.card:hover {
+  transform: scale(1.05);
+  z-index: 1;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px 0px #aaa;
+}
+.card-subtitle {
+  font-size: 1rem;
+  color: #777;
+}
+.card-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+.card-body {
+padding: 15px;
+}
+.card-img-top {
+max-width: 100%;
+height: auto;
+border-radius: 10px 10px 0 0;
+}
+.card-img-container {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 300px;
+overflow: hidden;
+border-radius: 10px 10px 0 0;
+}
+/*  */
+
+.Sign_up_title {
+  text-align: center;
+  margin-top: 50px;
+}
+#infoLogo{
+  font-size: 50px;
+  padding: 1%;
+  margin: 7% 0% 0% 41.5%;
+  cursor:pointer;
+}
+.showUserInfowrap{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  height: 900px;
+}
+.showUserInfo{
+  height: 580px;
+  width: 500px;
+  padding: 30px;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  flex-direction: column;
+  margin: 200px auto 300px auto;
+  background-color: #F5EDF0;
+  border-radius: 5%;
+}
+.showUserInfo h2{
+  font-size: 30px;
+  margin: 50px auto 60px auto;
+}
+.userInfoTable {
+  border-radius: 5%;
+  border: 2px solid white;
+}
+.userInfoTable tr, th {
+  padding: 30px;
+  border: 2px solid white;
+  font-size: 20px;
+  height: 20px;
+} 
+
+
+#infoDeleteBtn:hover,
+#infoModifyBtn:hover{
+  background-color: #d1ccdc;
+  /* border:2px solid #e0e0e0 */
+}
+
+#infoDeleteBtn, 
+#infoModifyBtn{
+  height: 60px;
+  width: 130px;
+  font-size: 20px;
+  background-color: transparent;
+  color: #424c55;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid  #d1ccdc;
+  cursor:pointer;
+}
+#infoDeleteBtn{
+  position: absolute;
+  left: 51.8%;
+  top: 112%;
+}
+
+#infoModifyBtn{
+  position: absolute;
+  left: 40%;
+  top: 112%;
+}
+
+.withDarwMsg{
+  border-radius: 20px;
+  font-size: 30px;
+  height: 200px;
+  width: 400px;
+}

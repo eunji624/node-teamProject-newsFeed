@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
 				foreignKey: 'userId',
 			});
 			this.hasMany(models.Comments, {
-				sourceKey: 'commentId',
-				foreignKey: 'postid',
+				sourceKey: 'id',
+				foreignKey: 'userId',
 			});
 		}
 	}
@@ -34,12 +34,17 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: false,
 				type: DataTypes.STRING,
 			},
+			sesId: {
+				type: DataTypes.STRING,
+			},
+			provider: {
+				type: DataTypes.STRING,
+			},
 			password: {
 				allowNull: false,
 				type: DataTypes.STRING,
 			},
 			description: {
-				allowNull: false,
 				type: DataTypes.STRING,
 			},
 		},

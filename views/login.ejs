@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>로그인</title>
+    <!-- 부트스트랩 CSS 링크 추가 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- 부트스트랩 및 jQuery/Popper.js/Bootstrap JavaScript 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        /* 폰트설정 */
+        @import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+
+        * {
+            font-family: 'Orbit', sans-serif;
+        }
+
+      
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .top-bar {
+            background-color: #333;
+         
+            color: #fff;
+   
+            padding: 10px 0;
+        
+            text-align: center;
+      
+        }
+        .login_btn {
+            margin-top: 10px;
+            width: 150px;
+        }
+
+        .Sign_up_btn {
+            background-color: transparent;
+            color: gray;
+            border: none;
+            margin-top: 10px;
+            width: 150px;
+        }
+
+        .login_btn {
+            margin-top: 10px;
+            width: 150px;
+        }
+
+        .login_title {
+
+
+            text-align: center;
+            /* 가로로 가운데 정렬 */
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login_title">
+        <h1 onclick="location.href='/api/main'" style="cursor:pointer;">IT`s Pet</h1>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 ">
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h2 class="text-center">로그인</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="/api/auth/login" method="post">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-user">Email</i>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" id="login_id" placeholder="아이디를 입력하시오" name="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-lock">PW</i>
+                                        </span>
+                                    </div>
+                                    <input type="password" class="form-control" id="login_password"
+                                        placeholder="비밀번호를 입력하시오"  name="password">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-center">
+                                    <form action="/api/auth/login" method="POST">
+                                        <button type="submit"  class="btn btn-secondary login_btn" onclick="location.href = '/api/auth/login'">로그인</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </form>
+                        <button class="btn btn-secondary login_btn" onclick="location.href = '/api/kakao'">kakao 로그인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- "회원가입" 버튼에 클래스 적용 -->
+        <div class="text-center">
+            <!-- <form action="/api/auth/login" method="POST"> -->
+                <button type="button" class="btn Sign_up_btn" onclick="location.href='/api/register'">-회원가입-</button>
+            <!-- </form> -->
+        </div>
+    </div>
+<script>
+
+</script>
+</body>
+
+</html>

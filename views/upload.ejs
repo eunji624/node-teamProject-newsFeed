@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>upload</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/CSS/upload.css">
+</head>
+<body>
+    <img id="imgLogo" onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
+ 
+    <div class="postingForm">
+        <form class = "postingFormtag" method="POST" action='/api/post?_method=post' enctype="multipart/form-data" >
+            <h4>-- posting --</h4>
+            <input id="fileInput" type="file" name="imgUrl"  >
+                <!-- <lebel id = "fileLabel" for="file">
+                    <button id="fileUploadBtn"> 🏞️ 🏞️ 🏞️ 파일 업로드  🏞️ 🏞️ 🏞️</button>
+                </lebel>-->
+            <input class = "postingInput" type="text"  placeholder="제목를 입력해 주세요" name="title">
+            <input class = "postingInput" type="text"  placeholder="동물이름을 입력해 주세요" name="petName">
+            <select name="category" class="form-select form-select-lg mb-3" id="floatingSelect" aria-label="Floating label select example">
+                <option selected disabled>애완동물의 종류</option>
+                <option value="cat">cat</option>
+                <option value="dog">dog</option>
+                <option value="bird">bird</option>
+                <option value="reptiles">reptiles</option>
+            </select>
+            <input class = "postingInput" type="text"  placeholder="내용을 입력해 주세요" name="content">
+            <button
+                id = "post_btn"
+                type="submit"
+                class="btn btn-secondary post_btn"
+            >
+                등록하기
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
