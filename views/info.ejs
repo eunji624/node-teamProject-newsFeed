@@ -36,18 +36,19 @@
           <th> <%= userData.description %> </th>
         </tr>
       </table>
+      <form id="deleteUserForm" action="/api/user/<%= userId %>" method="POST">
+        <button id="infoDeleteBtn" >
+          <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">
+            탈퇴
+          </input>
+        </button>
+        <button id ="infoModifyBtn" onclick="location.href = '/api/user/modify/<%=userId%>'">
+          수정
+        </button>
+      </form>
     </div>
   </div>
-  <form id="deleteUserForm" action="/api/user/<%= userId %>" method="POST">
-    <button id="infoDeleteBtn" >
-      <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">
-        탈퇴
-      </input>
-    </button>
-    <button id ="infoModifyBtn" onclick="location.href = '/api/user/modify/<%=userId%>'">
-      수정
-    </button>
-  </form>
+
 </div><!-- container -->
 <script>
   function moveWithDrawPage(){
