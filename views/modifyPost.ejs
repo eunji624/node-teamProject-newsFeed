@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/CSS/upload.css">
 </head>
 <body>
+    <div class="container">
     <img id="imgLogo" onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
     <div class="postingForm">
         <form class = "postingFormtag" method="POST" id="postEditForm" action='/api/post/modify/<%= postsDetail.id %>?_method=patch' >
@@ -28,5 +29,6 @@
             <button type="submit" class="btn btn-secondary" id="postEditCorrectBtn">확인</button>
         </form>
     </div>
+</div><!-- container -->
 </body>
 </html>
