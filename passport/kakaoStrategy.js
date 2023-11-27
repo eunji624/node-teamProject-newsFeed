@@ -3,7 +3,6 @@ require('dotenv').config();
 const passport = require('passport');
 const kakaoStrategy = require('passport-kakao').Strategy;
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 const { Users } = require('../models');
 
@@ -21,14 +20,14 @@ const kakaoLogin = () => {
 					const exUser = await Users.findOne({
 						where: { email: profile._json.kakao_account.email },
 					});
+					const hashPwd = await bcrypt.hash('profile.id', 11);
 					if (exUser) {
 						done(null, exUser);
 					} else {
 						const newUser = await Users.create({
 							email: profile._json.kakao_account.email,
 							name: profile.displayName,
-							password: profile.id, //수정
-							snsId: profile.id,
+							password: hashPwd, //수정
 							provider: 'kakao',
 						});
 						done(null, newUser);
