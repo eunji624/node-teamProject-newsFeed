@@ -101,20 +101,18 @@ border-radius: 10px 10px 0 0;
   height: 900px;
 }
 .showUserInfo{
-  height: 580px;
   width: 500px;
   padding: 30px;
   display: flex;
   justify-content:center;
   align-items: center;
   flex-direction: column;
-  margin: 200px auto 300px auto;
   background-color: #F5EDF0;
   border-radius: 5%;
 }
 .showUserInfo h2{
   font-size: 30px;
-  margin: 50px auto 60px auto;
+  margin: 30px auto 30px auto;
 }
 .userInfoTable {
   border-radius: 5%;
@@ -136,7 +134,6 @@ border-radius: 10px 10px 0 0;
 #infoDeleteBtn, 
 #infoModifyBtn{
   height: 60px;
-  width: 130px;
   font-size: 20px;
   background-color: transparent;
   color: #424c55;
@@ -145,14 +142,13 @@ border-radius: 10px 10px 0 0;
   border-radius: 10px;
   border: 2px solid  #d1ccdc;
   cursor:pointer;
+  width: 300px;
 }
 #deleteUserForm{
   margin-top: 30px;
 }
-#infoDeleteBtn{
-}
-
 #infoModifyBtn{
+  margin-top: 20px;
 }
 
 .withDarwMsg{
