@@ -164,3 +164,10 @@ border-radius: 10px 10px 0 0;
   height: 200px;
   width: 400px;
 }
+
+#imgLogo{
+  margin: 60px 20px 60px 20px;
+  display: flex;
+  align-items: center;
+  width: 200px;
+}

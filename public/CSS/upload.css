@@ -5,27 +5,20 @@
 font-family: 'Orbit', sans-serif;
 }
 
-body{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 #imgLogo{
   margin: 60px 20px 60px 20px;
   display: flex;
   align-items: center;
-  margin-left: 10%;
-  margin-right: 4%;
-  height: 100px;
-  width: 300px;
+  width: 200px;
 }
 
 h4{
-  font-size: 30px;
+  font-size: 25px;
   color: #886F68;
   padding: 20px;
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .postingForm{
@@ -41,7 +34,7 @@ h4{
   height: 50px;
   width: 90%;
   border-radius: 10px;
-  margin: 20px;
+  margin: 10px;
   font-size: 17px;
   padding: 5px 5px 5px 15px;
   border: transparent
@@ -51,7 +44,7 @@ h4{
   height: 50px;
   width: 90%;
   border-radius: 10px;
-  margin: 20px;
+  margin: 10px;
   font-size: 17px;
   padding: 5px 5px 5px 18px;
   border: transparent;
