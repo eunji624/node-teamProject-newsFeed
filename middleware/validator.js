@@ -1,15 +1,5 @@
-const {
-	validationResult,
-	body,
-	check,
-	query,
-	param,
-	checkSchema,
-} = require('express-validator');
+const { validationResult, body } = require('express-validator');
 const { Posts, Users, Comments } = require('../models');
-
-// const express = require('express');
-// const router = express.Router();
 
 const errorMsgMiddleware = (req, res, next) => {
 	const errors = validationResult(req);
@@ -113,7 +103,6 @@ const postValidator = [
 	body('content').notEmpty().withMessage('내용은 필수 입력입니다.'),
 	body('category')
 		.custom(value => {
-			console.log('값', value);
 			if (
 				value !== 'dog' &&
 				value !== 'cat' &&

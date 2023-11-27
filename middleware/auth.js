@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
 
 const authMiddleware = async (req, res, next) => {
-	console.log('어쓰 통과');
 	try {
 		const { Authorization } = req.cookies;
 		const [tokenType, tokenValue] = (Authorization ?? '').split(' ');
@@ -18,7 +17,6 @@ const authMiddleware = async (req, res, next) => {
 			where: { id: checkJwt.userId },
 		});
 		res.locals.user = userData;
-		// res.cookies.id = checkJwt.userId;
 		next();
 	} catch (err) {
 		if (err.name === 'TokenExpiredError') {

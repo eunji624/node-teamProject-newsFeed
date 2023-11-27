@@ -77,7 +77,6 @@ router.get('/main', async (req, res) => {
 router.get('/main/:category', async (req, res) => {
 	try {
 		const category = req.params.category;
-		console.log('이것은' + category + '입니다.');
 		//작성일 내림차순 - 최신 작성된 게시글부터 조회
 		const sort = req.query.sort === 'ASC' ? 'ASC' : 'DESC';
 		//게시글 전체 가져오기 (게시글id, 제목)
@@ -110,7 +109,6 @@ router.get('/main/:category', async (req, res) => {
 			const [jwtToken, jwtValue] =
 				req.cookies.Authorization.split(' ');
 			const checkJwt = jwt.verify(jwtValue, process.env.SECRET_KEY);
-			console.log(categoryPosts);
 			return res.render('category', {
 				userId: checkJwt.userId,
 				data: categoryPosts,
@@ -170,7 +168,6 @@ router.post(
 				});
 
 				const s3 = new AWS.S3();
-				console.log('s3', s3);
 
 				const uploadParams = {
 					Bucket: 'myejbucket',
@@ -181,10 +178,8 @@ router.post(
 					ACL: 'public-read',
 					ContentType: 'image/jpeg',
 				};
-				console.log('업로드파람스', uploadParams);
 
 				const uploadResult = await s3.upload(uploadParams).promise();
-				console.log('업로드리졸트', uploadResult);
 				const imgUrl = uploadResult.Location;
 
 				const createPost = await Posts.create({
@@ -236,7 +231,6 @@ router.delete(
 	postSameWriterValidator,
 	passwordValidator,
 	async (req, res) => {
-		console.log('삭제중');
 		try {
 			const postId = req.params.postId;
 			const { password } = req.body;
@@ -250,19 +244,16 @@ router.delete(
 					attributes: ['id'],
 				},
 			});
-			console.log('checkPost', checkPost);
 			const checkedPassword = await Users.findOne({
 				where: {
 					id: checkPost.userId,
 				},
 			});
-			console.log('checkedPassword ', checkedPassword);
-			console.log('사용자입력 비번', password);
+
 			const isSame = await bcrypt.compare(
 				password,
 				checkedPassword.password,
 			);
-			console.log('isSame', isSame);
 			//비밀번호 체크
 			if (!isSame) {
 				return res.render('blank', {
@@ -299,7 +290,6 @@ router.get('/search/:searchWord', async (req, res) => {
 			],
 			order: [['updatedAt', sort]],
 		});
-		console.log('searchPosts', searchPosts);
 		if (!searchPosts) {
 			return res.render('blank', {
 				message: '검색결과가 없습니다.',
@@ -364,19 +354,9 @@ router.patch(
 	postValidator,
 	async (req, res) => {
 		try {
-			console.log(req.body);
 			const postId = req.params.postId;
 			const localsUserId = res.locals.user.id;
-			console.log(postId + '<<<<post Id');
-			console.log(localsUserId + '<<<< localsUserId');
 			const { category, title, content, petName } = req.body;
-			console.log(req.body);
-			console.log(
-				'req바디' + category,
-				title,
-				content,
-				petName + '수정값',
-			);
 			//해당 게시물 정보 가져오기
 			const postsDetail = await Posts.findOne({
 				where: {

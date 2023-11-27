@@ -12,15 +12,15 @@ const kakaoLogin = () => {
 			{
 				clientID: process.env.KAKAO_ID,
 				callbackURL: '/api/kakao/callback',
-				// callbackURL: '/api/main',
 			},
 			async (accessToken, refreshToken, profile, done) => {
-				console.log('profile', profile);
 				try {
 					const exUser = await Users.findOne({
 						where: { email: profile._json.kakao_account.email },
 					});
+
 					const hashPwd = await bcrypt.hash('profile.id', 11);
+
 					if (exUser) {
 						done(null, exUser);
 					} else {
@@ -33,7 +33,6 @@ const kakaoLogin = () => {
 						done(null, newUser);
 					}
 				} catch (err) {
-					console.log('없음');
 					done(err);
 				}
 			},
