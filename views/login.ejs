@@ -37,16 +37,16 @@
             margin-top: 10px;
             width: 150px;
         }
-
+        #kakaoLogin{
+            position: relative;
+            left: 34.5%;
+            /* margin: 10px auto 0px auto */
+        }
+   
         .Sign_up_btn {
             background-color: transparent;
             color: gray;
             border: none;
-            margin-top: 10px;
-            width: 150px;
-        }
-
-        .login_btn {
             margin-top: 10px;
             width: 150px;
         }
@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                         </form>
-                        <button class="btn btn-secondary login_btn" onclick="location.href = '/api/kakao'">kakao 로그인</button>
+                        <button id = "kakaoLogin" class="btn btn-secondary login_btn" onclick="location.href = '/api/kakao'">kakao 로그인</button>
                     </div>
                 </div>
             </div>
