@@ -114,6 +114,7 @@ router.post(
 			tokenValue,
 			process.env.SECRET_KEY,
 		);
+
 		//해당 회원이 맞는 경우만 삭제
 		if (Number(id) === decodeValue.userId) {
 			res.clearCookie('Authorization');

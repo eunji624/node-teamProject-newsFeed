@@ -16,7 +16,7 @@
     height: 100vh;
 }
 </style>
-<body >
+<body>
   <div class="container">
   <img id="imgLogo" onclick="location.href='/api/main'" style="cursor:pointer;" src="https://github.com/eunji624/node-teamProject-newsFeed/blob/dev/public/images/logo_img.png?raw=true" >
   <div class="showUserInfowrap"> 
@@ -36,16 +36,17 @@
           <th> <%= userData.description %> </th>
         </tr>
       </table>
+
       <form id="deleteUserForm" action="/api/user/<%= userId %>" method="POST">
         <button id="infoDeleteBtn" >
           <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">
             탈퇴
           </input>
         </button>
-        <button id ="infoModifyBtn" onclick="location.href = '/api/user/modify/<%=userId%>'">
-          수정
-        </button>
       </form>
+      <button id ="infoModifyBtn" onclick="location.href = '/api/user/modify/<%=userId%>'">
+        수정
+      </button>
     </div>
   </div>
 
@@ -55,9 +56,9 @@
     if(confirm('정말 탈퇴하시겠습니까?')){
       document.getElementById('deleteUserForm').submit()
     }else{
-
     }
   }
+
 </script>
 </body>
 </html>
