@@ -32,7 +32,7 @@
           <th> <%= userData.email %></th>
         </tr>
         <tr>
-          <th>이메일</th>
+          <th>자기소개</th>
           <th> <%= userData.description %> </th>
         </tr>
       </table>
@@ -43,20 +43,20 @@
       <input type = 'hidden' name="_method" value="DELETE" onclick="location.href = '/api/user/<%=userId%>'">
         탈퇴
       </input>
-      <script>
-        function moveWithDrawPage(){
-          if(confirm('정말 탈퇴하시겠습니까?')){
-            document.getElementById('deleteUserForm').submit()
-          }else{
-
-          }
-        }
-      </script>
+    </button>
+    <button id ="infoModifyBtn" onclick="location.href = '/api/user/modify/<%=userId%>'">
+      수정
     </button>
   </form>
-  <button id ="infoModifyBtn" onclick="location.href = '/api/user/modify/<%=userId%>'">
-    수정
-  </button>
 </div><!-- container -->
+<script>
+  function moveWithDrawPage(){
+    if(confirm('정말 탈퇴하시겠습니까?')){
+      document.getElementById('deleteUserForm').submit()
+    }else{
+
+    }
+  }
+</script>
 </body>
 </html>
