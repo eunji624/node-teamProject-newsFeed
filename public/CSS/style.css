@@ -146,16 +146,13 @@ border-radius: 10px 10px 0 0;
   border: 2px solid  #d1ccdc;
   cursor:pointer;
 }
+#deleteUserForm{
+  margin-top: 30px;
+}
 #infoDeleteBtn{
-  position: absolute;
-  left: 51.8%;
-  top: 112%;
 }
 
 #infoModifyBtn{
-  position: absolute;
-  left: 40%;
-  top: 112%;
 }
 
 .withDarwMsg{
@@ -164,7 +161,6 @@ border-radius: 10px 10px 0 0;
   height: 200px;
   width: 400px;
 }
-
 #imgLogo{
   margin: 60px 20px 60px 20px;
   display: flex;
